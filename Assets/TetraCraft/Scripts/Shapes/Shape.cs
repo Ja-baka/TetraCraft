@@ -6,7 +6,6 @@ public abstract class Shape : ScriptableObject
     private int _indexOfCurrent;
     private Vector2Int[][] _rotates;
 
-
     protected Shape()
     {
         _rotates = new Vector2Int[4][];

@@ -13,8 +13,8 @@ public class Tetramino : MonoBehaviour
         _material = material;
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        Instantiate(_material.Model);
+        Instantiate(_material.Model, transform);
     }
 }
