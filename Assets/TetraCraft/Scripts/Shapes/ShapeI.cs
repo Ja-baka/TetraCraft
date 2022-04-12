@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[CreateAssetMenu(fileName = "ShapeI", menuName = "ScriptableObjects/Shapes/I", order = 1)]
 public class ShapeI : Shape
 {
     protected override void CreateRotate1(out Vector2Int[] rotate)

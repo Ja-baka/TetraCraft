@@ -4,8 +4,6 @@ public class ShapeFactory
 {
     public static Shape GenerateRandomShape()
     {
-        return new ShapeI();
-
         int shapeId = Random.Range(1, 7);
 
         if (shapeId == 0)

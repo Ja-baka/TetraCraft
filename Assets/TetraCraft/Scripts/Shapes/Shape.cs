@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class Shape
+public abstract class Shape : ScriptableObject
 {
     private int _indexOfCurrent;
     private Vector2Int[][] _rotates;

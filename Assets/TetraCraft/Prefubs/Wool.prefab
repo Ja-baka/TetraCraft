@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1557775478130776928}
   - component: {fileID: 199575196757238079}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Wool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
