@@ -1,17 +1,14 @@
-﻿public static class TetraminoValidator
+﻿using UnityEngine;
+
+public static class TetraminoValidator
 {
     public const int ExpectedBlocksCount = 4;
 
-    public static bool Validate(bool[][,] rotates)
+    public static bool Validate(Vector2Int[][] rotates)
     {
-        foreach (bool[,] rotate in rotates)
+        foreach (Vector2Int[] rotate in rotates)
         {
-            int blocksCount = 0;
-            foreach (bool isBlockExist in rotate)
-            {
-                blocksCount += isBlockExist ? 1 : 0;
-            }
-            if (blocksCount != ExpectedBlocksCount)
+            if (rotate.Length != ExpectedBlocksCount)
             {
                 return false;
             }

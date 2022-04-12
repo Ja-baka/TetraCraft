@@ -1,42 +1,24 @@
-﻿internal class ShapeL : Shape
+﻿using UnityEngine;
+
+internal class ShapeL : Shape
 {
-    protected override bool[,] CreateRotate1()
+    protected override void CreateRotate1(out Vector2Int[] rotate)
     {
-        return new bool[,]
-        {
-            { O, O, I },
-            { I, I, I },
-            { O, O, O },
-        };
+        throw new System.NotImplementedException();
     }
 
-    protected override bool[,] CreateRotate2()
+    protected override void CreateRotate2(out Vector2Int[] rotate)
     {
-        return new bool[,]
-        {
-            { O, I, O },
-            { O, I, O },
-            { O, I, I },
-        };
+        throw new System.NotImplementedException();
     }
 
-    protected override bool[,] CreateRotate3()
+    protected override void CreateRotate3(out Vector2Int[] rotate)
     {
-        return new bool[,]
-        {
-            { O, O, O },
-            { I, I, I },
-            { I, O, O },
-        };
+        throw new System.NotImplementedException();
     }
 
-    protected override bool[,] CreateRotate4()
+    protected override void CreateRotate4(out Vector2Int[] rotate)
     {
-        return new bool[,]
-        {
-            { I, I, O },
-            { O, I, O },
-            { O, I, O },
-        };
+        throw new System.NotImplementedException();
     }
 }

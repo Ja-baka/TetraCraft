@@ -1,19 +1,20 @@
 ﻿using System;
+using UnityEngine;
 
 public abstract class Shape
 {
-    protected const bool O = false;
-    protected const bool I = true;
     private int _indexOfCurrent;
+    private Vector2Int[][] _rotates;
+
 
     protected Shape()
     {
-        _rotates = new bool[4][,];
+        _rotates = new Vector2Int[4][];
 
-        _rotates[0] = CreateRotate1();
-        _rotates[1] = CreateRotate2();
-        _rotates[2] = CreateRotate3();
-        _rotates[3] = CreateRotate4();
+        CreateRotate1(out _rotates[0]);
+        CreateRotate2(out _rotates[1]);
+        CreateRotate3(out _rotates[2]);
+        CreateRotate4(out _rotates[3]);
 
         if (TetraminoValidator.Validate(_rotates) == false)
         {
@@ -21,14 +22,13 @@ public abstract class Shape
         }
     }
 
-    protected abstract bool[,] CreateRotate1();
-    protected abstract bool[,] CreateRotate2();
-    protected abstract bool[,] CreateRotate3();
-    protected abstract bool[,] CreateRotate4();
+    protected abstract void CreateRotate1(out Vector2Int[] rotate);
+    protected abstract void CreateRotate2(out Vector2Int[] rotate);
+    protected abstract void CreateRotate3(out Vector2Int[] rotate);
+    protected abstract void CreateRotate4(out Vector2Int[] rotate);
 
-    public bool[,] Current => _rotates[_indexOfCurrent];
-    public bool[,] Next => _rotates[(_indexOfCurrent + 1) % 4];
-    private bool[][,] _rotates { get; }
+    public Vector2Int[] Current => _rotates[_indexOfCurrent];
+    public Vector2Int[] Next => _rotates[(_indexOfCurrent + 1) % 4];
 
     public void Rotate()
     {

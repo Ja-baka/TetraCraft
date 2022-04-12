@@ -1,42 +1,24 @@
-﻿public class ShapeZ : Shape
+﻿using UnityEngine;
+
+public class ShapeZ : Shape
 {
-    protected override bool[,] CreateRotate1()
+    protected override void CreateRotate1(out Vector2Int[] rotate)
     {
-        return new bool[,]
-        {
-            { I, I, O },
-            { O, I, I },
-            { O, O, O },
-        };
+        throw new System.NotImplementedException();
     }
 
-    protected override bool[,] CreateRotate2()
+    protected override void CreateRotate2(out Vector2Int[] rotate)
     {
-        return new bool[,]
-        {
-            { O, O, I },
-            { O, I, I },
-            { O, I, O },
-        };
+        throw new System.NotImplementedException();
     }
 
-    protected override bool[,] CreateRotate3()
+    protected override void CreateRotate3(out Vector2Int[] rotate)
     {
-        return new bool[,]
-        {
-            { O, O, O },
-            { I, I, O },
-            { O, I, I },
-        };
+        throw new System.NotImplementedException();
     }
 
-    protected override bool[,] CreateRotate4()
+    protected override void CreateRotate4(out Vector2Int[] rotate)
     {
-        return new bool[,]
-        {
-            { O, I, O },
-            { I, I, O },
-            { I, O, O },
-        };
+        throw new System.NotImplementedException();
     }
 }

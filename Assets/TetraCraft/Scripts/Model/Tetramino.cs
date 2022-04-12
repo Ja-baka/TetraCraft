@@ -1,11 +1,11 @@
-﻿public class Tetramino
+﻿using UnityEngine;
+
+public class Tetramino : MonoBehaviour
 {
     private Shape _shape;
 
-    public Tetramino()
+    private void Awake()
     {
         _shape = ShapeFactory.GenerateRandomShape();
     }
-
-
 }
