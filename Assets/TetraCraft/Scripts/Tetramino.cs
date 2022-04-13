@@ -2,12 +2,12 @@
 public class Tetramino : MonoBehaviour
 {
     private Shape _shape;
-    private Material _material;
+    private BlockMaterial _material;
 
     public Shape Shape => _shape;
-    public Material Material => _material;
+    public BlockMaterial Material => _material;
 
-    public void Initialize(Shape shape, Material material)
+    public void Initialize(Shape shape, BlockMaterial material)
     {
         _shape = shape;
         _material = material;

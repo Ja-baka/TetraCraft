@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private List<Material> _materials;
+    [SerializeField] private List<BlockMaterial> _materials;
     [SerializeField] private List<Shape> _shapes;
     [SerializeField] private GameObject _tetramino;
 
