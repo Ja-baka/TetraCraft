@@ -1,5 +1,10 @@
-﻿public class Block
+﻿using System;
+using UnityEngine;
+
+[Serializable]
+public class Block
 {
+    public Vector2Int Position;
     private BlockMaterial _material;
 
     public Block(BlockMaterial material)
