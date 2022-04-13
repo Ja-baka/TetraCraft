@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 
-public abstract class Shape : ScriptableObject
+[CreateAssetMenu(menuName = "ScriptableObjects/Shapes", fileName = "Shape")]
+public class Shape : ScriptableObject
 {
-    public abstract Block[] Blocks { get; }
+    [SerializeField] private Block[] _blocks;
+
+    public Block[] Blocks => _blocks;
 
     private void OnValidate()
     {
