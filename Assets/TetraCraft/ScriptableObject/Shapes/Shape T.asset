@@ -10,11 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0700674aa279be43938db8a0e5a9bf2, type: 3}
-  m_Name: Shape I
+  m_Name: Shape T
   m_EditorClassIdentifier: 
-  _blocks:
-  - Position: {x: 3, y: 19}
-  - Position: {x: 4, y: 19}
-  - Position: {x: 5, y: 19}
-  - Position: {x: 6, y: 19}
-  _pivot: {x: 4.5, y: 18.5}
+  _blocks: []
+  _pivot: {x: 0, y: 0}

@@ -4,6 +4,7 @@
 public class Shape : ScriptableObject
 {
     [SerializeField] private Block[] _blocks;
+    [SerializeField] private Vector2 _pivot;
 
     public Block[] Blocks => _blocks;
 
