@@ -9,8 +9,8 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        _tetramino.GetComponent<Tetramino>()
-            .Initialize(_shapes[0], _materials[0]);
+        _tetramino.GetComponent<ActiveTetramino>()
+            .Init(_shapes[0], _materials[0]);
 
         Instantiate(_tetramino, transform);
     }

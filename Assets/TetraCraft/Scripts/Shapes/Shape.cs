@@ -3,10 +3,10 @@
 [CreateAssetMenu(menuName = "ScriptableObjects/Shapes", fileName = "Shape")]
 public class Shape : ScriptableObject
 {
-    [SerializeField] private Block[] _blocks;
+    [SerializeField] private Vector2Int[] _blocks;
     [SerializeField] private Vector2 _pivot;
 
-    public Block[] Blocks => _blocks;
+    public Vector2Int[] Blocks => _blocks;
 
     private void OnValidate()
     {

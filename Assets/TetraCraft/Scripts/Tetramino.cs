@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class Tetramino : MonoBehaviour
+public class ActiveTetramino : MonoBehaviour
 {
     private Shape _shape;
     private BlockMaterial _material;
@@ -7,7 +7,7 @@ public class Tetramino : MonoBehaviour
     public Shape Shape => _shape;
     public BlockMaterial Material => _material;
 
-    public void Initialize(Shape shape, BlockMaterial material)
+    public void Init(Shape shape, BlockMaterial material)
     {
         _shape = shape;
         _material = material;
