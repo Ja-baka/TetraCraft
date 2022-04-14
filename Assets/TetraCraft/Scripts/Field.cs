@@ -66,19 +66,20 @@ public class Field : MonoBehaviour
 
     private void OnTetraminoFalled()
     {
-        for (int i = 0; i < _cells.GetLength(0); i++)
+        for (int y = 0; y < _cells.GetLength(1); y++)
         {
-            bool isFullRow = false;
-            for (int j = 0; j < _cells.GetLength(1); j++)
+            bool isFullRow = true;
+            for (int x = 0; x < _cells.GetLength(0); x++)
             {
-                if ((_cells[i, j] is Air) == false)
+                if (_cells[x, y] is Air)
                 {
-                    isFullRow = true;
+                    isFullRow = false;
+                    break;
                 }
             }
             if (isFullRow)
             {
-                ClearLine(i);
+                ClearLine(y);
             }
         }
     }
@@ -87,26 +88,26 @@ public class Field : MonoBehaviour
     {
         foreach (Vector2Int oldPosition in _tetraminoPosition)
         {
-            int oldX = oldPosition.x;
-            int oldY = oldPosition.y;
-            int newX = oldX + offset.x;
-            int newY = oldY + offset.y;
-            (_cells[oldX, oldY], _cells[newX, newY])
-                = (_cells[newX, newY], _cells[oldX, oldY]);
-        }
-    }
+            Vector2Int newPosition = oldPosition + offset;
 
-    private void UpdateTetraminoPosition(BlockMaterial material)
-    {
-        foreach (Vector2Int oldPosition in _tetraminoPosition)
-        {
-            _cells[oldPosition.x, oldPosition.y] = material;
+            (_cells[oldPosition.x, oldPosition.y], _cells[newPosition.x, newPosition.y])
+                = (_cells[newPosition.x, newPosition.y], _cells[oldPosition.x, oldPosition.y]);
         }
     }
 
     public void ClearLine(int indexOfRow)
     {
-        throw new System.NotImplementedException();
+        for (int y = indexOfRow; y < _cells.GetLength(1) - 1; y++)
+        {
+            for (int x = 0; x < _cells.GetLength(0); x++)
+            {
+                _cells[x, y] = _cells[x, y + 1];
+            }
+        }
+        for (int x = 0; x < _cells.GetLength(0); x++)
+        {
+            _cells[x, _cells.GetLength(1) - 1] = Air.Instance;
+        }
     }
 
     public void GameOver()
