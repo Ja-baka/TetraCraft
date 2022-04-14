@@ -13,8 +13,4 @@
             return _instance;
         }
     }
-
-    public override void HandlePhysics()
-    {
-    }
 }

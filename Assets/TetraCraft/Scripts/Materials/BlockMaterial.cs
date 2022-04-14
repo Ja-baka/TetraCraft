@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
 
-public abstract class BlockMaterial
+public class BlockMaterial : ScriptableObject
 {
-    public Material Material;
+    [SerializeField] private Material _material;
 
-    public abstract void HandlePhysics();
+    public Material Material => _material;
+
+    private void SetCurrentMaterialToCube()
+    {
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.GetComponent<Renderer>().material = _material;
+    }
 }
