@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockMaterialPicker : MonoBehaviour
+public class MaterialGenerator : MonoBehaviour
 {
     [SerializeField] private List<BlockMaterial> _materials;
 

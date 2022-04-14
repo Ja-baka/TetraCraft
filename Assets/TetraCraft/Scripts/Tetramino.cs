@@ -7,7 +7,7 @@ public class ActiveTetramino : MonoBehaviour
     public Shape Shape => _shape;
     public BlockMaterial Material => _material;
 
-    public void Init(Shape shape, BlockMaterial material)
+    public void Init(Block[] shape, BlockMaterial material)
     {
         _shape = shape;
         _material = material;

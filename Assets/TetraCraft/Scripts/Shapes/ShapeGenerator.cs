@@ -5,7 +5,7 @@ public class ShapeGenerator : MonoBehaviour
 {
     [SerializeField] private List<Shape> _shapes;
 
-    public Block[] GenerateRandomShape()
+    public Block[] PickRandomShape()
     {
         throw new System.NotImplementedException();
     }
