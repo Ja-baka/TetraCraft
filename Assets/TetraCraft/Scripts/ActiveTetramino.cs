@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ActiveTetramino : MonoBehaviour
 {
@@ -16,7 +17,11 @@ public class ActiveTetramino : MonoBehaviour
         {
             _blocks[i] = new Block(shape.Positions[i], _material);
         }
+        enabled = true;
     }
+
+    public event Action Falled;
+    public event Action<Vector2Int> Moved;
 
     public Shape Shape => _shape;
     public BlockMaterial Material => _material;
@@ -35,5 +40,11 @@ public class ActiveTetramino : MonoBehaviour
     public void Fall()
     {
         Debug.Log("Fall");
+    }
+
+    public void ReachBottom()
+    {
+        Falled?.Invoke();
+        enabled = false;
     }
 }
