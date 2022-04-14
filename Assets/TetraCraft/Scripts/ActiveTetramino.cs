@@ -2,37 +2,34 @@
 
 public class ActiveTetramino : MonoBehaviour
 {
-    private const float Tick = 1;
+    [SerializeField] private Timer _timer;
     private Shape _shape;
     private BlockMaterial _material;
     private Block[] _blocks;
-    private float _passedTime = 0;
 
     public void Init(Shape shape, BlockMaterial material)
     {
         _shape = shape;
         _material = material;
-        _blocks = new Block[4]
+        _blocks = new Block[4];
+        for (int i = 0; i < _blocks.Length; i++)
         {
-            new Block(shape.Positions[0], _material),
-            new Block(shape.Positions[1], _material),
-            new Block(shape.Positions[2], _material),
-            new Block(shape.Positions[3], _material),
-        };
+            _blocks[i] = new Block(shape.Positions[i], _material);
+        }
     }
 
     public Shape Shape => _shape;
     public BlockMaterial Material => _material;
     public Block[] Blocks => _blocks;
 
-    private void Update()
+    private void OnEnable()
     {
-        _passedTime += Time.deltaTime;
-        if (_passedTime > Tick)
-        {
-            _passedTime = 0;
-            Fall();
-        }
+        _timer.Tick += Fall;
+    }
+
+    private void OnDisable()
+    {
+        _timer.Tick -= Fall;
     }
 
     public void Fall()
