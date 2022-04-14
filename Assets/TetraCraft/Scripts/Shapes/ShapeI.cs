@@ -2,13 +2,14 @@
 
 public class ShapeI : Shape
 {
-    private Vector2Int[] _positions;
-
-    public ShapeI()
+    protected override Vector2Int[] SetPosition()
     {
-        _positions = new Vector2Int[4];
-        throw new System.NotImplementedException();
+        return new Vector2Int[4]
+        {
+            new Vector2Int(3, 19),
+            new Vector2Int(4, 19),
+            new Vector2Int(5, 19),
+            new Vector2Int(6, 19),
+        };
     }
-
-    public override Vector2Int[] Positions => _positions;
 }
