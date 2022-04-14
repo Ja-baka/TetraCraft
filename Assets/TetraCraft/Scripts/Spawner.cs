@@ -1,18 +1,21 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private ShapeGenerator _shapeGenerator;
-    [SerializeField] private MaterialGenerator _materialGenerator;
-    [SerializeField] private ActiveTetramino _tetramino;
+    [SerializeField] private ActiveTetramino activeTetramino;
 
-    private void Start()
+    private void Awake()
     {
-        Block[] shape = _shapeGenerator.PickRandomShape();
-        BlockMaterial material = _materialGenerator.PickRandomMaterial();
+        BlockMaterial material
+            = new MaterialCreator().PickRandom();
+        Shape shape
+            = new ShapeCreator().PickRandom();
 
-        _tetramino.Init(shape, material);
+        throw new System.NotImplementedException();
+    }
 
-        Instantiate(_tetramino, transform);
+    public void Spawn()
+    {
+        throw new System.NotImplementedException();
     }
 }
