@@ -85,11 +85,15 @@ public class Field : MonoBehaviour
 
     private void OnTetraminoMoved(Vector2Int offset)
     {
-        UpdateTetraminoPosition(Air.Instance);
-
-        _tetraminoPosition.ForEach((p) => p += offset);
-
-        UpdateTetraminoPosition(_tetramino.Material);
+        foreach (Vector2Int oldPosition in _tetraminoPosition)
+        {
+            int oldX = oldPosition.x;
+            int oldY = oldPosition.y;
+            int newX = oldX + offset.x;
+            int newY = oldY + offset.y;
+            (_cells[oldX, oldY], _cells[newX, newY])
+                = (_cells[newX, newY], _cells[oldX, oldY]);
+        }
     }
 
     private void UpdateTetraminoPosition(BlockMaterial material)
