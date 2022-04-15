@@ -11,8 +11,7 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        BlockMaterial material = _materialCreator.PickRandom();
-        Shape shape = _shapeCreator.PickRandom();
+        Spawn();
     }
 
     private void OnEnable()
@@ -27,7 +26,13 @@ public class Spawner : MonoBehaviour
 
     public void Spawn()
     {
+        BlockMaterial material = _materialCreator.PickRandom();
+        Shape shape = _shapeCreator.PickRandom();
+
+        _activeTetramino.Init(shape, material);
+
+
+
         TetraminoSpawned?.Invoke(_activeTetramino);
-        throw new NotImplementedException();
     }
 }

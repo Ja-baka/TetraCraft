@@ -15,8 +15,15 @@ public class ActiveTetramino : MonoBehaviour
         _blocks = new Block[4];
         for (int i = 0; i < _blocks.Length; i++)
         {
-            _blocks[i] = new Block(shape.Positions[i], _material);
+            Vector2Int position = shape.Positions[i];
+            _blocks[i] = new Block(position, _material);
+
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.SetParent(transform, false);
+            cube.transform.position = new Vector3(position.x, position.y);
+            cube.GetComponent<Renderer>().material = _material.Material;
         }
+
         enabled = true;
     }
 
