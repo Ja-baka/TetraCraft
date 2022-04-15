@@ -9,7 +9,7 @@ public class Field : MonoBehaviour
     private BlockMaterial[,] _cells;
     private List<Vector2Int> _tetraminoPosition;
 
-    private void Start()
+    private void Awake()
     {
         _cells = FillArray();
         _tetraminoPosition = new List<Vector2Int>();
@@ -21,14 +21,6 @@ public class Field : MonoBehaviour
         const int ClassicTetrisFieldHeigth = 20;
         BlockMaterial[,] array = new BlockMaterial
             [ClassicTetrisFieldWidth, ClassicTetrisFieldHeigth];
-        for (int i = 0; i < _cells.GetLength(0); i++)
-        {
-            for (int j = 0; j < _cells.GetLength(1); j++)
-            {
-                _cells[i, j] = null;
-            }
-        }
-
 
         return array;
     }
@@ -118,6 +110,7 @@ public class Field : MonoBehaviour
 
     public void GameOver()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Game Over");
+        Application.Quit();
     }
 }

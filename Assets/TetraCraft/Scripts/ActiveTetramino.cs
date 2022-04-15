@@ -43,21 +43,22 @@ public class ActiveTetramino : MonoBehaviour
 
     private void OnEnable()
     {
-        _timer.Tick += Fall;
+        _timer.Tick += TryFall;
     }
 
     private void OnDisable()
     {
-        _timer.Tick -= Fall;
+        _timer.Tick -= TryFall;
     }
 
-    public void Fall()
+    public void TryFall()
     {
         if (_field.IsCanFall(_shape) == false)
         {
             Falled?.Invoke();
             return;
         }
+
         for (int i = 0; i < _blocks.Length; i++)
         {
             _blocks[i].Fall();
