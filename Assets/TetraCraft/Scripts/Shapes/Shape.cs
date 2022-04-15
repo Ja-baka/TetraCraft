@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 
-public abstract class Shape
+[CreateAssetMenu(menuName = "SO/Shape", fileName = "Shape")]
+public class Shape : ScriptableObject
 {
+    [SerializeField] private Vector2Int[] _positions;
+
     private const int BlockCount = 4;
 
-    public Vector2Int[] Positions { get; }
+    public Vector2Int[] Positions => _positions;
 
-    public Shape()
+    private void OnValidate()
     {
-        Positions = SetPosition();
         if (Positions.Length != BlockCount)
         {
             throw new System.Exception($"{GetType().Name} " +
@@ -21,6 +23,4 @@ public abstract class Shape
     {
         throw new System.NotImplementedException();
     }
-
-    protected abstract Vector2Int[] SetPosition();
 }

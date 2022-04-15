@@ -1,10 +1,11 @@
-﻿public class MaterialCreator : Creator<BlockMaterial>
+﻿using UnityEngine;
+
+public class MaterialCreator : Creator<BlockMaterial>
 {
+    [SerializeField] private BlockMaterial[] _materials;
+
     protected override BlockMaterial[] FillArray()
     {
-        return new BlockMaterial[]
-        {
-            new Wool(),
-        };
+        return _materials;
     }
 }

@@ -1,10 +1,11 @@
-﻿public class ShapeCreator : Creator<Shape>
+﻿using UnityEngine;
+
+public class ShapeCreator : Creator<Shape>
 {
+    [SerializeField] private Shape[] _shapes;
+
     protected override Shape[] FillArray()
     {
-        return new Shape[]
-        {
-            new ShapeI(),
-        };
+        return _shapes;
     }
 }

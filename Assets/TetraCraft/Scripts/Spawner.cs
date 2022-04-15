@@ -4,16 +4,15 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private ActiveTetramino _activeTetramino;
-    private Vector2Int _spawnPosition;
+    [SerializeField] private MaterialCreator _materialCreator;
+    [SerializeField] private ShapeCreator _shapeCreator;
 
     public event Action<ActiveTetramino> TetraminoSpawned;
 
-    private void Awake()
+    private void Start()
     {
-        BlockMaterial material = new MaterialCreator().PickRandom();
-        Shape shape = new ShapeCreator().PickRandom();
-
-        throw new NotImplementedException();
+        BlockMaterial material = _materialCreator.PickRandom();
+        Shape shape = _shapeCreator.PickRandom();
     }
 
     private void OnEnable()

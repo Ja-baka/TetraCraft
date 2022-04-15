@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class Creator<T>
+public abstract class Creator<T> : MonoBehaviour
 {
     public T PickRandom()
     {

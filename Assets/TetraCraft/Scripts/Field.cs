@@ -21,14 +21,6 @@ public class Field : MonoBehaviour
         BlockMaterial[,] array = new BlockMaterial
             [ClassicTetrisFieldWidth, ClassicTetrisFieldHeigth];
 
-        for (int i = 0; i < array.GetLength(0); i++)
-        {
-            for (int j = 0; j < array.GetLength(1); j++)
-            {
-                array[i, j] = Air.Instance;
-            }
-        }
-
         return array;
     }
 
@@ -54,7 +46,7 @@ public class Field : MonoBehaviour
             int x = block.Position.x;
             int y = block.Position.y;
 
-            if ((_cells[x, y] is Air) == false)
+            if ((_cells[x, y] is null) == false)
             {
                 GameOver();
             }
@@ -71,7 +63,7 @@ public class Field : MonoBehaviour
             bool isFullRow = true;
             for (int x = 0; x < _cells.GetLength(0); x++)
             {
-                if (_cells[x, y] is Air)
+                if (_cells[x, y] is null)
                 {
                     isFullRow = false;
                     break;
@@ -106,7 +98,7 @@ public class Field : MonoBehaviour
         }
         for (int x = 0; x < _cells.GetLength(0); x++)
         {
-            _cells[x, _cells.GetLength(1) - 1] = Air.Instance;
+            _cells[x, _cells.GetLength(1) - 1] = null;
         }
     }
 
