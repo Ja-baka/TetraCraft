@@ -13,4 +13,13 @@ public class Block
 
     public Vector2Int Position => _position;
     public BlockMaterial Material => _material;
+
+    public void Fall()
+    {
+        if (_position.y == 0)
+        {
+            throw new System.InvalidOperationException();
+        }
+        _position.y--;
+    }
 }
