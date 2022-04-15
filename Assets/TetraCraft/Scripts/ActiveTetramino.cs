@@ -4,6 +4,7 @@ using UnityEngine;
 public class ActiveTetramino : MonoBehaviour
 {
     [SerializeField] private Timer _timer;
+    [SerializeField] private Field _field;
     private Shape _shape;
     private BlockMaterial _material;
     private Block[] _blocks;
@@ -52,9 +53,13 @@ public class ActiveTetramino : MonoBehaviour
 
     public void Fall()
     {
+        if (_field.IsCanFall(_shape) == false)
+        {
+            Falled?.Invoke();
+            return;
+        }
         for (int i = 0; i < _blocks.Length; i++)
         {
-            Vector2Int position = _shape.Positions[i];
             _blocks[i].Fall();
 
             // View

@@ -16,10 +16,15 @@ public class Block
 
     public void Fall()
     {
-        if (_position.y == 0)
+        if (IsCanFall() == false)
         {
-            throw new System.InvalidOperationException();
+            throw new System.InvalidOperationException("Блёк упаў");
         }
         _position.y--;
+    }
+
+    public bool IsCanFall()
+    {
+        return _position.y != 0;
     }
 }

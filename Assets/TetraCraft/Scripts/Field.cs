@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Field : MonoBehaviour
@@ -20,6 +21,14 @@ public class Field : MonoBehaviour
         const int ClassicTetrisFieldHeigth = 20;
         BlockMaterial[,] array = new BlockMaterial
             [ClassicTetrisFieldWidth, ClassicTetrisFieldHeigth];
+        for (int i = 0; i < _cells.GetLength(0); i++)
+        {
+            for (int j = 0; j < _cells.GetLength(1); j++)
+            {
+                _cells[i, j] = null;
+            }
+        }
+
 
         return array;
     }
@@ -100,6 +109,11 @@ public class Field : MonoBehaviour
         {
             _cells[x, _cells.GetLength(1) - 1] = null;
         }
+    }
+
+    public bool IsCanFall(Shape shape)
+    {
+        return shape.Positions.Any((p) => (_cells[p.x, p.y] is null) == false);
     }
 
     public void GameOver()

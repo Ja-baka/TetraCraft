@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    private const float TickValue = 1;
+    [SerializeField] private float _tickDuration = 1;
     private float _passedTime = 0;
 
     public event Action Tick;
@@ -11,7 +11,7 @@ public class Timer : MonoBehaviour
     private void Update()
     {
         _passedTime += Time.deltaTime;
-        if (_passedTime > TickValue)
+        if (_passedTime > _tickDuration)
         {
             _passedTime = 0;
             Tick?.Invoke();
