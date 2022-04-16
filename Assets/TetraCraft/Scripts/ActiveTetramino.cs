@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using UnityEngine;
 
 public class ActiveTetramino : MonoBehaviour
@@ -63,7 +62,7 @@ public class ActiveTetramino : MonoBehaviour
     }
 
     public void ReachBottom()
-    {
+    {   
         Falled?.Invoke(_cubes);
     }
 }

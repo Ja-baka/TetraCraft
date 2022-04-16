@@ -48,7 +48,7 @@ public class Field : MonoBehaviour
             int x = block.Position.x;
             int y = block.Position.y;
 
-            if ((_cells[x, y] is null) == false)
+            if (_cells[x, y] != null)
             {
                 GameOver();
             }
@@ -111,7 +111,7 @@ public class Field : MonoBehaviour
         foreach (Block block in blocks)
         {
             Vector2Int bellow = block.Position + Vector2Int.down;
-            if (bellow.y == 0
+            if (block.Position.y == 0
                 || _tetraminoPosition.Contains(bellow) == false
                 && _cells[bellow.x, bellow.y] != null)
             {
