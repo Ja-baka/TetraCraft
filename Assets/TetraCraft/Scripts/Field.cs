@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public class Field : MonoBehaviour
@@ -12,17 +12,16 @@ public class Field : MonoBehaviour
 
     private void Awake()
     {
-        _cells = FillArray();
+        _cells = InitializeArray();
     }
 
-    private BlockMaterial[,] FillArray()
+    private BlockMaterial[,] InitializeArray()
     {
         const int ClassicTetrisFieldWidth = 10;
         const int ClassicTetrisFieldHeigth = 20;
-        BlockMaterial[,] array = new BlockMaterial
-            [ClassicTetrisFieldWidth, ClassicTetrisFieldHeigth];
 
-        return array;
+        return new BlockMaterial
+            [ClassicTetrisFieldWidth, ClassicTetrisFieldHeigth];
     }
 
     private void OnEnable()
@@ -57,10 +56,38 @@ public class Field : MonoBehaviour
             _cells[x, y] = block.Material;
             _tetraminoPosition[i++] = block.Position;
         }
+        DrawField();
+    }
+
+    private void OnTetraminoMoved(Vector2Int offset)
+    {
+        for (int i = 0; i < _tetramino.Blocks.Length; i++)
+        {
+            Vector2Int oldPosition = _tetraminoPosition[i];
+            Vector2Int newPosition = oldPosition + offset;
+
+            _cells[newPosition.x, newPosition.y] = _cells[oldPosition.x, oldPosition.y];
+            _cells[oldPosition.x, oldPosition.y] = null;
+        }
+    }
+
+    private void DrawField()
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int y = 0; y < _cells.GetLength(1); y++)
+        {
+            for (int x = 0; x < _cells.GetLength(0); x++)
+            {
+                sb.Append(_cells[x, _cells.GetLength(1) - 1 - y] == null ? "░░" : "██");
+            }
+            sb.AppendLine();
+        }
+        Debug.Log(sb.ToString());
     }
 
     private void OnTetraminoFalled(GameObject[] cubes)
     {
+        DrawField();
         Array.ForEach(cubes, (c) => c.transform.SetParent(transform, false));
 
         for (int y = 0; y < _cells.GetLength(1); y++)
@@ -78,20 +105,6 @@ public class Field : MonoBehaviour
             {
                 ClearLine(y--);
             }
-        }
-    }
-
-    private void OnTetraminoMoved(Vector2Int offset)
-    {
-        for (int i = 0; i < _tetraminoPosition.Length; i++)
-        {
-            Vector2Int oldPosition = _tetraminoPosition[i];
-            Vector2Int newPosition = oldPosition + offset;
-
-            (_cells[oldPosition.x, oldPosition.y], _cells[newPosition.x, newPosition.y])
-                = (_cells[newPosition.x, newPosition.y], _cells[oldPosition.x, oldPosition.y]);
-
-            //_tetraminoPosition[i] = newPosition;
         }
     }
 
