@@ -54,6 +54,7 @@ public class ActiveTetramino : MonoBehaviour
         for (int i = 0; i < _blocks.Length; i++)
         {
             _blocks[i].Fall();
+            Moved?.Invoke(Vector2Int.down);
 
             // View
             _cubes[i].transform.position += Vector3.down;

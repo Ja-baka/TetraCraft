@@ -43,6 +43,7 @@ public class Field : MonoBehaviour
     {
         _tetraminoPosition = new Vector2Int[4];
         int i = 0;
+
         foreach (Block block in tetramino.Blocks)
         {
             int x = block.Position.x;
@@ -67,7 +68,7 @@ public class Field : MonoBehaviour
             bool isFullRow = true;
             for (int x = 0; x < _cells.GetLength(0); x++)
             {
-                if (_cells[x, y] is null)
+                if (_cells[x, y] == null)
                 {
                     isFullRow = false;
                     break;
@@ -75,24 +76,28 @@ public class Field : MonoBehaviour
             }
             if (isFullRow)
             {
-                ClearLine(y);
+                ClearLine(y--);
             }
         }
     }
 
     private void OnTetraminoMoved(Vector2Int offset)
     {
-        foreach (Vector2Int oldPosition in _tetraminoPosition)
+        for (int i = 0; i < _tetraminoPosition.Length; i++)
         {
+            Vector2Int oldPosition = _tetraminoPosition[i];
             Vector2Int newPosition = oldPosition + offset;
 
             (_cells[oldPosition.x, oldPosition.y], _cells[newPosition.x, newPosition.y])
                 = (_cells[newPosition.x, newPosition.y], _cells[oldPosition.x, oldPosition.y]);
+
+            //_tetraminoPosition[i] = newPosition;
         }
     }
 
     public void ClearLine(int indexOfRow)
     {
+        Debug.Log("Clear Line");
         for (int y = indexOfRow; y < _cells.GetLength(1) - 1; y++)
         {
             for (int x = 0; x < _cells.GetLength(0); x++)
