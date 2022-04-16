@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -57,8 +58,10 @@ public class Field : MonoBehaviour
         }
     }
 
-    private void OnTetraminoFalled()
+    private void OnTetraminoFalled(GameObject[] cubes)
     {
+        Array.ForEach(cubes, (c) => c.transform.SetParent(transform, false));
+
         for (int y = 0; y < _cells.GetLength(1); y++)
         {
             bool isFullRow = true;
@@ -103,12 +106,11 @@ public class Field : MonoBehaviour
         }
     }
 
-    public bool IsCanFall(Shape shape)
+    public bool IsCanFall(Block[] blocks)
     {
-        //return shape.Positions.Any((p) => _cells[p.x, p.y - 1] != null);
-        foreach (Vector2Int position in shape.Positions)
+        foreach (Block block in blocks)
         {
-            Vector2Int bellow = position + Vector2Int.down;
+            Vector2Int bellow = block.Position + Vector2Int.down;
             if (bellow.y == 0
                 || _tetraminoPosition.Contains(bellow) == false
                 && _cells[bellow.x, bellow.y] != null)

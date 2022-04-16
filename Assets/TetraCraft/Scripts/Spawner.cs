@@ -16,12 +16,12 @@ public class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        _activeTetramino.Falled += Spawn;
+        _activeTetramino.Falled += (c) => Spawn();
     }
 
     private void OnDisable()
     {
-        _activeTetramino.Falled -= Spawn;
+        _activeTetramino.Falled -= (c) => Spawn();
     }
 
     public void Spawn()
