@@ -18,7 +18,6 @@ public class ActiveTetramino : MonoBehaviour
         _cubes = new GameObject[4];
         for (int i = 0; i < _blocks.Length; i++)
         {
-            _shape.Positions[i].y--;
             Vector2Int position = _shape.Positions[i];
             _blocks[i] = new Block(position, _material);
 
@@ -51,7 +50,7 @@ public class ActiveTetramino : MonoBehaviour
         _timer.Tick -= TryFall;
     }
 
-    public void TryFall()
+    private void TryFall()
     {
         if (_field.IsCanFall(_shape) == false)
         {
@@ -62,6 +61,7 @@ public class ActiveTetramino : MonoBehaviour
         for (int i = 0; i < _blocks.Length; i++)
         {
             _blocks[i].Fall();
+            _shape.Positions[i] = _blocks[i].Position;
 
             // View
             _cubes[i].transform.position += Vector3.down;

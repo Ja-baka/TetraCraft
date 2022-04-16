@@ -7,12 +7,11 @@ public class Field : MonoBehaviour
     [SerializeField] private Spawner _spawner;
     [SerializeField] private ActiveTetramino _tetramino;
     private BlockMaterial[,] _cells;
-    private List<Vector2Int> _tetraminoPosition;
+    private Vector2Int[] _tetraminoPosition;
 
     private void Awake()
     {
         _cells = FillArray();
-        _tetraminoPosition = new List<Vector2Int>();
     }
 
     private BlockMaterial[,] FillArray()
@@ -41,7 +40,8 @@ public class Field : MonoBehaviour
 
     public void OnTetraminoSpawned(ActiveTetramino tetramino)
     {
-        _tetraminoPosition.Clear();
+        _tetraminoPosition = new Vector2Int[4];
+        int i = 0;
         foreach (Block block in tetramino.Blocks)
         {
             int x = block.Position.x;
@@ -53,7 +53,7 @@ public class Field : MonoBehaviour
             }
 
             _cells[x, y] = block.Material;
-            _tetraminoPosition.Add(block.Position);
+            _tetraminoPosition[i++] = block.Position;
         }
     }
 
@@ -105,7 +105,18 @@ public class Field : MonoBehaviour
 
     public bool IsCanFall(Shape shape)
     {
-        return shape.Positions.Any((p) => (_cells[p.x, p.y] is null) == false);
+        //return shape.Positions.Any((p) => _cells[p.x, p.y - 1] != null);
+        foreach (Vector2Int position in shape.Positions)
+        {
+            Vector2Int bellow = position + Vector2Int.down;
+            if (bellow.y == 0
+                || _tetraminoPosition.Contains(bellow) == false
+                && _cells[bellow.x, bellow.y] != null)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void GameOver()
