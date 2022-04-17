@@ -27,14 +27,14 @@ public class Field : MonoBehaviour
     private void OnEnable()
     {
         _spawner.TetraminoSpawned += OnTetraminoSpawned;
-        _tetramino.Moved += OnTetraminoMoved;
+        _tetramino.TetraminoMoved += OnTetraminoMoved;
         _tetramino.Falled += OnTetraminoFalled;
     }
 
     private void OnDisable()
     {
         _spawner.TetraminoSpawned -= OnTetraminoSpawned;
-        _tetramino.Moved -= OnTetraminoMoved;
+        _tetramino.TetraminoMoved -= OnTetraminoMoved;
         _tetramino.Falled -= OnTetraminoFalled;
     }
 
@@ -56,19 +56,27 @@ public class Field : MonoBehaviour
             _cells[x, y] = block.Material;
             _tetraminoPosition[i++] = block.Position;
         }
-        DrawField();
+        // DrawField();
     }
 
     private void OnTetraminoMoved(Vector2Int offset)
     {
+        if (_tetraminoPosition.Any((p) => p.y == 0))
+        {
+            //return;
+        }
+
         for (int i = 0; i < _tetramino.Blocks.Length; i++)
         {
             Vector2Int oldPosition = _tetraminoPosition[i];
             Vector2Int newPosition = oldPosition + offset;
 
-            _cells[newPosition.x, newPosition.y] = _cells[oldPosition.x, oldPosition.y];
-            _cells[oldPosition.x, oldPosition.y] = null;
+            (_cells[newPosition.x, newPosition.y], _cells[oldPosition.x, oldPosition.y])
+                = (_cells[oldPosition.x, oldPosition.y], _cells[newPosition.x, newPosition.y]);
+
+            _tetraminoPosition[i] += offset;
         }
+        // DrawField();
     }
 
     private void DrawField()
@@ -87,7 +95,7 @@ public class Field : MonoBehaviour
 
     private void OnTetraminoFalled(GameObject[] cubes)
     {
-        DrawField();
+        // DrawField();
         Array.ForEach(cubes, (c) => c.transform.SetParent(transform, false));
 
         for (int y = 0; y < _cells.GetLength(1); y++)

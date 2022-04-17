@@ -29,7 +29,7 @@ public class ActiveTetramino : MonoBehaviour
     }
 
     public event Action<GameObject[]> Falled;
-    public event Action<Vector2Int> Moved;
+    public event Action<Vector2Int> TetraminoMoved;
 
     public Block[] Blocks => _blocks;
 
@@ -51,10 +51,10 @@ public class ActiveTetramino : MonoBehaviour
             return;
         }
 
+        TetraminoMoved?.Invoke(Vector2Int.down); 
         for (int i = 0; i < _blocks.Length; i++)
         {
             _blocks[i].Fall();
-            Moved?.Invoke(Vector2Int.down);
 
             // View
             _cubes[i].transform.position += Vector3.down;
