@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1665ee55095fefd4286597bacad0ad3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tickDuration: 0.35
+  _tickDuration: 0.1
 --- !u!4 &353541350
 Transform:
   m_ObjectHideFlags: 0
@@ -752,6 +752,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shapes:
   - {fileID: 11400000, guid: d2352c7506c058b4f88d8d457cface3a, type: 2}
+  - {fileID: 11400000, guid: c95fcef9a2691e84c94e554264c2f2c9, type: 2}
+  - {fileID: 11400000, guid: 7a26bbea3c3019f44825fc34762c1371, type: 2}
+  - {fileID: 11400000, guid: b87bda869911d0a4ba4267a4c95b00ba, type: 2}
+  - {fileID: 11400000, guid: 49cb72172dc2d8b4d9681aa623a362fd, type: 2}
+  - {fileID: 11400000, guid: aad6898927bfb1746b3ebdaf205916ba, type: 2}
+  - {fileID: 11400000, guid: e34b1fb0812c54f47b3a1f9e93fcba9a, type: 2}
 --- !u!114 &1576628494
 MonoBehaviour:
   m_ObjectHideFlags: 0

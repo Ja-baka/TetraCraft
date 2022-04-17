@@ -151,5 +151,8 @@ public class Field : MonoBehaviour
     {
         Debug.Log("Game Over");
         Application.Quit();
+#if UNITY_EDITOR
+        Time.timeScale = 0;
+#endif
     }
 }
