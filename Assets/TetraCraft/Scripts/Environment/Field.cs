@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 public class Field : MonoBehaviour
@@ -9,6 +8,9 @@ public class Field : MonoBehaviour
     [SerializeField] private ActiveTetramino _tetramino;
     private BlockMaterial[,] _cells;
     private Vector2Int[] _tetraminoPosition;
+    private bool _playing = true;
+
+    public BlockMaterial[,] Cells => _cells;
 
     private void Awake()
     {
@@ -17,11 +19,10 @@ public class Field : MonoBehaviour
 
     private BlockMaterial[,] InitializeArray()
     {
-        const int ClassicTetrisFieldWidth = 10;
-        const int ClassicTetrisFieldHeigth = 20;
+        const int ClassicWidth = 10;
+        const int ClassicHeigth = 20;
 
-        return new BlockMaterial
-            [ClassicTetrisFieldWidth, ClassicTetrisFieldHeigth];
+        return new BlockMaterial[ClassicWidth, ClassicHeigth];
     }
 
     private void OnEnable()
@@ -56,16 +57,10 @@ public class Field : MonoBehaviour
             _cells[x, y] = block.Material;
             _tetraminoPosition[i++] = block.Position;
         }
-        // DrawField();
     }
 
     private void OnTetraminoMoved(Vector2Int offset)
     {
-        if (_tetraminoPosition.Any((p) => p.y == 0))
-        {
-            //return;
-        }
-
         for (int i = 0; i < _tetramino.Blocks.Length; i++)
         {
             Vector2Int oldPosition = _tetraminoPosition[i];
@@ -76,26 +71,10 @@ public class Field : MonoBehaviour
 
             _tetraminoPosition[i] += offset;
         }
-        // DrawField();
-    }
-
-    private void DrawField()
-    {
-        StringBuilder sb = new StringBuilder();
-        for (int y = 0; y < _cells.GetLength(1); y++)
-        {
-            for (int x = 0; x < _cells.GetLength(0); x++)
-            {
-                sb.Append(_cells[x, _cells.GetLength(1) - 1 - y] == null ? "░░" : "██");
-            }
-            sb.AppendLine();
-        }
-        Debug.Log(sb.ToString());
     }
 
     private void OnTetraminoFalled(GameObject[] cubes)
     {
-        // DrawField();
         Array.ForEach(cubes, (c) => c.transform.SetParent(transform, false));
 
         for (int y = 0; y < _cells.GetLength(1); y++)
@@ -119,17 +98,6 @@ public class Field : MonoBehaviour
     public void ClearLine(int indexOfRow)
     {
         Debug.Log("Clear Line");
-        for (int y = indexOfRow; y < _cells.GetLength(1) - 1; y++)
-        {
-            for (int x = 0; x < _cells.GetLength(0); x++)
-            {
-                _cells[x, y] = _cells[x, y + 1];
-            }
-        }
-        for (int x = 0; x < _cells.GetLength(0); x++)
-        {
-            _cells[x, _cells.GetLength(1) - 1] = null;
-        }
     }
 
     public bool IsCanFall(Block[] blocks)
@@ -149,8 +117,15 @@ public class Field : MonoBehaviour
 
     public void GameOver()
     {
+        if (_playing == false)
+        {
+            return;
+        }
+        _playing = false;
+
         Debug.Log("Game Over");
         Application.Quit();
+
 #if UNITY_EDITOR
         Time.timeScale = 0;
 #endif
