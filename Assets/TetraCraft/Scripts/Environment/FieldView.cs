@@ -3,8 +3,6 @@
 public class FieldView : MonoBehaviour
 {
     [SerializeField] private Field _field;
-    [SerializeField] private Spawner _spawner;
-    [SerializeField] private ActiveTetramino _tetramino;
     [SerializeField] private BlockMaterial _material;
 
     private GameObject[,] _cubes;
@@ -32,16 +30,12 @@ public class FieldView : MonoBehaviour
 
     private void OnEnable()
     {
-        _spawner.TetraminoSpawned += (x) => DrawField();
-        _tetramino.TetraminoMoved += (x) => DrawField();
-        _tetramino.Falled += (x) => DrawField();
+        _field.Updated += DrawField;
     }
 
     private void OnDisable()
     {
-        _spawner.TetraminoSpawned -= (x) => DrawField();
-        _tetramino.TetraminoMoved -= (x) => DrawField();
-        _tetramino.Falled -= (x) => DrawField();
+        _field.Updated -= DrawField;
     }
 
 

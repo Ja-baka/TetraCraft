@@ -5,21 +5,14 @@ public class FieldDebugDrawer : MonoBehaviour
 {
     [SerializeField] private Field _field;
 
-    [SerializeField] private Spawner _spawner;
-    [SerializeField] private ActiveTetramino _tetramino;
-
     private void OnEnable()
     {
-        _spawner.TetraminoSpawned += (x) => DrawField();
-        _tetramino.TetraminoMoved += (x) => DrawField();
-        _tetramino.Falled += (x) => DrawField();
+        _field.Updated += DrawField;
     }
 
     private void OnDisable()
     {
-        _spawner.TetraminoSpawned -= (x) => DrawField();
-        _tetramino.TetraminoMoved -= (x) => DrawField();
-        _tetramino.Falled -= (x) => DrawField();
+        _field.Updated -= DrawField;
     }
 
 
