@@ -1,8 +1,10 @@
 using UnityEngine;
 
+[RequireComponent(typeof(ActiveTetramino))]
 public class PlayerController : MonoBehaviour
 {
     private PlayerInput _input;
+    private ActiveTetramino _tetramino;
 
     private void Awake()
     {
@@ -12,6 +14,8 @@ public class PlayerController : MonoBehaviour
             .performed += (ctx) => OnMoveLeft();
         _input.Tetramino.MoveRight
             .performed += (ctx) => OnMoveRight();
+
+        _tetramino = GetComponent<ActiveTetramino>();
     }
 
     private void OnEnable()
@@ -24,13 +28,13 @@ public class PlayerController : MonoBehaviour
         _input.Disable();
     }
 
-    private void OnMoveRight()
-    {
-        Debug.Log("MoveRight");
-    }
-
     private void OnMoveLeft()
     {
-        Debug.Log("MoveLeft");
+        _tetramino.TryMoveLeft();
+    }
+
+    private void OnMoveRight()
+    {
+        _tetramino.TryMoveRight();
     }
 }

@@ -27,4 +27,14 @@ public class Block
     {
         return _position.y != 0;
     }
+
+    public void MoveLeft()
+    {
+        _position.x--;
+    }
+
+    public void MoveRight()
+    {
+        _position.x++;
+    }
 }

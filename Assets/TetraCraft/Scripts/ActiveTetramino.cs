@@ -25,6 +25,34 @@ public class ActiveTetramino : MonoBehaviour
 
     public Block[] Blocks => _blocks;
 
+    public void TryMoveLeft()
+    {
+        if (_field.IsCanMoveLeft(_blocks) == false)
+        {
+            return;
+        }
+
+        TetraminoMoved?.Invoke(Vector2Int.left);
+        for (int i = 0; i < _blocks.Length; i++)
+        {
+            _blocks[i].MoveLeft();
+        }
+    }
+
+    public void TryMoveRight()
+    {
+        if (_field.IsCanMoveRight(_blocks) == false)
+        {
+            return;
+        }
+
+        TetraminoMoved?.Invoke(Vector2Int.right);
+        for (int i = 0; i < _blocks.Length; i++)
+        {
+            _blocks[i].MoveRight();
+        }
+    }
+
     private void OnEnable()
     {
         _timer.Tick += TryFall;
