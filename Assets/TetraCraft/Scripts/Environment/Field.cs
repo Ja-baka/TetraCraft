@@ -128,6 +128,11 @@ public class Field : MonoBehaviour
 
     private void OnTetraminoMoved(Vector2Int offset)
     {
+        if (offset == Vector2Int.right)
+        {
+            _tetraminoPosition = _tetraminoPosition.Reverse().ToArray();
+        }
+
         for (int i = 0; i < _tetramino.Blocks.Length; i++)
         {
             Vector2Int oldPosition = _tetraminoPosition[i];
@@ -137,6 +142,11 @@ public class Field : MonoBehaviour
                 = (_cells[oldPosition.x, oldPosition.y], _cells[newPosition.x, newPosition.y]);
 
             _tetraminoPosition[i] += offset;
+        }
+
+        if (offset == Vector2Int.right)
+        {
+            _tetraminoPosition = _tetraminoPosition.Reverse().ToArray();
         }
         Updated?.Invoke(Cells);
     }
