@@ -17,14 +17,6 @@ public class ActiveTetramino : MonoBehaviour
         {
             Vector2Int position = shape.Positions[i];
             _blocks[i] = new Block(position, material);
-
-            // View
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.SetParent(transform, false);
-            cube.transform.position = new Vector3(position.x, position.y);
-            cube.GetComponent<Renderer>().material = material.Material;
-            _cubes[i] = cube;
-            // View
         }
     }
 
@@ -51,19 +43,15 @@ public class ActiveTetramino : MonoBehaviour
             return;
         }
 
-        TetraminoMoved?.Invoke(Vector2Int.down); 
+        TetraminoMoved?.Invoke(Vector2Int.down);
         for (int i = 0; i < _blocks.Length; i++)
         {
             _blocks[i].Fall();
-
-            // View
-            _cubes[i].transform.position += Vector3.down;
-            // View
         }
     }
 
     public void ReachBottom()
-    {   
+    {
         Falled?.Invoke(_cubes);
     }
 }

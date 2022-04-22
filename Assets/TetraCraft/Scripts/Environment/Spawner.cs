@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private ActiveTetramino _activeTetramino;
     [SerializeField] private MaterialCreator _materialCreator;
     [SerializeField] private ShapeCreator _shapeCreator;
+    [SerializeField] private GameObject[] _templates;
 
     public event Action<ActiveTetramino> TetraminoSpawned;
 

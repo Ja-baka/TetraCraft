@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shape Z
   m_EditorClassIdentifier: 
   _positions:
-  - {x: 4, y: 19}
-  - {x: 5, y: 19}
   - {x: 3, y: 18}
   - {x: 4, y: 18}
+  - {x: 4, y: 19}
+  - {x: 5, y: 19}

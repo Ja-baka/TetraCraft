@@ -75,8 +75,6 @@ public class Field : MonoBehaviour
 
     private void OnTetraminoFalled(GameObject[] cubes)
     {
-        Array.ForEach(cubes, (c) => c.transform.SetParent(transform, false));
-
         for (int y = 0; y < _cells.GetLength(1); y++)
         {
             bool isFullRow = true;
@@ -97,7 +95,7 @@ public class Field : MonoBehaviour
 
     public void ClearLine(int indexOfRow)
     {
-        Debug.Log("Clear Line");
+        Debug.Log($"Clear Line {indexOfRow}");
     }
 
     public bool IsCanFall(Block[] blocks)
@@ -126,8 +124,6 @@ public class Field : MonoBehaviour
         Debug.Log("Game Over");
         Application.Quit();
 
-#if UNITY_EDITOR
         Time.timeScale = 0;
-#endif
     }
 }
