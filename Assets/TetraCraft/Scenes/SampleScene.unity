@@ -211,8 +211,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _field: {fileID: 1034825157}
-  _spawner: {fileID: 1863002917}
-  _tetramino: {fileID: 583764042}
 --- !u!1 &583764041
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,10 +408,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e238f2385b805e7448794194abf89947, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _field: {fileID: 1034825157}
-  _spawner: {fileID: 1863002917}
-  _tetramino: {fileID: 583764042}
   _material: {fileID: 11400000, guid: 56450b3737f30154b9eb7898557ceff6, type: 2}
+  _field: {fileID: 1034825157}
 --- !u!4 &850905832
 Transform:
   m_ObjectHideFlags: 0
