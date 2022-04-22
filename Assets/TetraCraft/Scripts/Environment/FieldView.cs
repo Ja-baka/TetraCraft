@@ -2,8 +2,8 @@
 
 public class FieldView : MonoBehaviour
 {
-    [SerializeField] private Field _field;
     [SerializeField] private BlockMaterial _material;
+    [SerializeField] private Field _field;
 
     private GameObject[,] _cubes;
 
@@ -14,9 +14,9 @@ public class FieldView : MonoBehaviour
 
         _cubes = new GameObject[ClassicWidth, ClassicHeigth];
 
-        for (int i = 0; i < _field.Cells.GetLength(0); i++)
+        for (int i = 0; i < _cubes.GetLength(0); i++)
         {
-            for (int j = 0; j < _field.Cells.GetLength(1); j++)
+            for (int j = 0; j < _cubes.GetLength(1); j++)
             {
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cube.SetActive(false);
@@ -39,13 +39,13 @@ public class FieldView : MonoBehaviour
     }
 
 
-    private void DrawField()
+    private void DrawField(BlockMaterial[,] cells)
     {
-        for (int i = 0; i < _field.Cells.GetLength(0); i++)
+        for (int i = 0; i < _cubes.GetLength(0); i++)
         {
-            for (int j = 0; j < _field.Cells.GetLength(1); j++)
+            for (int j = 0; j < _cubes.GetLength(1); j++)
             {
-                _cubes[i, j].SetActive(_field.Cells[i, j] != null);
+                _cubes[i, j].SetActive(cells[i, j] != null);
             }
         }
     }

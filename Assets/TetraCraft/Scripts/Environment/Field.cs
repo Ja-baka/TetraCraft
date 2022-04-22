@@ -10,8 +10,9 @@ public class Field : MonoBehaviour
     private Vector2Int[] _tetraminoPosition;
     private bool _playing = true;
 
-    public BlockMaterial[,] Cells => _cells;
-    public event Action Updated;
+    public event Action<BlockMaterial[,]> Updated;
+
+    public BlockMaterial[,] Cells => (BlockMaterial[,])_cells.Clone();
 
     private void Awake()
     {
@@ -58,7 +59,7 @@ public class Field : MonoBehaviour
             _cells[x, y] = block.Material;
             _tetraminoPosition[i++] = block.Position;
         }
-        Updated?.Invoke();
+        Updated?.Invoke(Cells);
     }
 
     private void OnTetraminoMoved(Vector2Int offset)
@@ -73,7 +74,7 @@ public class Field : MonoBehaviour
 
             _tetraminoPosition[i] += offset;
         }
-        Updated?.Invoke();
+        Updated?.Invoke(Cells);
     }
 
     private void OnTetraminoFalled(GameObject[] cubes)
@@ -94,7 +95,7 @@ public class Field : MonoBehaviour
                 ClearLine(y--);
             }
         }
-        Updated?.Invoke();
+        Updated?.Invoke(Cells);
     }
 
     public void ClearLine(int indexOfRow)

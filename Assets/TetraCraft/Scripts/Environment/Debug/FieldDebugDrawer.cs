@@ -16,14 +16,14 @@ public class FieldDebugDrawer : MonoBehaviour
     }
 
 
-    private void DrawField()
+    private void DrawField(BlockMaterial[,] cells)
     {
         StringBuilder sb = new StringBuilder();
-        for (int y = 0; y < _field.Cells.GetLength(1); y++)
+        for (int y = 0; y < cells.GetLength(1); y++)
         {
-            for (int x = 0; x < _field.Cells.GetLength(0); x++)
+            for (int x = 0; x < cells.GetLength(0); x++)
             {
-                sb.Append(_field.Cells[x, _field.Cells.GetLength(1) - 1 - y] == null ? "░░" : "██");
+                sb.Append(cells[x, cells.GetLength(1) - 1 - y] == null ? "░░" : "██");
             }
             sb.AppendLine();
         }
