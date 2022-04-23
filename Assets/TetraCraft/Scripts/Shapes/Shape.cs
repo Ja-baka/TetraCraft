@@ -6,6 +6,7 @@ public class Shape : ScriptableObject
     [SerializeField] private Vector2Int[] _positions;
 
     private const int BlockCount = 4;
+    private Vector2Int _initialPosition;
 
     public Vector2Int[] Positions => _positions;
 
