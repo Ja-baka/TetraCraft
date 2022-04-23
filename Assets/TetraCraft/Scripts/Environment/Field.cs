@@ -92,10 +92,6 @@ public class Field : MonoBehaviour
         Updated?.Invoke(Cells);
     }
 
-    public void ClearLine(int indexOfRow)
-    {
-        Debug.Log($"Clear Line {indexOfRow}");
-    }
 
     public bool IsCanFall(Block[] blocks)
     {
@@ -112,7 +108,7 @@ public class Field : MonoBehaviour
         return true;
     }
 
-    public void GameOver()
+    private void GameOver()
     {
         if (_playing == false)
         {
@@ -146,12 +142,6 @@ public class Field : MonoBehaviour
         Updated?.Invoke(Cells);
     }
 
-    private void SwapCells(ref Vector2Int first, ref Vector2Int second)
-    {
-        (_cells[second.x, second.y], _cells[first.x, first.y])
-            = (_cells[first.x, first.y], _cells[second.x, second.y]); 
-    }
-
     private void OnTetraminoFalled(GameObject[] cubes)
     {
         for (int y = 0; y < _cells.GetLength(1); y++)
@@ -171,5 +161,20 @@ public class Field : MonoBehaviour
             }
         }
         Updated?.Invoke(Cells);
+    }
+    
+    private void ClearLine(int indexOfRow)
+    {
+        for (int y = indexOfRow; y < _cells.GetLength(1) - 1; y++)
+        {
+            for (int x = 0; x < _cells.GetLength(0); x++)
+            {
+                _cells[x, y] = _cells[x, y + 1];
+            }
+        }
+        for (int x = 0; x < _cells.GetLength(0); x++)
+        {
+            _cells[x, _cells.GetLength(1) - 1] = null;
+        }
     }
 }

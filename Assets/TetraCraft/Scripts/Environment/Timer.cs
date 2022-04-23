@@ -3,17 +3,34 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private float _tickDuration = 1;
-    private float _passedTime = 0;
+    [SerializeField] private float _tickDuration;
+    [SerializeField] private float _boostedTick;
+    private float _elapsedTime = 0;
+    private float _standartTick;
 
     public event Action Tick;
 
+    public void StartBoost()
+    {
+        _tickDuration = _boostedTick;
+    }
+
+    public void EndBoost()
+    {
+        _tickDuration = _standartTick;
+    }
+
+    private void Start()
+    {
+        _standartTick = _tickDuration;
+    }
+
     private void Update()
     {
-        _passedTime += Time.deltaTime;
-        if (_passedTime > _tickDuration)
+        _elapsedTime += Time.deltaTime;
+        if (_elapsedTime > _tickDuration)
         {
-            _passedTime = 0;
+            _elapsedTime = 0;
             Tick?.Invoke();
         }
     }

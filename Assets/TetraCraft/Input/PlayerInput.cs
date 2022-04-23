@@ -33,6 +33,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Boost"",
+                    ""type"": ""Button"",
+                    ""id"": ""9ce7ad44-6ece-4c28-a6cb-a2ff82a59bea"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -42,7 +50,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Move Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -53,8 +61,19 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""MoveLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c240fd6d-4462-4b1a-bc50-ad981eb16878"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -90,6 +109,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Tetramino = asset.FindActionMap("Tetramino", throwIfNotFound: true);
         m_Tetramino_MoveRight = m_Tetramino.FindAction("Move Right", throwIfNotFound: true);
         m_Tetramino_MoveLeft = m_Tetramino.FindAction("MoveLeft", throwIfNotFound: true);
+        m_Tetramino_Boost = m_Tetramino.FindAction("Boost", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -141,12 +161,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private ITetraminoActions m_TetraminoActionsCallbackInterface;
     private readonly InputAction m_Tetramino_MoveRight;
     private readonly InputAction m_Tetramino_MoveLeft;
+    private readonly InputAction m_Tetramino_Boost;
     public struct TetraminoActions
     {
         private @PlayerInput m_Wrapper;
         public TetraminoActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @MoveRight => m_Wrapper.m_Tetramino_MoveRight;
         public InputAction @MoveLeft => m_Wrapper.m_Tetramino_MoveLeft;
+        public InputAction @Boost => m_Wrapper.m_Tetramino_Boost;
         public InputActionMap Get() { return m_Wrapper.m_Tetramino; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -162,6 +184,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @MoveLeft.started -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnMoveLeft;
                 @MoveLeft.performed -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnMoveLeft;
                 @MoveLeft.canceled -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnMoveLeft;
+                @Boost.started -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnBoost;
+                @Boost.performed -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnBoost;
+                @Boost.canceled -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnBoost;
             }
             m_Wrapper.m_TetraminoActionsCallbackInterface = instance;
             if (instance != null)
@@ -172,6 +197,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @MoveLeft.started += instance.OnMoveLeft;
                 @MoveLeft.performed += instance.OnMoveLeft;
                 @MoveLeft.canceled += instance.OnMoveLeft;
+                @Boost.started += instance.OnBoost;
+                @Boost.performed += instance.OnBoost;
+                @Boost.canceled += instance.OnBoost;
             }
         }
     }
@@ -198,5 +226,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     {
         void OnMoveRight(InputAction.CallbackContext context);
         void OnMoveLeft(InputAction.CallbackContext context);
+        void OnBoost(InputAction.CallbackContext context);
     }
 }

@@ -81,5 +81,6 @@ public class ActiveTetramino : MonoBehaviour
     public void ReachBottom()
     {
         Falled?.Invoke(_cubes);
+        _timer.EndBoost();
     }
 }

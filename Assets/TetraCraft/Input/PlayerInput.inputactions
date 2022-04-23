@@ -1,5 +1,5 @@
 {
-    "name": "TetraminoInput",
+    "name": "PlayerInput",
     "maps": [
         {
             "name": "Tetramino",
@@ -20,6 +20,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Boost",
+                    "type": "Button",
+                    "id": "9ce7ad44-6ece-4c28-a6cb-a2ff82a59bea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -29,7 +37,7 @@
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "Move Right",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -40,8 +48,19 @@
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "MoveLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c240fd6d-4462-4b1a-bc50-ad981eb16878",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Boost",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
