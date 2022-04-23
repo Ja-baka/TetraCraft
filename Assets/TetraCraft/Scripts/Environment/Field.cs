@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Field : MonoBehaviour
 {
     [SerializeField] private Spawner _spawner;
     [SerializeField] private ActiveTetramino _tetramino;
     private BlockMaterial[,] _cells;
-    private Vector2Int[] _figurePosition;
     private bool _playing = true;
+    private Vector2Int[] _activeTetraminoPosition;
 
     public event Action<BlockMaterial[,]> Updated;
 
@@ -40,6 +42,65 @@ public class Field : MonoBehaviour
         _tetramino.TetraminoMoved -= OnTetraminoMoved;
         _tetramino.Falled -= OnTetraminoFalled;
     }
+    public void OnTetraminoSpawned(ActiveTetramino tetramino)
+    {
+        _activeTetraminoPosition = new Vector2Int[4];
+        int i = 0;
+
+        foreach (Block block in tetramino.Blocks)
+        {
+            int x = block.Position.x;
+            int y = block.Position.y;
+
+            if (_cells[x, y] != null)
+            {
+                GameOver();
+            }
+
+            _cells[x, y] = block.Material;
+            _activeTetraminoPosition[i++] = block.Position;
+        }
+        Updated?.Invoke(Cells);
+}
+
+    public bool IsCanRotate()
+    {
+        Vector2Int[] rotated = _tetramino.GetRotated(_activeTetraminoPosition);
+
+        foreach (Vector2Int position in rotated)
+        {
+            bool blockOutOfField = position.x < 0 
+                || position.x >= _cells.GetLength(0)
+                || position.y < 0 
+                || position.y >= _cells.GetLength(1);
+            bool alreadyOccupired = _activeTetraminoPosition
+                .Contains(position) == false
+                && _cells[position.x, position.y] != null;
+
+            if (blockOutOfField || alreadyOccupired)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    public bool IsCanFall(Block[] blocks)
+    {
+        foreach (Block block in blocks)
+        {
+            Vector2Int bellow = block.Position + Vector2Int.down;
+            if (block.Position.y == 0
+                || _activeTetraminoPosition.Contains(bellow) == false
+                && _cells[bellow.x, bellow.y] != null)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public bool IsCanMoveLeft(Block[] blocks)
     {
@@ -47,7 +108,7 @@ public class Field : MonoBehaviour
         {
             Vector2Int leftward = block.Position + Vector2Int.left;
             if (block.Position.x == 0
-                || _figurePosition.Contains(leftward) == false
+                || _activeTetraminoPosition.Contains(leftward) == false
                 && _cells[leftward.x, leftward.y] != null)
             {
                 return false;
@@ -62,45 +123,8 @@ public class Field : MonoBehaviour
         {
             Vector2Int rightward = block.Position + Vector2Int.right;
             if (block.Position.x == _cells.GetLength(0) - 1
-                || _figurePosition.Contains(rightward) == false
+                || _activeTetraminoPosition.Contains(rightward) == false
                 && _cells[rightward.x, rightward.y] != null)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public void OnTetraminoSpawned(ActiveTetramino tetramino)
-    {
-        _figurePosition = new Vector2Int[4];
-        int i = 0;
-
-        foreach (Block block in tetramino.Blocks)
-        {
-            int x = block.Position.x;
-            int y = block.Position.y;
-
-            if (_cells[x, y] != null)
-            {
-                GameOver();
-            }
-
-            _cells[x, y] = block.Material;
-            _figurePosition[i++] = block.Position;
-        }
-        Updated?.Invoke(Cells);
-    }
-
-
-    public bool IsCanFall(Block[] blocks)
-    {
-        foreach (Block block in blocks)
-        {
-            Vector2Int bellow = block.Position + Vector2Int.down;
-            if (block.Position.y == 0
-                || _figurePosition.Contains(bellow) == false
-                && _cells[bellow.x, bellow.y] != null)
             {
                 return false;
             }
@@ -122,21 +146,21 @@ public class Field : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    private void OnTetraminoMoved(Vector2Int offset)
+    private void OnTetraminoMoved(Block[] blocks)
     {
-        Vector2Int[] oldPositions = (Vector2Int[])_figurePosition.Clone();
+        Vector2Int[] oldPositions = (Vector2Int[])_activeTetraminoPosition.Clone();
 
         for (int i = 0; i < _tetramino.Blocks.Length; i++)
         {
-            _cells[_figurePosition[i].x, _figurePosition[i].y] = null;
+            _cells[_activeTetraminoPosition[i].x, _activeTetraminoPosition[i].y] = null;
         }
         for (int i = 0; i < _tetramino.Blocks.Length; i++)
         {
-            _figurePosition[i] += offset;
+            _activeTetraminoPosition[i] = blocks[i].Position;
         }
         for (int i = 0; i < _tetramino.Blocks.Length; i++)
         {
-            _cells[_figurePosition[i].x, _figurePosition[i].y] 
+            _cells[_activeTetraminoPosition[i].x, _activeTetraminoPosition[i].y] 
                 = _tetramino.Blocks[i].Material;
         }
         Updated?.Invoke(Cells);

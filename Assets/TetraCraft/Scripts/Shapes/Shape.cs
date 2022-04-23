@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Shape", fileName = "Shape")]
 public class Shape : ScriptableObject
@@ -6,7 +9,6 @@ public class Shape : ScriptableObject
     [SerializeField] private Vector2Int[] _positions;
 
     private const int BlockCount = 4;
-    private Vector2Int _initialPosition;
 
     public Vector2Int[] Positions => _positions;
 
@@ -14,7 +16,7 @@ public class Shape : ScriptableObject
     {
         if (Positions.Length != BlockCount)
         {
-            throw new System.Exception($"{GetType().Name} " +
+            throw new Exception($"{GetType().Name} " +
                 $"складаецца з {Positions.Length} блокаў, " +
                 $"а не {BlockCount}");
         }
@@ -22,6 +24,6 @@ public class Shape : ScriptableObject
 
     public void Rotate()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }

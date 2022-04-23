@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Block
 {
@@ -13,6 +14,11 @@ public class Block
 
     public Vector2Int Position => _position;
     public BlockMaterial Material => _material;
+
+    public void SetPosition(Vector2Int position)
+    {
+        _position = position;
+    }
 
     public void Fall()
     {
