@@ -7,7 +7,7 @@ public class Field : MonoBehaviour
     [SerializeField] private Spawner _spawner;
     [SerializeField] private ActiveTetramino _tetramino;
     private BlockMaterial[,] _cells;
-    private Vector2Int[] _tetraminoPosition;
+    private Vector2Int[] _figurePosition;
     private bool _playing = true;
 
     public event Action<BlockMaterial[,]> Updated;
@@ -47,7 +47,7 @@ public class Field : MonoBehaviour
         {
             Vector2Int leftward = block.Position + Vector2Int.left;
             if (block.Position.x == 0
-                || _tetraminoPosition.Contains(leftward) == false
+                || _figurePosition.Contains(leftward) == false
                 && _cells[leftward.x, leftward.y] != null)
             {
                 return false;
@@ -62,7 +62,7 @@ public class Field : MonoBehaviour
         {
             Vector2Int rightward = block.Position + Vector2Int.right;
             if (block.Position.x == _cells.GetLength(0) - 1
-                || _tetraminoPosition.Contains(rightward) == false
+                || _figurePosition.Contains(rightward) == false
                 && _cells[rightward.x, rightward.y] != null)
             {
                 return false;
@@ -73,7 +73,7 @@ public class Field : MonoBehaviour
 
     public void OnTetraminoSpawned(ActiveTetramino tetramino)
     {
-        _tetraminoPosition = new Vector2Int[4];
+        _figurePosition = new Vector2Int[4];
         int i = 0;
 
         foreach (Block block in tetramino.Blocks)
@@ -87,7 +87,7 @@ public class Field : MonoBehaviour
             }
 
             _cells[x, y] = block.Material;
-            _tetraminoPosition[i++] = block.Position;
+            _figurePosition[i++] = block.Position;
         }
         Updated?.Invoke(Cells);
     }
@@ -103,7 +103,7 @@ public class Field : MonoBehaviour
         {
             Vector2Int bellow = block.Position + Vector2Int.down;
             if (block.Position.y == 0
-                || _tetraminoPosition.Contains(bellow) == false
+                || _figurePosition.Contains(bellow) == false
                 && _cells[bellow.x, bellow.y] != null)
             {
                 return false;
@@ -128,27 +128,28 @@ public class Field : MonoBehaviour
 
     private void OnTetraminoMoved(Vector2Int offset)
     {
-        if (offset == Vector2Int.right)
-        {
-            _tetraminoPosition = _tetraminoPosition.Reverse().ToArray();
-        }
+        Vector2Int[] oldPositions = (Vector2Int[])_figurePosition.Clone();
 
         for (int i = 0; i < _tetramino.Blocks.Length; i++)
         {
-            Vector2Int oldPosition = _tetraminoPosition[i];
-            Vector2Int newPosition = oldPosition + offset;
-
-            (_cells[newPosition.x, newPosition.y], _cells[oldPosition.x, oldPosition.y])
-                = (_cells[oldPosition.x, oldPosition.y], _cells[newPosition.x, newPosition.y]);
-
-            _tetraminoPosition[i] += offset;
+            _cells[_figurePosition[i].x, _figurePosition[i].y] = null;
         }
-
-        if (offset == Vector2Int.right)
+        for (int i = 0; i < _tetramino.Blocks.Length; i++)
         {
-            _tetraminoPosition = _tetraminoPosition.Reverse().ToArray();
+            _figurePosition[i] += offset;
+        }
+        for (int i = 0; i < _tetramino.Blocks.Length; i++)
+        {
+            _cells[_figurePosition[i].x, _figurePosition[i].y] 
+                = _tetramino.Blocks[i].Material;
         }
         Updated?.Invoke(Cells);
+    }
+
+    private void SwapCells(ref Vector2Int first, ref Vector2Int second)
+    {
+        (_cells[second.x, second.y], _cells[first.x, first.y])
+            = (_cells[first.x, first.y], _cells[second.x, second.y]); 
     }
 
     private void OnTetraminoFalled(GameObject[] cubes)
