@@ -6,39 +6,39 @@ public class Tetramino : MonoBehaviour
     [SerializeField] private Timer _timer;
     [SerializeField] private Field _field;
 
-    private Vector2Int[] _blocks;
+    private Vector2Int[] _positions;
     private BlockMaterial _material;
 
     public void Init(Shape shape, BlockMaterial material)
     {
         _material = material;
         Vector2Int spawnerPosition = new Vector2Int(3, 17);
-        _blocks = new Vector2Int[4];
-        for (int i = 0; i < _blocks.Length; i++)
+        _positions = new Vector2Int[4];
+        for (int i = 0; i < _positions.Length; i++)
         {
             Vector2Int position = shape.Positions[i] + spawnerPosition;
-            _blocks[i] = position;
+            _positions[i] = position;
         }
     }
 
     public event Action Falled;
-    public event Action<Vector2Int[]> TetraminoMoved;
+    public event Action TetraminoMoved;
 
-    public Vector2Int[] Blocks => _blocks;
+    public Vector2Int[] Positions => _positions;
     public BlockMaterial Material => _material;
 
     public void TryMoveLeft()
     {
-        if (_field.IsCanMoveLeft(_blocks) == false)
+        if (_field.IsCanMoveLeft(_positions) == false)
         {
             return;
         }
 
-        for (int i = 0; i < _blocks.Length; i++)
+        for (int i = 0; i < _positions.Length; i++)
         {
-            _blocks[i].x--;
+            _positions[i].x--;
         }
-        TetraminoMoved?.Invoke(_blocks);
+        TetraminoMoved?.Invoke();
     }
 
     public void TryRotate()
@@ -50,7 +50,7 @@ public class Tetramino : MonoBehaviour
         }
 
         Rotate();
-        TetraminoMoved?.Invoke(_blocks);
+        TetraminoMoved?.Invoke();
     }
 
     private void Rotate()
@@ -60,16 +60,16 @@ public class Tetramino : MonoBehaviour
 
     public void TryMoveRight()
     {
-        if (_field.IsCanMoveRight(_blocks) == false)
+        if (_field.IsCanMoveRight(_positions) == false)
         {
             return;
         }
 
-        for (int i = 0; i < _blocks.Length; i++)
+        for (int i = 0; i < _positions.Length; i++)
         {
-            _blocks[i].x++;
+            _positions[i].x++;
         }
-        TetraminoMoved?.Invoke(_blocks);
+        TetraminoMoved?.Invoke();
     }
 
     private void OnEnable()
@@ -84,17 +84,17 @@ public class Tetramino : MonoBehaviour
 
     private void TryFall()
     {
-        if (_field.IsCanFall(_blocks) == false)
+        if (_field.IsCanFall(_positions) == false)
         {
             ReachBottom();
             return;
         }
 
-        for (int i = 0; i < _blocks.Length; i++)
+        for (int i = 0; i < _positions.Length; i++)
         {
-            _blocks[i].y--;
+            _positions[i].y--;
         }
-        TetraminoMoved?.Invoke(_blocks);
+        TetraminoMoved?.Invoke();
     }
 
     public void ReachBottom()

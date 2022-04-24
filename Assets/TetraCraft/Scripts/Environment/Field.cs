@@ -9,12 +9,12 @@ public class Field : MonoBehaviour
     [SerializeField] private Spawner _spawner;
     [SerializeField] private Tetramino _tetramino;
     private BlockMaterial[,] _cells;
+    private Vector2Int[] _previousPositions;
     private bool _playing = true;
-    private Vector2Int[] _tetraminoPosition;
 
     public event Action<BlockMaterial[,]> Updated;
 
-    public BlockMaterial[,] Cells => (BlockMaterial[,])_cells.Clone();
+    public BlockMaterial[,] FieldView => (BlockMaterial[,])_cells.Clone();
 
     private void Awake()
     {
@@ -42,12 +42,11 @@ public class Field : MonoBehaviour
         _tetramino.TetraminoMoved -= OnTetraminoMoved;
         _tetramino.Falled -= OnTetraminoFalled;
     }
+
     public void OnTetraminoSpawned(Tetramino tetramino)
     {
-        _tetraminoPosition = new Vector2Int[4];
-        int i = 0;
-
-        foreach (Vector2Int block in tetramino.Blocks)
+        _previousPositions = (Vector2Int[])tetramino.Positions.Clone();
+        foreach (Vector2Int block in tetramino.Positions)
         {
             int x = block.x;
             int y = block.y;
@@ -58,9 +57,8 @@ public class Field : MonoBehaviour
             }
 
             _cells[x, y] = tetramino.Material;
-            _tetraminoPosition[i++] = block;
         }
-        Updated?.Invoke(Cells);
+        Updated?.Invoke(FieldView);
 }
 
     public bool IsCanRotate()
@@ -75,7 +73,7 @@ public class Field : MonoBehaviour
         {
             Vector2Int bellow = block + Vector2Int.down;
             if (block.y == 0
-                || _tetraminoPosition.Contains(bellow) == false
+                || _tetramino.Positions.Contains(bellow) == false
                 && _cells[bellow.x, bellow.y] != null)
             {
                 return false;
@@ -90,7 +88,7 @@ public class Field : MonoBehaviour
         {
             Vector2Int leftward = block + Vector2Int.left;
             if (block.x == 0
-                || _tetraminoPosition.Contains(leftward) == false
+                || _tetramino.Positions.Contains(leftward) == false
                 && _cells[leftward.x, leftward.y] != null)
             {
                 return false;
@@ -105,7 +103,7 @@ public class Field : MonoBehaviour
         {
             Vector2Int rightward = block + Vector2Int.right;
             if (block.x == _cells.GetLength(0) - 1
-                || _tetraminoPosition.Contains(rightward) == false
+                || _tetramino.Positions.Contains(rightward) == false
                 && _cells[rightward.x, rightward.y] != null)
             {
                 return false;
@@ -128,24 +126,21 @@ public class Field : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    private void OnTetraminoMoved(Vector2Int[] blocks)
+    private void OnTetraminoMoved()
     {
-        Vector2Int[] oldPositions = (Vector2Int[])_tetraminoPosition.Clone();
+        for (int i = 0; i < _tetramino.Positions.Length; i++)
+        {
+            _cells[_previousPositions[i].x, _previousPositions[i].y] = null;
+        }
 
-        for (int i = 0; i < _tetramino.Blocks.Length; i++)
+        for (int i = 0; i < _tetramino.Positions.Length; i++)
         {
-            _cells[_tetraminoPosition[i].x, _tetraminoPosition[i].y] = null;
-        }
-        for (int i = 0; i < _tetramino.Blocks.Length; i++)
-        {
-            _tetraminoPosition[i] = blocks[i];
-        }
-        for (int i = 0; i < _tetramino.Blocks.Length; i++)
-        {
-            _cells[_tetraminoPosition[i].x, _tetraminoPosition[i].y] 
+            _cells[_tetramino.Positions[i].x, _tetramino.Positions[i].y] 
                 = _tetramino.Material;
         }
-        Updated?.Invoke(Cells);
+
+        Updated?.Invoke(FieldView);
+        _previousPositions = (Vector2Int[])_tetramino.Positions.Clone();
     }
 
     private void OnTetraminoFalled()
@@ -166,7 +161,7 @@ public class Field : MonoBehaviour
                 ClearLine(y--);
             }
         }
-        Updated?.Invoke(Cells);
+        Updated?.Invoke(FieldView);
     }
     
     private void ClearLine(int indexOfRow)
