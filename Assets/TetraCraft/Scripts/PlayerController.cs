@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(ActiveTetramino))]
+[RequireComponent(typeof(Tetramino))]
 public class PlayerController : MonoBehaviour
 {
     private PlayerInput _input;
-    private ActiveTetramino _tetramino;
+    private Tetramino _tetramino;
 
     private void Awake()
     {
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
         _input.Tetramino.Rotate
             .performed += (ctx) => OnRotate();
 
-        _tetramino = GetComponent<ActiveTetramino>();
+        _tetramino = GetComponent<Tetramino>();
     }
 
     private void OnEnable()

@@ -1,32 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class ActiveTetramino : MonoBehaviour
+public class Tetramino : MonoBehaviour
 {
     [SerializeField] private Timer _timer;
     [SerializeField] private Field _field;
 
-    private Block[] _blocks;
-    private GameObject[] _cubes;
+    private Vector2Int[] _blocks;
+    private BlockMaterial _material;
 
     public void Init(Shape shape, BlockMaterial material)
     {
-        _blocks = new Block[4];
-        _cubes = new GameObject[4];
+        _material = material;
         Vector2Int spawnerPosition = new Vector2Int(3, 17);
+        _blocks = new Vector2Int[4];
         for (int i = 0; i < _blocks.Length; i++)
         {
             Vector2Int position = shape.Positions[i] + spawnerPosition;
-            _blocks[i] = new Block(position, material);
+            _blocks[i] = position;
         }
     }
 
-    public event Action<GameObject[]> Falled;
-    public event Action<Block[]> TetraminoMoved;
+    public event Action Falled;
+    public event Action<Vector2Int[]> TetraminoMoved;
 
-    public Block[] Blocks => _blocks;
+    public Vector2Int[] Blocks => _blocks;
+    public BlockMaterial Material => _material;
 
     public void TryMoveLeft()
     {
@@ -37,7 +36,7 @@ public class ActiveTetramino : MonoBehaviour
 
         for (int i = 0; i < _blocks.Length; i++)
         {
-            _blocks[i].MoveLeft();
+            _blocks[i].x--;
         }
         TetraminoMoved?.Invoke(_blocks);
     }
@@ -50,41 +49,13 @@ public class ActiveTetramino : MonoBehaviour
             return;
         }
 
-        Vector2Int[] positions = GetRotated
-        (
-            _blocks
-                .ToList()
-                .Select
-                (
-                    (b) => b.Position
-                )
-                .ToArray()
-        );
-        foreach (Block block in _blocks)
-        {
-            Debug.Log(block.Position);
-        }
-        print("-----------------------");
-        foreach (Vector2Int position in positions)
-        {
-            Debug.Log(position);
-        }
-
-        for (int i = 0; i < _blocks.Length; i++)
-        {
-            _blocks[i].SetPosition(positions[i]);
-        }
+        Rotate();
         TetraminoMoved?.Invoke(_blocks);
     }
 
-    public Vector2Int[] GetRotated(Vector2Int[] sourceShape)
+    private void Rotate()
     {
-        List<Vector2Int> rotated = new List<Vector2Int>(sourceShape);
-        rotated.ForEach((p) => (p.x, p.y) = (p.y, p.x));
-        int width = Math.Max(rotated.Max((p) => p.x), rotated.Max((p) => p.y));
-        rotated.ForEach((p) => p.y = width - p.y);
-
-        return rotated.ToArray();
+        throw new NotImplementedException();
     }
 
     public void TryMoveRight()
@@ -96,7 +67,7 @@ public class ActiveTetramino : MonoBehaviour
 
         for (int i = 0; i < _blocks.Length; i++)
         {
-            _blocks[i].MoveRight();
+            _blocks[i].x++;
         }
         TetraminoMoved?.Invoke(_blocks);
     }
@@ -121,14 +92,14 @@ public class ActiveTetramino : MonoBehaviour
 
         for (int i = 0; i < _blocks.Length; i++)
         {
-            _blocks[i].Fall();
+            _blocks[i].y--;
         }
         TetraminoMoved?.Invoke(_blocks);
     }
 
     public void ReachBottom()
     {
-        Falled?.Invoke(_cubes);
+        Falled?.Invoke();
         _timer.EndBoost();
     }
 }

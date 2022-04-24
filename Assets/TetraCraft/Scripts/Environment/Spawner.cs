@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private ActiveTetramino _activeTetramino;
+    [SerializeField] private Tetramino _activeTetramino;
     [SerializeField] private MaterialCreator _materialCreator;
     [SerializeField] private ShapeCreator _shapeCreator;
     [SerializeField] private GameObject[] _templates;
 
-    public event Action<ActiveTetramino> TetraminoSpawned;
+    public event Action<Tetramino> TetraminoSpawned;
 
     private void Start()
     {
@@ -17,12 +17,12 @@ public class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        _activeTetramino.Falled += (c) => Spawn();
+        _activeTetramino.Falled += Spawn;
     }
 
     private void OnDisable()
     {
-        _activeTetramino.Falled -= (c) => Spawn();
+        _activeTetramino.Falled -= Spawn;
     }
 
     public void Spawn()
