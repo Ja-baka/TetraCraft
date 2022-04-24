@@ -61,55 +61,47 @@ public class Field : MonoBehaviour
         Updated?.Invoke(FieldView);
 }
 
-    public bool IsCanRotate()
+    public bool TetraminoCanRotate()
     {
         throw new NotImplementedException();
     }
 
-
-    public bool IsCanFall(Vector2Int[] blocks)
+    public bool TetraminoCanFall()
     {
-        foreach (Vector2Int block in blocks)
-        {
-            Vector2Int bellow = block + Vector2Int.down;
-            if (block.y == 0
-                || _tetramino.Positions.Contains(bellow) == false
-                && _cells[bellow.x, bellow.y] != null)
-            {
-                return false;
-            }
-        }
-        return true;
+        return TetraminoCanMove(Vector2Int.down,
+           (position) => position.y == 0);
     }
 
-    public bool IsCanMoveLeft(Vector2Int[] blocks)
+    public bool TetraminoCanMoveLeft()
     {
-        foreach (Vector2Int block in blocks)
-        {
-            Vector2Int leftward = block + Vector2Int.left;
-            if (block.x == 0
-                || _tetramino.Positions.Contains(leftward) == false
-                && _cells[leftward.x, leftward.y] != null)
-            {
-                return false;
-            }
-        }
-        return true;
+        return TetraminoCanMove(Vector2Int.left,
+            (position) => position.x == 0);
     }
 
-    public bool IsCanMoveRight(Vector2Int[] blocks)
+    public bool TetraminoCanMoveRight()
     {
-        foreach (Vector2Int block in blocks)
+        return TetraminoCanMove(Vector2Int.right, 
+            (position) => position.x == _cells.GetLength(0) - 1);
+    }
+
+    public bool TetraminoCanMove(Vector2Int direction, 
+        Predicate<Vector2Int> blockOutOfFiled)
+    {
+        foreach (Vector2Int position in _tetramino.Positions)
         {
-            Vector2Int rightward = block + Vector2Int.right;
-            if (block.x == _cells.GetLength(0) - 1
-                || _tetramino.Positions.Contains(rightward) == false
-                && _cells[rightward.x, rightward.y] != null)
+            Vector2Int offsetted = position + direction;
+
+            if (blockOutOfFiled(position) 
+                || AlreadyOccupied(offsetted))
             {
                 return false;
             }
         }
         return true;
+
+        bool AlreadyOccupied(Vector2Int offsetted) 
+            => _tetramino.Positions.Contains(offsetted) == false
+                && _cells[offsetted.x, offsetted.y] != null;
     }
 
     private void GameOver()
@@ -128,15 +120,14 @@ public class Field : MonoBehaviour
 
     private void OnTetraminoMoved()
     {
-        for (int i = 0; i < _tetramino.Positions.Length; i++)
+        foreach (Vector2Int position in _previousPositions)
         {
-            _cells[_previousPositions[i].x, _previousPositions[i].y] = null;
+            _cells[position.x, position.y] = null;
         }
 
-        for (int i = 0; i < _tetramino.Positions.Length; i++)
+        foreach (Vector2Int position in _tetramino.Positions)
         {
-            _cells[_tetramino.Positions[i].x, _tetramino.Positions[i].y] 
-                = _tetramino.Material;
+            _cells[position.x, position.y] = _tetramino.Material;
         }
 
         Updated?.Invoke(FieldView);

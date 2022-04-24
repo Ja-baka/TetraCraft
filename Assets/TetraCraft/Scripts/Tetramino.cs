@@ -29,7 +29,7 @@ public class Tetramino : MonoBehaviour
 
     public void TryMoveLeft()
     {
-        if (_field.IsCanMoveLeft(_positions) == false)
+        if (_field.TetraminoCanMoveLeft() == false)
         {
             return;
         }
@@ -43,7 +43,7 @@ public class Tetramino : MonoBehaviour
 
     public void TryRotate()
     {
-        if (_field.IsCanRotate() == false)
+        if (_field.TetraminoCanRotate() == false)
         {
             Debug.Log("Can't Rotate");
             return;
@@ -60,7 +60,7 @@ public class Tetramino : MonoBehaviour
 
     public void TryMoveRight()
     {
-        if (_field.IsCanMoveRight(_positions) == false)
+        if (_field.TetraminoCanMoveRight() == false)
         {
             return;
         }
@@ -84,7 +84,7 @@ public class Tetramino : MonoBehaviour
 
     private void TryFall()
     {
-        if (_field.IsCanFall(_positions) == false)
+        if (_field.TetraminoCanFall() == false)
         {
             ReachBottom();
             return;
