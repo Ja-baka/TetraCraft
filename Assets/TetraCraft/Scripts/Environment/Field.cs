@@ -68,30 +68,30 @@ public class Field : MonoBehaviour
 
     public bool TetraminoCanFall()
     {
-        return TetraminoCanMove(Vector2Int.down,
+        return TetraminoCanMove((p) => p + Vector2Int.down,
            (position) => position.y == 0);
     }
 
     public bool TetraminoCanMoveLeft()
     {
-        return TetraminoCanMove(Vector2Int.left,
+        return TetraminoCanMove((p) => p + Vector2Int.left,
             (position) => position.x == 0);
     }
 
     public bool TetraminoCanMoveRight()
     {
-        return TetraminoCanMove(Vector2Int.right, 
+        return TetraminoCanMove((p) => p + Vector2Int.right, 
             (position) => position.x == _cells.GetLength(0) - 1);
     }
 
-    public bool TetraminoCanMove(Vector2Int direction, 
-        Predicate<Vector2Int> blockOutOfFiled)
+    private bool TetraminoCanMove(Func<Vector2Int, Vector2Int> newPosition,
+        Predicate<Vector2Int> positionOutOfFiled)
     {
         foreach (Vector2Int position in _tetramino.Positions)
         {
-            Vector2Int offsetted = position + direction;
+            Vector2Int offsetted = newPosition(position);
 
-            if (blockOutOfFiled(position) 
+            if (positionOutOfFiled(position) 
                 || AlreadyOccupied(offsetted))
             {
                 return false;
@@ -99,7 +99,7 @@ public class Field : MonoBehaviour
         }
         return true;
 
-        bool AlreadyOccupied(Vector2Int offsetted) 
+        bool AlreadyOccupied(Vector2Int offsetted)
             => _tetramino.Positions.Contains(offsetted) == false
                 && _cells[offsetted.x, offsetted.y] != null;
     }
