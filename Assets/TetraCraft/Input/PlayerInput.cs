@@ -41,6 +41,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b9ecc38-e674-410e-bc62-14b6e4624773"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -74,6 +82,28 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Boost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7704821-ec99-4428-99df-0ad99972363d"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""410abaa5-68a5-4340-b3b5-bdc6e4354c02"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -110,6 +140,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Tetramino_MoveRight = m_Tetramino.FindAction("Move Right", throwIfNotFound: true);
         m_Tetramino_MoveLeft = m_Tetramino.FindAction("MoveLeft", throwIfNotFound: true);
         m_Tetramino_Boost = m_Tetramino.FindAction("Boost", throwIfNotFound: true);
+        m_Tetramino_Rotate = m_Tetramino.FindAction("Rotate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -162,6 +193,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Tetramino_MoveRight;
     private readonly InputAction m_Tetramino_MoveLeft;
     private readonly InputAction m_Tetramino_Boost;
+    private readonly InputAction m_Tetramino_Rotate;
     public struct TetraminoActions
     {
         private @PlayerInput m_Wrapper;
@@ -169,6 +201,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @MoveRight => m_Wrapper.m_Tetramino_MoveRight;
         public InputAction @MoveLeft => m_Wrapper.m_Tetramino_MoveLeft;
         public InputAction @Boost => m_Wrapper.m_Tetramino_Boost;
+        public InputAction @Rotate => m_Wrapper.m_Tetramino_Rotate;
         public InputActionMap Get() { return m_Wrapper.m_Tetramino; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -187,6 +220,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Boost.started -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnBoost;
                 @Boost.performed -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnBoost;
                 @Boost.canceled -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnBoost;
+                @Rotate.started -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnRotate;
+                @Rotate.performed -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnRotate;
+                @Rotate.canceled -= m_Wrapper.m_TetraminoActionsCallbackInterface.OnRotate;
             }
             m_Wrapper.m_TetraminoActionsCallbackInterface = instance;
             if (instance != null)
@@ -200,6 +236,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Boost.started += instance.OnBoost;
                 @Boost.performed += instance.OnBoost;
                 @Boost.canceled += instance.OnBoost;
+                @Rotate.started += instance.OnRotate;
+                @Rotate.performed += instance.OnRotate;
+                @Rotate.canceled += instance.OnRotate;
             }
         }
     }
@@ -227,5 +266,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnMoveRight(InputAction.CallbackContext context);
         void OnMoveLeft(InputAction.CallbackContext context);
         void OnBoost(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
     }
 }

@@ -46,13 +46,30 @@ public class ActiveTetramino : MonoBehaviour
     {
         if (_field.IsCanRotate() == false)
         {
+            Debug.Log("Can't Rotate");
             return;
         }
 
-        Vector2Int[] positions 
-            = _blocks.ToList().Select((b) => b.Position).ToArray();
+        Vector2Int[] positions = GetRotated
+        (
+            _blocks
+                .ToList()
+                .Select
+                (
+                    (b) => b.Position
+                )
+                .ToArray()
+        );
+        foreach (Block block in _blocks)
+        {
+            Debug.Log(block.Position);
+        }
+        print("-----------------------");
+        foreach (Vector2Int position in positions)
+        {
+            Debug.Log(position);
+        }
 
-        positions = GetRotated(positions);
         for (int i = 0; i < _blocks.Length; i++)
         {
             _blocks[i].SetPosition(positions[i]);

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(ActiveTetramino))]
@@ -12,8 +13,12 @@ public class PlayerController : MonoBehaviour
 
         _input.Tetramino.MoveLeft
             .performed += (ctx) => OnMoveLeft();
+
         _input.Tetramino.MoveRight
             .performed += (ctx) => OnMoveRight();
+
+        _input.Tetramino.Rotate
+            .performed += (ctx) => OnRotate();
 
         _tetramino = GetComponent<ActiveTetramino>();
     }
@@ -26,6 +31,11 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         _input.Disable();
+    }
+
+    private void OnRotate()
+    {
+        _tetramino.TryRotate();
     }
 
     private void OnMoveLeft()

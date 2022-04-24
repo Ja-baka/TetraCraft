@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ public class Shape : ScriptableObject
     {
         if (Positions.Length != BlockCount)
         {
-            throw new Exception($"{GetType().Name} " +
+            throw new Exception($"Фігура " +
                 $"складаецца з {Positions.Length} блокаў, " +
                 $"а не {BlockCount}");
         }
@@ -24,6 +23,20 @@ public class Shape : ScriptableObject
 
     public void Rotate()
     {
-        throw new NotImplementedException();
+        Vector2Int[] rotated = (Vector2Int[])_positions.Clone();
+
+        int delta = Math.Max
+        (
+            rotated.Max((p) => p.x) - rotated.Min((p) => p.x),
+            rotated.Max((p) => p.y) - rotated.Min((p) => p.y)
+        );
+        int offset = delta - 1;
+        int width = Math.Max(rotated.Max((p) => p.x), rotated.Max((p) => p.y));
+        for (int i = 0; i < rotated.Length; i++)
+        {
+            (rotated[i].x, rotated[i].y) = (rotated[i].y, rotated[i].x);
+            rotated[i].y = width - rotated[i].y;
+        }
+        _positions = rotated.ToArray();
     }
 }
