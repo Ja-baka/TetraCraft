@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class Tetramino : MonoBehaviour
@@ -35,7 +36,7 @@ public class Tetramino : MonoBehaviour
 
     public void TryMoveLeft()
     {
-        TryMove(_field.TetraminoCanMoveLeft(),
+        TryMove(IsCanMoveLeft(),
             () =>
             {
                 for (int i = 0; i < _positions.Length; i++)
@@ -47,7 +48,7 @@ public class Tetramino : MonoBehaviour
 
     public void TryMoveRight()
     {
-        TryMove(_field.TetraminoCanMoveRight(),
+        TryMove(ISCanMoveRight(),
             () =>
             {
                 for (int i = 0; i < _positions.Length; i++)
@@ -67,6 +68,44 @@ public class Tetramino : MonoBehaviour
         _timer.Tick -= TryFall;
     }
 
+    private bool IsCanFall()
+    {
+        return IsCanMove((p) => p + Vector2Int.down,
+           (position) => position.y == 0);
+    }
+
+    private bool IsCanMoveLeft()
+    {
+        return IsCanMove((p) => p + Vector2Int.left,
+            (position) => position.x == 0);
+    }
+
+    private bool ISCanMoveRight()
+    {
+        return IsCanMove((p) => p + Vector2Int.right,
+            (position) => position.x == _field.FieldView.GetLength(0) - 1);
+    }
+
+    private bool IsCanMove(Func<Vector2Int, Vector2Int> newPosition,
+        Predicate<Vector2Int> positionOutOfFiled)
+    {
+        foreach (Vector2Int position in _positions)
+        {
+            Vector2Int offsetted = newPosition(position);
+
+            if (positionOutOfFiled(position)
+                || AlreadyOccupied(offsetted))
+            {
+                return false;
+            }
+        }
+        return true;
+
+        bool AlreadyOccupied(Vector2Int offsetted)
+            => _positions.Contains(offsetted) == false
+                && _field.FieldView[offsetted.x, offsetted.y] != null;
+    }
+
     private void Rotate()
     {
         throw new NotImplementedException();
@@ -74,7 +113,7 @@ public class Tetramino : MonoBehaviour
 
     private void TryFall()
     {
-        if (_field.TetraminoCanFall() == false)
+        if (IsCanFall() == false)
         {
             ReachBottom();
             return;

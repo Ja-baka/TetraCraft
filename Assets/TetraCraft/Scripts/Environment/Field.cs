@@ -66,44 +66,6 @@ public class Field : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    public bool TetraminoCanFall()
-    {
-        return TetraminoCanMove((p) => p + Vector2Int.down,
-           (position) => position.y == 0);
-    }
-
-    public bool TetraminoCanMoveLeft()
-    {
-        return TetraminoCanMove((p) => p + Vector2Int.left,
-            (position) => position.x == 0);
-    }
-
-    public bool TetraminoCanMoveRight()
-    {
-        return TetraminoCanMove((p) => p + Vector2Int.right, 
-            (position) => position.x == _cells.GetLength(0) - 1);
-    }
-
-    private bool TetraminoCanMove(Func<Vector2Int, Vector2Int> newPosition,
-        Predicate<Vector2Int> positionOutOfFiled)
-    {
-        foreach (Vector2Int position in _tetramino.Positions)
-        {
-            Vector2Int offsetted = newPosition(position);
-
-            if (positionOutOfFiled(position) 
-                || AlreadyOccupied(offsetted))
-            {
-                return false;
-            }
-        }
-        return true;
-
-        bool AlreadyOccupied(Vector2Int offsetted)
-            => _tetramino.Positions.Contains(offsetted) == false
-                && _cells[offsetted.x, offsetted.y] != null;
-    }
-
     private void GameOver()
     {
         if (_playing == false)
