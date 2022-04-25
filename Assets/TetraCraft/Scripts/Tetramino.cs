@@ -27,49 +27,34 @@ public class Tetramino : MonoBehaviour
     public Vector2Int[] Positions => _positions;
     public BlockMaterial Material => _material;
 
-    public void TryMoveLeft()
-    {
-        if (_field.TetraminoCanMoveLeft() == false)
-        {
-            return;
-        }
-
-        for (int i = 0; i < _positions.Length; i++)
-        {
-            _positions[i].x--;
-        }
-        TetraminoMoved?.Invoke();
-    }
-
     public void TryRotate()
     {
-        if (_field.TetraminoCanRotate() == false)
-        {
-            Debug.Log("Can't Rotate");
-            return;
-        }
-
-        Rotate();
-        TetraminoMoved?.Invoke();
+        TryMove(_field.TetraminoCanRotate(),
+            () => Rotate());
     }
 
-    private void Rotate()
+    public void TryMoveLeft()
     {
-        throw new NotImplementedException();
+        TryMove(_field.TetraminoCanMoveLeft(),
+            () =>
+            {
+                for (int i = 0; i < _positions.Length; i++)
+                {
+                    _positions[i].x--;
+                }
+            });
     }
 
     public void TryMoveRight()
     {
-        if (_field.TetraminoCanMoveRight() == false)
-        {
-            return;
-        }
-
-        for (int i = 0; i < _positions.Length; i++)
-        {
-            _positions[i].x++;
-        }
-        TetraminoMoved?.Invoke();
+        TryMove(_field.TetraminoCanMoveRight(),
+            () =>
+            {
+                for (int i = 0; i < _positions.Length; i++)
+                {
+                    _positions[i].x++;
+                }
+            });
     }
 
     private void OnEnable()
@@ -80,6 +65,11 @@ public class Tetramino : MonoBehaviour
     private void OnDisable()
     {
         _timer.Tick -= TryFall;
+    }
+
+    private void Rotate()
+    {
+        throw new NotImplementedException();
     }
 
     private void TryFall()
@@ -97,7 +87,18 @@ public class Tetramino : MonoBehaviour
         TetraminoMoved?.Invoke();
     }
 
-    public void ReachBottom()
+    private void TryMove(bool isCan, Action move)  
+    {
+        if (isCan == false)
+        {
+            return;
+        }
+
+        move();
+        TetraminoMoved?.Invoke();
+    }
+
+    private void ReachBottom()
     {
         Falled?.Invoke();
         _timer.EndBoost();

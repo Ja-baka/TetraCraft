@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shape O
   m_EditorClassIdentifier: 
   _positions:
-  - {x: 4, y: 18}
-  - {x: 5, y: 18}
-  - {x: 4, y: 19}
-  - {x: 5, y: 19}
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
