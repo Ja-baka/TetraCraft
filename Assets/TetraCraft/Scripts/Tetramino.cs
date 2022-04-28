@@ -30,7 +30,7 @@ public class Tetramino : MonoBehaviour
 
     public void TryRotate()
     {
-        TryMove(_field.TetraminoCanRotate(),
+        TryMove(IsCanRotate(),
             () => Rotate());
     }
 
@@ -68,6 +68,17 @@ public class Tetramino : MonoBehaviour
         _timer.Tick -= TryFall;
     }
 
+    public bool IsCanRotate()
+    {
+        int index = 0;
+        Vector2Int[] rotated = GetRotated(_positions);
+        Predicate<Vector2Int> isOnBorder = 
+            (p) => false;
+
+        return IsCanMove((p) => rotated[index++],
+            isOnBorder);
+    }
+
     private bool IsCanFall()
     {
         return IsCanMove((p) => p + Vector2Int.down,
@@ -86,14 +97,14 @@ public class Tetramino : MonoBehaviour
             (position) => position.x == _field.FieldView.GetLength(0) - 1);
     }
 
-    private bool IsCanMove(Func<Vector2Int, Vector2Int> newPosition,
-        Predicate<Vector2Int> positionOutOfFiled)
+    private bool IsCanMove(Func<Vector2Int, Vector2Int> move,
+        Predicate<Vector2Int> positionOnBorder)
     {
         foreach (Vector2Int position in _positions)
         {
-            Vector2Int offsetted = newPosition(position);
+            Vector2Int offsetted = move(position);
 
-            if (positionOutOfFiled(position)
+            if (positionOnBorder(position)
                 || AlreadyOccupied(offsetted))
             {
                 return false;
@@ -108,7 +119,26 @@ public class Tetramino : MonoBehaviour
 
     private void Rotate()
     {
-        throw new NotImplementedException();
+        _positions = GetRotated(_positions);
+    }
+
+    public Vector2Int[] GetRotated(Vector2Int[] sourceShape)
+    {
+        Vector2Int[] rotated = (Vector2Int[])sourceShape.Clone();
+
+        int delta = Math.Max
+        (
+            rotated.Max((p) => p.x) - rotated.Min((p) => p.x),
+            rotated.Max((p) => p.y) - rotated.Min((p) => p.y)
+        );
+        int offset = delta - 1;
+        int width = Math.Max(rotated.Max((p) => p.x), rotated.Max((p) => p.y));
+        for (int i = 0; i < rotated.Length; i++)
+        {
+            (rotated[i].x, rotated[i].y) = (rotated[i].y, rotated[i].x);
+            rotated[i].y = width - rotated[i].y;
+        }
+        return rotated;
     }
 
     private void TryFall()
@@ -126,7 +156,7 @@ public class Tetramino : MonoBehaviour
         TetraminoMoved?.Invoke();
     }
 
-    private void TryMove(bool isCan, Action move)  
+    private void TryMove(bool isCan, Action move)
     {
         if (isCan == false)
         {

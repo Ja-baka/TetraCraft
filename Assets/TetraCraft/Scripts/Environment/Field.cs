@@ -59,12 +59,8 @@ public class Field : MonoBehaviour
             _cells[x, y] = tetramino.Material;
         }
         Updated?.Invoke(FieldView);
-}
-
-    public bool TetraminoCanRotate()
-    {
-        throw new NotImplementedException();
     }
+
 
     private void GameOver()
     {
