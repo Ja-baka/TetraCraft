@@ -33,8 +33,9 @@ public class Tetramino : MonoBehaviour
     public BlockMaterial Material => _material;
 
     public void TryRotate()
-    { 
+    {
         _positions = _rotator.TryRotate();
+        TetraminoMoved?.Invoke();
     }
 
     public void TryMoveLeft()

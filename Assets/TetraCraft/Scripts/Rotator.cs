@@ -31,7 +31,7 @@ public class Rotator
     {
         Vector2Int[] rotated = (Vector2Int[])positions.Clone();
         rotated = Transpose(rotated);
-        rotated = ReflectByX(rotated);
+        rotated = ReflectByY(rotated);
         return rotated;
     }
 
@@ -99,12 +99,12 @@ public class Rotator
     }
 
 
-    private Vector2Int[] ReflectByX(Vector2Int[] rotated)
+    private Vector2Int[] ReflectByY(Vector2Int[] rotated)
     {
-        int width = rotated.Max((p) => p.x) + 1;
+        int width = rotated.Max((p) => p.y) + 1;
         for (int i = 0; i < rotated.Length; i++)
         {
-            rotated[i].x = width - rotated[i].x;
+            rotated[i].y = width - rotated[i].y;
         }
         return rotated;
     }
