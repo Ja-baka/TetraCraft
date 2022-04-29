@@ -9,17 +9,21 @@ public class Tetramino : MonoBehaviour
 
     private Vector2Int[] _positions;
     private BlockMaterial _material;
+    private Rotator _rotator;
 
     public void Init(Shape shape, BlockMaterial material)
     {
         _material = material;
         Vector2Int spawnerPosition = new Vector2Int(3, 17);
+        
         _positions = new Vector2Int[4];
         for (int i = 0; i < _positions.Length; i++)
         {
             Vector2Int position = shape.Positions[i] + spawnerPosition;
             _positions[i] = position;
         }
+
+        _rotator = new Rotator(_positions);
     }
 
     public event Action Falled;
@@ -29,9 +33,8 @@ public class Tetramino : MonoBehaviour
     public BlockMaterial Material => _material;
 
     public void TryRotate()
-    {
-        TryMove(IsCanRotate(),
-            () => Rotate());
+    { 
+        _positions = _rotator.TryRotate();
     }
 
     public void TryMoveLeft()
@@ -66,17 +69,6 @@ public class Tetramino : MonoBehaviour
     private void OnDisable()
     {
         _timer.Tick -= TryFall;
-    }
-
-    public bool IsCanRotate()
-    {
-        int index = 0;
-        Vector2Int[] rotated = GetRotated(_positions);
-        Predicate<Vector2Int> isOnBorder = 
-            (p) => false;
-
-        return IsCanMove((p) => rotated[index++],
-            isOnBorder);
     }
 
     private bool IsCanFall()
@@ -115,30 +107,6 @@ public class Tetramino : MonoBehaviour
         bool AlreadyOccupied(Vector2Int offsetted)
             => _positions.Contains(offsetted) == false
                 && _field.FieldView[offsetted.x, offsetted.y] != null;
-    }
-
-    private void Rotate()
-    {
-        _positions = GetRotated(_positions);
-    }
-
-    public Vector2Int[] GetRotated(Vector2Int[] sourceShape)
-    {
-        Vector2Int[] rotated = (Vector2Int[])sourceShape.Clone();
-
-        int delta = Math.Max
-        (
-            rotated.Max((p) => p.x) - rotated.Min((p) => p.x),
-            rotated.Max((p) => p.y) - rotated.Min((p) => p.y)
-        );
-        int offset = delta - 1;
-        int width = Math.Max(rotated.Max((p) => p.x), rotated.Max((p) => p.y));
-        for (int i = 0; i < rotated.Length; i++)
-        {
-            (rotated[i].x, rotated[i].y) = (rotated[i].y, rotated[i].x);
-            rotated[i].y = width - rotated[i].y;
-        }
-        return rotated;
     }
 
     private void TryFall()
