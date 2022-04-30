@@ -34,32 +34,19 @@ public class Tetramino : MonoBehaviour
 
     public void TryRotate()
     {
-        TryMove(IsCanRotate(), 
-            () => _positions = _rotator.Rotate());
+        int index = 0;
+        Vector2Int[] rotated = _rotator.GetRotated(_positions);
+        TryMove(IsCanRotate(), (p) => rotated[index++]);
     }
 
     public void TryMoveLeft()
     {
-        TryMove(IsCanMoveLeft(),
-            () =>
-            {
-                for (int i = 0; i < _positions.Length; i++)
-                {
-                    _positions[i].x--;
-                }
-            });
+        TryMove(IsCanMoveLeft(), (p) => p + Vector2Int.left);
     }
 
     public void TryMoveRight()
     {
-        TryMove(ISCanMoveRight(),
-            () =>
-            {
-                for (int i = 0; i < _positions.Length; i++)
-                {
-                    _positions[i].x++;
-                }
-            });
+        TryMove(ISCanMoveRight(), (p) => p + Vector2Int.right);
     }
 
     private void OnEnable()
@@ -124,14 +111,17 @@ public class Tetramino : MonoBehaviour
         TetraminoMoved?.Invoke();
     }
 
-    private void TryMove(bool isCan, Action move)
+    private void TryMove(bool isCan, Func<Vector2Int, Vector2Int> moveBlock)
     {
         if (isCan == false)
         {
             return;
         }
 
-        move();
+        for (int i = 0; i < _positions.Length; i++)
+        {
+            _positions[i] = moveBlock(_positions[i]);
+        }
         TetraminoMoved?.Invoke();
     }
 
