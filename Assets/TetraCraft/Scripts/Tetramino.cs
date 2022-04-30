@@ -34,8 +34,8 @@ public class Tetramino : MonoBehaviour
 
     public void TryRotate()
     {
-        _positions = _rotator.TryRotate();
-        TetraminoMoved?.Invoke();
+        TryMove(IsCanRotate(), 
+            () => _positions = _rotator.Rotate());
     }
 
     public void TryMoveLeft()
@@ -74,40 +74,49 @@ public class Tetramino : MonoBehaviour
 
     private bool IsCanFall()
     {
-        return IsCanMove((p) => p + Vector2Int.down,
-           (position) => position.y == 0);
+        return IsCanMove((p) => p + Vector2Int.down);
+    }
+
+    private bool IsCanRotate()
+    {
+        int index = 0;
+        Vector2Int[] rotated = _rotator.GetRotated(_positions);
+        return IsCanMove((p) => rotated[index++]);
     }
 
     private bool IsCanMoveLeft()
     {
-        return IsCanMove((p) => p + Vector2Int.left,
-            (position) => position.x == 0);
+        return IsCanMove((p) => p + Vector2Int.left);
     }
 
     private bool ISCanMoveRight()
     {
-        return IsCanMove((p) => p + Vector2Int.right,
-            (position) => position.x == _field.FieldView.GetLength(0) - 1);
+        return IsCanMove((p) => p + Vector2Int.right);
     }
 
-    private bool IsCanMove(Func<Vector2Int, Vector2Int> move,
-        Predicate<Vector2Int> positionOnBorder)
+    private bool IsCanMove(Func<Vector2Int, Vector2Int> move)
     {
         foreach (Vector2Int position in _positions)
         {
             Vector2Int offsetted = move(position);
 
-            if (positionOnBorder(position)
-                || AlreadyOccupied(offsetted))
+            if (IsOutOfBounce(offsetted)
+                || IsAlreadyOccupied(offsetted))
             {
                 return false;
             }
         }
         return true;
 
-        bool AlreadyOccupied(Vector2Int offsetted)
+        bool IsAlreadyOccupied(Vector2Int offsetted)
             => _positions.Contains(offsetted) == false
                 && _field.FieldView[offsetted.x, offsetted.y] != null;
+
+        bool IsOutOfBounce(Vector2Int offsetted)
+             => offsetted.x < 0
+            || offsetted.x >= _field.FieldView.GetLength(0)
+            || offsetted.y < 0
+            || offsetted.y >= _field.FieldView.GetLength(1);
     }
 
     private void TryFall()

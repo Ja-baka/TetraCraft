@@ -16,11 +16,11 @@ public class Rotator
         _currentTurn = InitialTurn;
     }
 
-    public Vector2Int[] TryRotate()
+    public Vector2Int[] Rotate()
     {
         NormalizePositions();
         AddOffset();
-        Rotate();
+        DirectlyRotate();
         ScalePositions();
         ReversePositions();
 
@@ -89,7 +89,7 @@ public class Rotator
         return turnOffset;
     }
 
-    private void Rotate()
+    private void DirectlyRotate()
     {
         _currentTurn = _currentTurn == MaxTurn
             ? _currentTurn + 1
