@@ -96,27 +96,18 @@ public class Tetramino : MonoBehaviour
 
     private bool IsCanMove(Func<Vector2Int, Vector2Int> move)
     {
-        foreach (Vector2Int position in _positions)
-        {
-            Vector2Int offsetted = move(position);
-
-            if (IsOutOfBounce(offsetted)
-                || IsAlreadyOccupied(offsetted))
-            {
-                return false;
-            }
-        }
-        return true;
-
-        bool IsAlreadyOccupied(Vector2Int offsetted)
-            => _positions.Contains(offsetted) == false
-                && _field.FieldView[offsetted.x, offsetted.y] != null;
+        return _positions.Any((p) => IsOutOfBounce(move(p)) 
+            || IsOccupied(move(p))) == false;
 
         bool IsOutOfBounce(Vector2Int offsetted)
              => offsetted.x < 0
             || offsetted.x >= _field.FieldView.GetLength(0)
             || offsetted.y < 0
             || offsetted.y >= _field.FieldView.GetLength(1);
+
+        bool IsOccupied(Vector2Int offsetted)
+            => _positions.Contains(offsetted) == false
+                && _field.FieldView[offsetted.x, offsetted.y] != null;
     }
 
     private void TryFall()
