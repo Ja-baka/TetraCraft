@@ -21,6 +21,12 @@ public class Rotator
 
     public Vector2Int[] Rotate()
     {
+        NextTurn();
+        return GetRotated();
+    }
+
+    public Vector2Int[] GetRotated()
+    {
         _normalized = (Vector2Int[])_positions.Clone();
         NormalizePositions();
         AddOffset();
@@ -80,7 +86,7 @@ public class Rotator
         }
         else
         {
-            throw new ArgumentOutOfRangeException(nameof(_currentTurn));
+            throw new Exception();
         }
 
         return turnOffset;
@@ -88,32 +94,33 @@ public class Rotator
 
     private void DirectlyRotate()
     {
-        _currentTurn = _currentTurn == MaxTurn
+        Transpose();
+        ReflectByX();
+    }
+    
+    private void NextTurn()
+    {
+        _currentTurn = _currentTurn != MaxTurn
             ? _currentTurn + 1
             : InitialTurn;
-
-        _normalized = Transpose();
-        _normalized = ReflectByY();
     }
 
-    private Vector2Int[] ReflectByY()
+    private void ReflectByX()
     {
-        int width = _normalized.Max((p) => p.y) + 1;
+        int width = _normalized.Max((p) => p.x) + 1;
         for (int i = 0; i < _normalized.Length; i++)
         {
-            _normalized[i].y = width - _normalized[i].y;
+            _normalized[i].x = width - _normalized[i].x;
         }
-        return _normalized;
     }
 
-    private Vector2Int[] Transpose()
+    private void Transpose()
     {
         for (int i = 0; i < _normalized.Length; i++)
         {
             (_normalized[i].x, _normalized[i].y)
                 = (_normalized[i].y, _normalized[i].x);
         }
-        return _normalized;
     }
 
     private void ScalePositions()

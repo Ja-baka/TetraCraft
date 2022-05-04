@@ -73,8 +73,8 @@ public class Tetramino : MonoBehaviour
 
     private bool IsCanRotate()
     {
-        Vector2Int[] rotated = _rotator.Rotate();
-        return IsCanMove(rotated);
+        Vector2Int[] rotated = _rotator.GetRotated();
+        return IsCanMove(rotated);    
     }
 
     private bool IsCanMoveLeft()
