@@ -6,7 +6,10 @@ public class Rotator
 {
     private const int MaxTurn = 4;
     private const int InitialTurn = 1;
-    private Vector2Int[] _positions;
+
+    private readonly Vector2Int[] _positions;
+    private Vector2Int[] _normalized;
+    
     private int _currentTurn;
     private Vector2Int _minPositionOffset;
 
@@ -18,13 +21,14 @@ public class Rotator
 
     public Vector2Int[] Rotate()
     {
+        _normalized = (Vector2Int[])_positions.Clone();
         NormalizePositions();
         AddOffset();
         DirectlyRotate();
         ScalePositions();
         ReversePositions();
 
-        return _positions;
+        return _normalized;
     }
 
     public Vector2Int[] GetRotated(Vector2Int[] positions)
@@ -37,26 +41,27 @@ public class Rotator
 
     private void NormalizePositions()
     {
-        int minX = _positions.Min((p) => p.x);
-        int minY = _positions.Min((p) => p.y);
+        int minX = _normalized.Min((p) => p.x);
+        int minY = _normalized.Min((p) => p.y);
 
         _minPositionOffset = new Vector2Int(minX, minY);
-        for (int i = 0; i < _positions.Length; i++)
+
+        for (int i = 0; i < _normalized.Length; i++)
         {
-            _positions[i] -= _minPositionOffset;
+            _normalized[i] -= _minPositionOffset;
         }
     }
 
     private void AddOffset()
     {
-        int maxX = _positions.Max((p) => p.x);
-        int maxY = _positions.Max((p) => p.y);
+        int maxX = _normalized.Max((p) => p.x);
+        int maxY = _normalized.Max((p) => p.y);
         int max = Math.Max(maxX, maxY);
         Vector2Int turnOffset = GetOffsetByTurn(max);
 
-        for (int i = 0; i < _positions.Length; i++)
+        for (int i = 0; i < _normalized.Length; i++)
         {
-            _positions[i] += turnOffset;
+            _normalized[i] += turnOffset;
         }
         _minPositionOffset -= turnOffset;
     }
@@ -95,9 +100,8 @@ public class Rotator
             ? _currentTurn + 1
             : InitialTurn;
 
-        _positions = GetRotated(_positions);
+        _normalized = GetRotated(_normalized);
     }
-
 
     private Vector2Int[] ReflectByY(Vector2Int[] rotated)
     {
@@ -121,14 +125,14 @@ public class Rotator
 
     private void ScalePositions()
     {
-        for (int i = 0; i < _positions.Length; i++)
+        for (int i = 0; i < _normalized.Length; i++)
         {
-            _positions[i] += _minPositionOffset;
+            _normalized[i] += _minPositionOffset;
         }
     }
 
     private void ReversePositions()
     {
-        _positions.Reverse();
+        _normalized.Reverse();
     }
 }

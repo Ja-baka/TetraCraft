@@ -35,7 +35,7 @@ public class Tetramino : MonoBehaviour
     public void TryRotate()
     {
         int index = 0;
-        Vector2Int[] rotated = _rotator.GetRotated(_positions);
+        Vector2Int[] rotated = _rotator.Rotate();
         TryMove(IsCanRotate(), (p) => rotated[index++]);
     }
 
