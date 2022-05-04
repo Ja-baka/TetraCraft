@@ -31,14 +31,6 @@ public class Rotator
         return _normalized;
     }
 
-    public Vector2Int[] GetRotated(Vector2Int[] positions)
-    {
-        Vector2Int[] rotated = (Vector2Int[])positions.Clone();
-        rotated = Transpose(rotated);
-        rotated = ReflectByY(rotated);
-        return rotated;
-    }
-
     private void NormalizePositions()
     {
         int minX = _normalized.Min((p) => p.x);
@@ -100,27 +92,28 @@ public class Rotator
             ? _currentTurn + 1
             : InitialTurn;
 
-        _normalized = GetRotated(_normalized);
+        _normalized = Transpose();
+        _normalized = ReflectByY();
     }
 
-    private Vector2Int[] ReflectByY(Vector2Int[] rotated)
+    private Vector2Int[] ReflectByY()
     {
-        int width = rotated.Max((p) => p.y) + 1;
-        for (int i = 0; i < rotated.Length; i++)
+        int width = _normalized.Max((p) => p.y) + 1;
+        for (int i = 0; i < _normalized.Length; i++)
         {
-            rotated[i].y = width - rotated[i].y;
+            _normalized[i].y = width - _normalized[i].y;
         }
-        return rotated;
+        return _normalized;
     }
 
-    private Vector2Int[] Transpose(Vector2Int[] rotated)
+    private Vector2Int[] Transpose()
     {
-        for (int i = 0; i < rotated.Length; i++)
+        for (int i = 0; i < _normalized.Length; i++)
         {
-            (rotated[i].x, rotated[i].y)
-                = (rotated[i].y, rotated[i].x);
+            (_normalized[i].x, _normalized[i].y)
+                = (_normalized[i].y, _normalized[i].x);
         }
-        return rotated;
+        return _normalized;
     }
 
     private void ScalePositions()

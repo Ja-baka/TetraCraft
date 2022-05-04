@@ -34,19 +34,26 @@ public class Tetramino : MonoBehaviour
 
     public void TryRotate()
     {
-        int index = 0;
         Vector2Int[] rotated = _rotator.Rotate();
-        TryMove(IsCanRotate(), (p) => rotated[index++]);
+        TryMove(IsCanRotate(), rotated);
     }
 
     public void TryMoveLeft()
     {
-        TryMove(IsCanMoveLeft(), (p) => p + Vector2Int.left);
+        TryMove<Func<Vector2Int, Vector2Int>>
+        (
+            IsCanMoveLeft(), 
+            (p) => p + Vector2Int.left
+        );
     }
 
     public void TryMoveRight()
     {
-        TryMove(ISCanMoveRight(), (p) => p + Vector2Int.right);
+        TryMove<Func<Vector2Int, Vector2Int>>
+        (
+            ISCanMoveRight(), 
+            (p) => p + Vector2Int.right
+        );
     }
 
     private void OnEnable()
@@ -66,9 +73,8 @@ public class Tetramino : MonoBehaviour
 
     private bool IsCanRotate()
     {
-        int index = 0;
-        Vector2Int[] rotated = _rotator.GetRotated(_positions);
-        return IsCanMove((p) => rotated[index++]);
+        Vector2Int[] rotated = _rotator.Rotate();
+        return IsCanMove(rotated);
     }
 
     private bool IsCanMoveLeft()
@@ -81,19 +87,28 @@ public class Tetramino : MonoBehaviour
         return IsCanMove((p) => p + Vector2Int.right);
     }
 
+    private bool IsCanMove(Vector2Int[] moved)
+    {
+        return moved.All((p) => IsInField(p) && IsFree(p));
+    }
+
     private bool IsCanMove(Func<Vector2Int, Vector2Int> move)
     {
         return _positions.All((p) => IsInField(move(p)) && IsFree(move(p)));
+    }
 
-        bool IsInField(Vector2Int offsetted)
-            => offsetted.x >= 0
+    private bool IsFree(Vector2Int offsetted)
+    {
+        return _positions.Contains(offsetted)
+            || _field.FieldView[offsetted.x, offsetted.y] == null;
+    }
+
+    private bool IsInField(Vector2Int offsetted)
+    {
+        return offsetted.x >= 0
             && offsetted.x < _field.FieldView.GetLength(0)
             && offsetted.y >= 0
             && offsetted.y < _field.FieldView.GetLength(1);
-
-        bool IsFree(Vector2Int offsetted)
-            => _positions.Contains(offsetted)
-            || _field.FieldView[offsetted.x, offsetted.y] == null;
     }
 
     private void TryFall()
@@ -111,18 +126,27 @@ public class Tetramino : MonoBehaviour
         TetraminoMoved?.Invoke();
     }
 
-    private void TryMove(bool isCan, Func<Vector2Int, Vector2Int> moveBlock)
+    private void TryMove<T>(bool isCanMove, T move)
     {
-        if (isCan == false)
+        if (isCanMove == false)
         {
             return;
         }
 
         for (int i = 0; i < _positions.Length; i++)
         {
-            _positions[i] = moveBlock(_positions[i]);
+            _positions[i] = MoveBlock(i, move);
         }
         TetraminoMoved?.Invoke();
+    }
+
+    private Vector2Int MoveBlock<T>(int i, T move)
+    {
+        return move is Func<Vector2Int, Vector2Int> moveFunc
+            ? moveFunc(_positions[i])
+            : move is Vector2Int[] movedBlocks 
+                ? movedBlocks[i] 
+                : throw new Exception();
     }
 
     private void ReachBottom()
