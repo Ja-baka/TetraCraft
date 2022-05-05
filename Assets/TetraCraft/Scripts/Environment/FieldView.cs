@@ -1,29 +1,46 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class FieldView : MonoBehaviour
 {
-    [SerializeField] private BlockMaterial _material;
+    [SerializeField] private Creator<BlockMaterial> _materialCreator;
     [SerializeField] private Field _field;
 
-    private GameObject[,] _cubes;
+    private Dictionary<BlockMaterial, GameObject[,]> _cubes;
 
     private void Start()
     {
-        const int ClassicWidth = 10;
-        const int ClassicHeigth = 20;
+        BlockMaterial[] materials = _materialCreator.GetCollection();
+        _cubes = new Dictionary<BlockMaterial, GameObject[,]>();
 
-        _cubes = new GameObject[ClassicWidth, ClassicHeigth];
-
-        for (int i = 0; i < _cubes.GetLength(0); i++)
+        foreach (BlockMaterial material in materials)
         {
-            for (int j = 0; j < _cubes.GetLength(1); j++)
+            Iteration(material);
+        }
+    }
+
+    private void Iteration(BlockMaterial material)
+    {
+        // https://tetris.fandom.com/wiki/Tetris_Guideline
+        const int Width = 10;
+        const int Heigth = 20;
+
+        GameObject[,] blocks = new GameObject[Width, Heigth];
+        _cubes.Add(material, blocks);
+
+        for (int i = 0; i < _cubes[material].GetLength(0); i++)
+        {
+            for (int j = 0; j < _cubes[material].GetLength(1); j++)
             {
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                GameObject cube = GameObject
+                    .CreatePrimitive(PrimitiveType.Cube);
                 cube.SetActive(false);
                 cube.transform.SetParent(transform, false);
                 cube.transform.position = new Vector3(i, j);
-                cube.GetComponent<Renderer>().material = _material.Material;
-                _cubes[i, j] = cube;
+                cube.GetComponent<Renderer>().material
+                    = material.Material;
+
+                _cubes[material][i, j] = cube;
             }
         }
     }
@@ -38,14 +55,16 @@ public class FieldView : MonoBehaviour
         _field.Updated -= DrawField;
     }
 
-
-    private void DrawField(BlockMaterial[,] cells)
+    private void DrawField(BlockMaterial[,] newField)
     {
-        for (int i = 0; i < _cubes.GetLength(0); i++)
+        foreach (KeyValuePair<BlockMaterial, GameObject[,]> pair in _cubes)
         {
-            for (int j = 0; j < _cubes.GetLength(1); j++)
+            for (int i = 0; i < pair.Value.GetLength(0); i++)
             {
-                _cubes[i, j].SetActive(cells[i, j] != null);
+                for (int j = 0; j < pair.Value.GetLength(1); j++)
+                {
+                    pair.Value[i, j].SetActive(newField[i, j] == pair.Key);
+                }
             }
         }
     }

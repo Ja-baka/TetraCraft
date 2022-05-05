@@ -2,6 +2,11 @@
 
 public abstract class Creator<T> : MonoBehaviour
 {
+    public T[] GetCollection()
+    {
+        return (T[])FillArray().Clone();
+    }
+
     public T PickRandom()
     {
         T[] Collection = FillArray();
