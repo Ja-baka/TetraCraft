@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Field : MonoBehaviour
 {
     [SerializeField] private Spawner _spawner;
     [SerializeField] private Tetramino _tetramino;
+    [SerializeField] private float _timeToClearLine;
+
     private BlockMaterial[,] _cells;
     private Vector2Int[] _previousPositions;
     private bool _playing = true;
 
     public event Action<BlockMaterial[,]> Updated;
+    public event Action LineCleared;
 
     public BlockMaterial[,] FieldView => (BlockMaterial[,])_cells.Clone();
 
@@ -23,24 +24,25 @@ public class Field : MonoBehaviour
 
     private BlockMaterial[,] InitializeArray()
     {
-        const int ClassicWidth = 10;
-        const int ClassicHeigth = 20;
+        // https://tetris.fandom.com/wiki/Tetris_Guideline
+        const int Width = 10;
+        const int Heigth = 20;
 
-        return new BlockMaterial[ClassicWidth, ClassicHeigth];
+        return new BlockMaterial[Width, Heigth];
     }
 
     private void OnEnable()
     {
         _spawner.TetraminoSpawned += OnTetraminoSpawned;
         _tetramino.TetraminoMoved += OnTetraminoMoved;
-        _tetramino.Falled += OnTetraminoFalled;
+        _tetramino.Falled += () => StartCoroutine(OnTetraminoFalled());
     }
 
     private void OnDisable()
     {
         _spawner.TetraminoSpawned -= OnTetraminoSpawned;
         _tetramino.TetraminoMoved -= OnTetraminoMoved;
-        _tetramino.Falled -= OnTetraminoFalled;
+        _tetramino.Falled -= () => OnTetraminoFalled();
     }
 
     public void OnTetraminoSpawned(Tetramino tetramino)
@@ -92,7 +94,7 @@ public class Field : MonoBehaviour
         _previousPositions = (Vector2Int[])_tetramino.Positions.Clone();
     }
 
-    private void OnTetraminoFalled()
+    private IEnumerator OnTetraminoFalled()
     {
         for (int y = 0; y < _cells.GetLength(1); y++)
         {
@@ -107,14 +109,25 @@ public class Field : MonoBehaviour
             }
             if (isFullRow)
             {
-                ClearLine(y--);
+                yield return StartCoroutine(ClearLine(y--));
+                Updated?.Invoke(FieldView);
             }
         }
-        Updated?.Invoke(FieldView);
+        
+        LineCleared?.Invoke();
     }
-    
-    private void ClearLine(int indexOfRow)
+
+
+    private IEnumerator ClearLine(int indexOfRow)
     {
+        for (int x = 0; x < _cells.GetLength(0); x++)
+        {
+            _cells[x, indexOfRow] = null;
+        }
+        Updated?.Invoke(FieldView);
+
+        yield return new WaitForSeconds(_timeToClearLine);
+
         for (int y = indexOfRow; y < _cells.GetLength(1) - 1; y++)
         {
             for (int x = 0; x < _cells.GetLength(0); x++)

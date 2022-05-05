@@ -905,6 +905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawner: {fileID: 1863002917}
   _tetramino: {fileID: 583764042}
+  _timeToClearLine: 0.25
 --- !u!4 &1034825158
 Transform:
   m_ObjectHideFlags: 0
@@ -1227,9 +1228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _materials:
+  - {fileID: 11400000, guid: b1209af2ec27b234eb1b517cee7dd709, type: 2}
   - {fileID: 11400000, guid: 56450b3737f30154b9eb7898557ceff6, type: 2}
-  - {fileID: 11400000, guid: 7be999ad32e7d344cae71ecbde717370, type: 2}
-  - {fileID: 11400000, guid: 29064bd3e14188641ab0dedecdde72d1, type: 2}
 --- !u!4 &1576628495
 Transform:
   m_ObjectHideFlags: 0
