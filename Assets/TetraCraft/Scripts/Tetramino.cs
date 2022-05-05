@@ -34,7 +34,7 @@ public class Tetramino : MonoBehaviour
 
     public void TryRotate()
     {
-        Vector2Int[] rotated = _rotator.Rotate();
+        Vector2Int[] rotated = _rotator.GetRotated();
         TryMove(IsCanRotate(), rotated);
     }
 
@@ -74,7 +74,13 @@ public class Tetramino : MonoBehaviour
     private bool IsCanRotate()
     {
         Vector2Int[] rotated = _rotator.GetRotated();
-        return IsCanMove(rotated);    
+        bool isCan = IsCanMove(rotated);
+        if (isCan)
+        {
+            _rotator.NextTurn();
+        }
+
+        return isCan; 
     }
 
     private bool IsCanMoveLeft()

@@ -9,7 +9,7 @@ public class Rotator
 
     private readonly Vector2Int[] _positions;
     private Vector2Int[] _normalized;
-    
+
     private int _currentTurn;
     private Vector2Int _minPositionOffset;
 
@@ -19,22 +19,33 @@ public class Rotator
         _currentTurn = InitialTurn;
     }
 
-    public Vector2Int[] Rotate()
-    {
-        NextTurn();
-        return GetRotated();
-    }
-
     public Vector2Int[] GetRotated()
     {
         _normalized = (Vector2Int[])_positions.Clone();
+
         NormalizePositions();
-        AddOffset();
+        //AddOffset();
         DirectlyRotate();
         ScalePositions();
         ReversePositions();
 
         return _normalized;
+    }
+
+    private void LogTetramino(string message)
+    {
+        Debug.Log(message);
+        for (int i = 0; i < _normalized.Length; i++)
+        {
+            Debug.Log(_normalized[i]);
+        }
+    }
+
+    public void NextTurn()
+    {
+        _currentTurn = _currentTurn != MaxTurn
+            ? _currentTurn + 1
+            : InitialTurn;
     }
 
     private void NormalizePositions()
@@ -79,10 +90,13 @@ public class Rotator
         else if (_currentTurn == 3)
         {
             turnOffset.y = maxXY - 2;
+            turnOffset.y = Math.Max(0, turnOffset.y);
+
         }
         else if (_currentTurn == 4)
         {
             turnOffset.x = maxXY - 2;
+            turnOffset.x = Math.Max(0, turnOffset.x);
         }
         else
         {
@@ -95,22 +109,15 @@ public class Rotator
     private void DirectlyRotate()
     {
         Transpose();
-        ReflectByX();
-    }
-    
-    private void NextTurn()
-    {
-        _currentTurn = _currentTurn != MaxTurn
-            ? _currentTurn + 1
-            : InitialTurn;
+        ReflectByY();
     }
 
-    private void ReflectByX()
+    private void ReflectByY()
     {
-        int width = _normalized.Max((p) => p.x) + 1;
+        int width = _normalized.Max((p) => p.y)/* + 1*/;
         for (int i = 0; i < _normalized.Length; i++)
         {
-            _normalized[i].x = width - _normalized[i].x;
+            _normalized[i].y = width - _normalized[i].y;
         }
     }
 

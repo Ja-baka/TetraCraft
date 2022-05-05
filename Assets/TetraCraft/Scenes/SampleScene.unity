@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1665ee55095fefd4286597bacad0ad3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _standartTickDuration: 1
+  _standartTickDuration: 100
   _boostedTickDuration: 0.03
 --- !u!4 &353541350
 Transform:
