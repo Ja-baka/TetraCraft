@@ -10,6 +10,9 @@ public class Tetramino : MonoBehaviour
     private Vector2Int[] _positions;
     private BlockMaterial _material;
     private Rotator _rotator;
+    
+    private bool IsInitialized => _material != null 
+        && _positions != null;
 
     public void Init(Shape shape, BlockMaterial material)
     {
@@ -100,7 +103,8 @@ public class Tetramino : MonoBehaviour
 
     private bool IsCanMove(Func<Vector2Int, Vector2Int> move)
     {
-        return _positions.All((p) => IsInField(move(p)) && IsFree(move(p)));
+        return IsInitialized 
+            && _positions.All((p) => IsInField(move(p)) && IsFree(move(p)));
     }
 
     private bool IsFree(Vector2Int offsetted)
@@ -119,8 +123,7 @@ public class Tetramino : MonoBehaviour
 
     private void TryFall()
     {
-        if (_positions == null
-            && _material == null)
+        if (IsInitialized == false)
         {
             return;
         }
@@ -140,7 +143,8 @@ public class Tetramino : MonoBehaviour
 
     private void TryMove<T>(bool isCanMove, T move)
     {
-        if (isCanMove == false)
+        if (IsInitialized == false
+            || isCanMove == false)
         {
             return;
         }
