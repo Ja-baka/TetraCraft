@@ -905,7 +905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawner: {fileID: 1863002917}
   _tetramino: {fileID: 583764042}
-  _timeToClearLine: 0.25
+  _timeToClearLine: 0.5
 --- !u!4 &1034825158
 Transform:
   m_ObjectHideFlags: 0
@@ -1374,10 +1374,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd5ea56b2433a7546ab71ba1388942fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _activeTetramino: {fileID: 583764042}
+  _tetramino: {fileID: 583764042}
   _materialCreator: {fileID: 1576628494}
   _shapeCreator: {fileID: 1576628493}
-  _templates: []
+  _field: {fileID: 1034825157}
 --- !u!4 &1863002918
 Transform:
   m_ObjectHideFlags: 0

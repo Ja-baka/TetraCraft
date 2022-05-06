@@ -119,6 +119,12 @@ public class Tetramino : MonoBehaviour
 
     private void TryFall()
     {
+        if (_positions == null
+            && _material == null)
+        {
+            return;
+        }
+
         if (IsCanFall() == false)
         {
             ReachBottom();
@@ -157,6 +163,9 @@ public class Tetramino : MonoBehaviour
 
     private void ReachBottom()
     {
+        _positions = null;
+        _material = null;
+
         Falled?.Invoke();
         _timer.EndBoost();
     }

@@ -63,7 +63,6 @@ public class Field : MonoBehaviour
         Updated?.Invoke(FieldView);
     }
 
-
     private void GameOver()
     {
         if (_playing == false)
@@ -107,8 +106,10 @@ public class Field : MonoBehaviour
                     break;
                 }
             }
+
             if (isFullRow)
             {
+                yield return new WaitForSeconds(_timeToClearLine);
                 yield return StartCoroutine(ClearLine(y--));
                 Updated?.Invoke(FieldView);
             }
@@ -117,15 +118,14 @@ public class Field : MonoBehaviour
         LineCleared?.Invoke();
     }
 
-
     private IEnumerator ClearLine(int indexOfRow)
     {
         for (int x = 0; x < _cells.GetLength(0); x++)
         {
             _cells[x, indexOfRow] = null;
         }
-        Updated?.Invoke(FieldView);
 
+        Updated?.Invoke(FieldView);
         yield return new WaitForSeconds(_timeToClearLine);
 
         for (int y = indexOfRow; y < _cells.GetLength(1) - 1; y++)
