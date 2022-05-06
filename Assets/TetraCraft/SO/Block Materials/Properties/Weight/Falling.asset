@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 363d105ea6eb129489e6bb1c3eefdd6e, type: 3}
-  m_Name: Wool
+  m_Script: {fileID: 11500000, guid: 119b18022ab9bb24a8802c2e4ba3ce75, type: 3}
+  m_Name: Falling
   m_EditorClassIdentifier: 
-  _material: {fileID: 2100000, guid: 69446f1cdd6cc7745b0d0eaecd0b14ad, type: 2}
-  _weight: {fileID: 11400000, guid: 1d8de486da3a3044d8817ba377faafe1, type: 2}

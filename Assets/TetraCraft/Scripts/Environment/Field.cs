@@ -95,6 +95,7 @@ public class Field : MonoBehaviour
 
     private IEnumerator OnTetraminoFalled()
     {
+        CalculatePhysics();
         for (int y = 0; y < _cells.GetLength(1); y++)
         {
             bool isFullRow = true;
@@ -114,8 +115,24 @@ public class Field : MonoBehaviour
                 Updated?.Invoke(FieldView);
             }
         }
-        
+
         LineCleared?.Invoke();
+    }
+
+    private void CalculatePhysics()
+    {
+        for (int x = 0; x < _cells.GetLength(0); x++)
+        {
+            for (int y = 0; y < _cells.GetLength(1); y++)
+            {
+                if (_cells[x, y] == null)
+                {
+                    continue;
+                }
+                _cells[x, y].Weight
+                    .Fall(new Vector2Int(x, y), ref _cells);
+            }
+        }
     }
 
     private IEnumerator ClearLine(int indexOfRow)

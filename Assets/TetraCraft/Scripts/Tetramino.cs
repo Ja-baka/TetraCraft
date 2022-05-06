@@ -11,8 +11,8 @@ public class Tetramino : MonoBehaviour
     private BlockMaterial _material;
     private Rotator _rotator;
     
-    private bool IsInitialized => _material != null 
-        && _positions != null;
+    private bool IsInitialized => _positions != null
+        && _material != null;
 
     public void Init(Shape shape, BlockMaterial material)
     {

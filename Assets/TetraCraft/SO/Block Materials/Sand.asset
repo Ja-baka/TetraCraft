@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Sand
   m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: ba488389b73c80a42b50c7b6fd82fd7a, type: 2}
+  _weight: {fileID: 11400000, guid: b80d9b8bdee26754ebbedca4c809c45a, type: 2}
