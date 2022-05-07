@@ -13,7 +13,7 @@ public class Field : MonoBehaviour
     private bool _playing = true;
 
     public event Action<BlockMaterial[,]> Updated;
-    public event Action LineCleared;
+    public event Action TurnEnded;
 
     public BlockMaterial[,] FieldView => (BlockMaterial[,])_cells.Clone();
 
@@ -35,14 +35,14 @@ public class Field : MonoBehaviour
     {
         _spawner.TetraminoSpawned += OnTetraminoSpawned;
         _tetramino.TetraminoMoved += OnTetraminoMoved;
-        _tetramino.Falled += () => StartCoroutine(OnTetraminoFalled());
+        _tetramino.Falled += OnTetraminoFalled;
     }
 
     private void OnDisable()
     {
         _spawner.TetraminoSpawned -= OnTetraminoSpawned;
         _tetramino.TetraminoMoved -= OnTetraminoMoved;
-        _tetramino.Falled -= () => OnTetraminoFalled();
+        _tetramino.Falled -= OnTetraminoFalled;
     }
 
     public void OnTetraminoSpawned(Tetramino tetramino)
@@ -93,9 +93,21 @@ public class Field : MonoBehaviour
         _previousPositions = (Vector2Int[])_tetramino.Positions.Clone();
     }
 
-    private IEnumerator OnTetraminoFalled()
+    private void OnTetraminoFalled()
     {
         CalculatePhysics();
+        Updated?.Invoke(FieldView);
+
+        StartCoroutine(ClearLines());
+
+        CalculatePhysics();
+        Updated?.Invoke(FieldView);
+
+        TurnEnded?.Invoke();
+    }
+
+    private IEnumerator ClearLines()
+    {
         for (int y = 0; y < _cells.GetLength(1); y++)
         {
             bool isFullRow = true;
@@ -115,8 +127,6 @@ public class Field : MonoBehaviour
                 Updated?.Invoke(FieldView);
             }
         }
-
-        LineCleared?.Invoke();
     }
 
     private void CalculatePhysics()

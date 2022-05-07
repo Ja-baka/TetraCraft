@@ -17,12 +17,12 @@ public class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        _field.LineCleared += Spawn;
+        _field.TurnEnded += Spawn;
     }
 
     private void OnDisable()
     {
-        _field.LineCleared -= Spawn;
+        _field.TurnEnded -= Spawn;
     }
 
     public void Spawn()
