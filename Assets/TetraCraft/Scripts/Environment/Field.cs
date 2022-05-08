@@ -6,11 +6,12 @@ public class Field : MonoBehaviour
 {
     [SerializeField] private Spawner _spawner;
     [SerializeField] private Tetramino _tetramino;
-    [SerializeField] private float _timeToClearLine;
+    [SerializeField] private float _delayDuration;
 
     private BlockMaterial[,] _cells;
     private Vector2Int[] _previousPositions;
     private bool _playing = true;
+    private WaitForSeconds _waitForDelay;
 
     public event Action<BlockMaterial[,]> Updated;
     public event Action TurnEnded;
@@ -19,6 +20,7 @@ public class Field : MonoBehaviour
 
     private void Awake()
     {
+        _waitForDelay = new WaitForSeconds(_delayDuration);
         _cells = InitializeArray();
     }
 
@@ -95,14 +97,17 @@ public class Field : MonoBehaviour
 
     private void OnTetraminoFalled()
     {
+        StartCoroutine(EndTurn());
+    }
+
+    private IEnumerator EndTurn()
+    {
         CalculatePhysics();
         Updated?.Invoke(FieldView);
 
-        StartCoroutine(ClearLines());
+        yield return _waitForDelay;
 
-        CalculatePhysics();
-        Updated?.Invoke(FieldView);
-
+        yield return ClearLines();
         TurnEnded?.Invoke();
     }
 
@@ -122,8 +127,8 @@ public class Field : MonoBehaviour
 
             if (isFullRow)
             {
-                yield return new WaitForSeconds(_timeToClearLine);
-                yield return StartCoroutine(ClearLine(y--));
+                yield return _waitForDelay;
+                yield return ClearLine(y--);
                 Updated?.Invoke(FieldView);
             }
         }
@@ -139,8 +144,9 @@ public class Field : MonoBehaviour
                 {
                     continue;
                 }
-                _cells[x, y].Weight
-                    .Fall(new Vector2Int(x, y), ref _cells);
+
+                IWeight weight = _cells[x, y].Weight;
+                weight.Fall(new Vector2Int(x, y), ref _cells);
             }
         }
     }
@@ -153,7 +159,7 @@ public class Field : MonoBehaviour
         }
 
         Updated?.Invoke(FieldView);
-        yield return new WaitForSeconds(_timeToClearLine);
+        yield return _waitForDelay;
 
         for (int y = indexOfRow; y < _cells.GetLength(1) - 1; y++)
         {

@@ -181,50 +181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5a13009be76b647a95849a183db27c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &530326012
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 530326013}
-  - component: {fileID: 530326014}
-  m_Layer: 0
-  m_Name: FieldDrawer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &530326013
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 530326012}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.5545263, y: -0.34313583, z: 5.7323895}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &530326014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 530326012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f55f1e4990d7964b9b7708d016bcd06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _field: {fileID: 1034825157}
 --- !u!1 &583764041
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,7 +861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawner: {fileID: 1863002917}
   _tetramino: {fileID: 583764042}
-  _timeToClearLine: 0.15
+  _delayDuration: 0.13
 --- !u!4 &1034825158
 Transform:
   m_ObjectHideFlags: 0
