@@ -12,6 +12,7 @@ public class Field : MonoBehaviour
     private Vector2Int[] _previousPositions;
     private bool _playing = true;
     private WaitForSeconds _waitForDelay;
+    private bool _isAfterCleaning;
 
     public event Action<BlockMaterial[,]> Updated;
     public event Action TurnEnded;
@@ -102,10 +103,12 @@ public class Field : MonoBehaviour
 
     private IEnumerator EndTurn()
     {
+        _isAfterCleaning = false;
         for (int i = 0; i < 2; i++)
         {
             yield return CalculatePhysics();
             yield return ClearLines(); 
+            _isAfterCleaning = true;
         }
 
         TurnEnded?.Invoke();
@@ -146,7 +149,7 @@ public class Field : MonoBehaviour
                 }
 
                 IWeight weight = _cells[x, y].Weight;
-                weight.Fall(new Vector2Int(x, y), ref _cells);
+                weight.Fall(new Vector2Int(x, y), ref _cells, _isAfterCleaning);
             }
         }
         Updated?.Invoke(FieldView);
