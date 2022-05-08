@@ -102,12 +102,12 @@ public class Field : MonoBehaviour
 
     private IEnumerator EndTurn()
     {
-        CalculatePhysics();
-        Updated?.Invoke(FieldView);
+        for (int i = 0; i < 2; i++)
+        {
+            yield return CalculatePhysics();
+            yield return ClearLines(); 
+        }
 
-        yield return _waitForDelay;
-
-        yield return ClearLines();
         TurnEnded?.Invoke();
     }
 
@@ -134,7 +134,7 @@ public class Field : MonoBehaviour
         }
     }
 
-    private void CalculatePhysics()
+    private IEnumerator CalculatePhysics()
     {
         for (int x = 0; x < _cells.GetLength(0); x++)
         {
@@ -149,6 +149,8 @@ public class Field : MonoBehaviour
                 weight.Fall(new Vector2Int(x, y), ref _cells);
             }
         }
+        Updated?.Invoke(FieldView);
+        yield return _waitForDelay;
     }
 
     private IEnumerator ClearLine(int indexOfRow)
