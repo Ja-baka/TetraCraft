@@ -21,11 +21,9 @@ public class FieldView : MonoBehaviour
 
     private void Iteration(BlockMaterial material)
     {
-        // https://tetris.fandom.com/wiki/Tetris_Guideline
-        const int Width = 10;
-        const int Heigth = 24;
+        BlockMaterial[,] temp = _field.FieldView;
 
-        GameObject[,] blocks = new GameObject[Width, Heigth];
+        GameObject[,] blocks = new GameObject[temp.GetLength(0), temp.GetLength(1)];
         _cubes.Add(material, blocks);
 
         for (int i = 0; i < _cubes[material].GetLength(0); i++)

@@ -24,21 +24,11 @@ public class Rotator
         _normalized = (Vector2Int[])_positions.Clone();
 
         NormalizePositions();
-        //AddOffset();
         DirectlyRotate();
         ScalePositions();
         ReversePositions();
 
         return _normalized;
-    }
-
-    private void LogTetramino(string message)
-    {
-        Debug.Log(message);
-        for (int i = 0; i < _normalized.Length; i++)
-        {
-            Debug.Log(_normalized[i]);
-        }
     }
 
     public void NextTurn()
@@ -59,51 +49,6 @@ public class Rotator
         {
             _normalized[i] -= _minPositionOffset;
         }
-    }
-
-    private void AddOffset()
-    {
-        int maxX = _normalized.Max((p) => p.x);
-        int maxY = _normalized.Max((p) => p.y);
-        int max = Math.Max(maxX, maxY);
-        Vector2Int turnOffset = GetOffsetByTurn(max);
-
-        for (int i = 0; i < _normalized.Length; i++)
-        {
-            _normalized[i] += turnOffset;
-        }
-        _minPositionOffset -= turnOffset;
-    }
-
-    private Vector2Int GetOffsetByTurn(int maxXY)
-    {
-        Vector2Int turnOffset = new Vector2Int();
-
-        if (_currentTurn == 1)
-        {
-            turnOffset.y = maxXY - 1;
-        }
-        else if (_currentTurn == 2)
-        {
-            turnOffset.x = maxXY - 1;
-        }
-        else if (_currentTurn == 3)
-        {
-            turnOffset.y = maxXY - 2;
-            turnOffset.y = Math.Max(0, turnOffset.y);
-
-        }
-        else if (_currentTurn == 4)
-        {
-            turnOffset.x = maxXY - 2;
-            turnOffset.x = Math.Max(0, turnOffset.x);
-        }
-        else
-        {
-            throw new Exception();
-        }
-
-        return turnOffset;
     }
 
     private void DirectlyRotate()
