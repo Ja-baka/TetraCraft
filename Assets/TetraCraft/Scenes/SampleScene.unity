@@ -1186,6 +1186,7 @@ MonoBehaviour:
   _materials:
   - {fileID: 11400000, guid: b1209af2ec27b234eb1b517cee7dd709, type: 2}
   - {fileID: 11400000, guid: 56450b3737f30154b9eb7898557ceff6, type: 2}
+  - {fileID: 11400000, guid: 0ff37ce0c3cfeda4e8602cc7396bb1c9, type: 2}
 --- !u!4 &1576628495
 Transform:
   m_ObjectHideFlags: 0

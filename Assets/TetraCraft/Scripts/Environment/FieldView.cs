@@ -23,7 +23,7 @@ public class FieldView : MonoBehaviour
     {
         // https://tetris.fandom.com/wiki/Tetris_Guideline
         const int Width = 10;
-        const int Heigth = 20;
+        const int Heigth = 24;
 
         GameObject[,] blocks = new GameObject[Width, Heigth];
         _cubes.Add(material, blocks);

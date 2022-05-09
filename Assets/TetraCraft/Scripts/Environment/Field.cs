@@ -29,7 +29,7 @@ public class Field : MonoBehaviour
     {
         // https://tetris.fandom.com/wiki/Tetris_Guideline
         const int Width = 10;
-        const int Heigth = 20;
+        const int Heigth = 24;
 
         return new BlockMaterial[Width, Heigth];
     }
