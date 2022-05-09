@@ -39,7 +39,7 @@ public class Tetramino : MonoBehaviour
     public void TryRotate()
     {
         Vector2Int[] rotated = _rotator.GetRotated();
-        TryMove(IsCanRotate(), rotated); // Exception
+        TryMove(IsCanRotate(), rotated);
     }
 
     public void TryMoveLeft()
@@ -78,7 +78,7 @@ public class Tetramino : MonoBehaviour
     private bool IsCanRotate()
     {
         Vector2Int[] rotated = _rotator.GetRotated();
-        bool isCan = IsCanMove(rotated); // Exception
+        bool isCan = IsCanMove(rotated);
         if (isCan)
         {
             _rotator.NextTurn();
@@ -100,7 +100,7 @@ public class Tetramino : MonoBehaviour
     private bool IsCanMove(Vector2Int[] moved)
     {
         return IsInitialized
-            && moved.All((p) => IsInField(p) && IsFree(p)); // Exception
+            && moved.All((p) => IsInField(p) && IsFree(p));
     }
 
     private bool IsCanMove(Func<Vector2Int, Vector2Int> move)
@@ -111,7 +111,7 @@ public class Tetramino : MonoBehaviour
 
     private bool IsFree(Vector2Int offsetted)
     {
-        return _positions.Contains(offsetted) // Exception
+        return _positions.Contains(offsetted)
             || _field.FieldView[offsetted.x, offsetted.y] == null;
     }
 

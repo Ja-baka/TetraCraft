@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FieldView : MonoBehaviour
 {
-    [SerializeField] private Creator<BlockMaterial> _materialCreator;
+    [SerializeField] private MaterialCreator _materialCreator;
     [SerializeField] private Field _field;
 
     private Dictionary<BlockMaterial, GameObject[,]> _cubes;
