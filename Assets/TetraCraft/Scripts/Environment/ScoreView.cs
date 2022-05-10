@@ -11,15 +11,15 @@ public class ScoreView : MonoBehaviour
 
     private void OnEnable()
     {
-        _scoreModel.ClearedLinesIncrement += OnClearedLinesIncrement;
+        _scoreModel.ScoreUpdated += OnScoreUpdated;
     }
 
     private void OnDisable()
     {
-        _scoreModel.ClearedLinesIncrement -= OnClearedLinesIncrement;
+        _scoreModel.ScoreUpdated -= OnScoreUpdated;
     }
 
-    private void OnClearedLinesIncrement()
+    private void OnScoreUpdated()
     {
         _clearedLinesView.text = _scoreModel.ClearedLinesCount.ToString();
         _levelView.text = _scoreModel.Level.ToString();

@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private float _standartTick;
     [SerializeField] private float _boostedTick;
     [Space]
     [SerializeField] private float _animationDelay;
     [Space]
-    [SerializeField] private float _boostPerLevel;
+    [SerializeField] private Score _score;
 
+    private float _standartTick;
     private float _elapsedTime = 0;
     private float _currentTime;
 
@@ -27,9 +27,20 @@ public class Timer : MonoBehaviour
         _currentTime = _standartTick;
     }
 
-    public void SpeedUp()
+    private void OnEnable()
     {
-        _standartTick -= _boostPerLevel;
+        _score.ScoreUpdated += OnScoreUpdated;
+    }
+
+    private void OnDisable()
+    {
+        _score.ScoreUpdated -= OnScoreUpdated;
+    }
+
+    private void OnScoreUpdated()
+    {
+        int level = _score.Level - 1;
+        _standartTick = Mathf.Pow(0.8f - level * 0.007f, level);
     }
 
     private void Start()

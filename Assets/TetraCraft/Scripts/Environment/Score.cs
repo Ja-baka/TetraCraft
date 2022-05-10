@@ -5,13 +5,12 @@ public class Score : MonoBehaviour
 {
     private const int LinesCountForSpeedUp = 10;
 
-    [SerializeField] private Timer _timer;
     [SerializeField] private Field _field;
 
     private int _clearedLinesCount = 0;
     private int _scoreValue = 0;
 
-    public event Action ClearedLinesIncrement;
+    public event Action ScoreUpdated;
 
     public int ScoreValue => _scoreValue;
     public int ClearedLinesCount => _clearedLinesCount;
@@ -35,11 +34,6 @@ public class Score : MonoBehaviour
         _clearedLinesCount++;
         _scoreValue += 40 * Level;
 
-        if (oldLevel < Level)
-        {
-            _timer.SpeedUp();
-        }
-
-        ClearedLinesIncrement?.Invoke();
+        ScoreUpdated?.Invoke();
     }
 }
