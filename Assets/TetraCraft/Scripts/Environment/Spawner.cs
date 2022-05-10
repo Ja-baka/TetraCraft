@@ -4,8 +4,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Tetramino _tetramino;
-    [SerializeField] private MaterialCreator _materialCreator;
-    [SerializeField] private ShapeCreator _shapeCreator;
+    [SerializeField] private Creator _creator;
     [SerializeField] private Field _field;
 
     public event Action<Tetramino> TetraminoSpawned;
@@ -27,8 +26,8 @@ public class Spawner : MonoBehaviour
 
     public void Spawn()
     {
-        BlockMaterial material = _materialCreator.PickRandom();
-        Shape shape = Instantiate(_shapeCreator.PickRandom());
+        BlockMaterial material = _creator.PickRandomMaterial();
+        Shape shape = Instantiate(_creator.PickRandomShape());
 
         _tetramino.Init(shape, material);
 

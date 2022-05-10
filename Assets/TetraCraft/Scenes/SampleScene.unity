@@ -801,36 +801,6 @@ Transform:
   m_Father: {fileID: 725705952}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &977632976
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 977632977}
-  m_Layer: 0
-  m_Name: Pool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &977632977
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 977632976}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1863002918}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1034825156
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,9 +830,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169ad49f4aa347d4eb01e7bbab873ce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timer: {fileID: 0}
   _spawner: {fileID: 1863002917}
   _tetramino: {fileID: 583764042}
-  _timer: {fileID: 0}
 --- !u!4 &1034825158
 Transform:
   m_ObjectHideFlags: 0
@@ -1185,12 +1155,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entries:
-  - Material: {fileID: 11400000, guid: b1209af2ec27b234eb1b517cee7dd709, type: 2}
+  - Item: {fileID: 11400000, guid: b1209af2ec27b234eb1b517cee7dd709, type: 2}
     Weight: 0.15
-  - Material: {fileID: 11400000, guid: 0ff37ce0c3cfeda4e8602cc7396bb1c9, type: 2}
+  - Item: {fileID: 11400000, guid: 0ff37ce0c3cfeda4e8602cc7396bb1c9, type: 2}
     Weight: 0.15
-  - Material: {fileID: 11400000, guid: 56450b3737f30154b9eb7898557ceff6, type: 2}
+  - Item: {fileID: 11400000, guid: 56450b3737f30154b9eb7898557ceff6, type: 2}
     Weight: 0.7
+  _shapes:
+  - {fileID: 11400000, guid: d2352c7506c058b4f88d8d457cface3a, type: 2}
+  - {fileID: 11400000, guid: c95fcef9a2691e84c94e554264c2f2c9, type: 2}
+  - {fileID: 11400000, guid: 7a26bbea3c3019f44825fc34762c1371, type: 2}
+  - {fileID: 11400000, guid: b87bda869911d0a4ba4267a4c95b00ba, type: 2}
+  - {fileID: 11400000, guid: 49cb72172dc2d8b4d9681aa623a362fd, type: 2}
+  - {fileID: 11400000, guid: aad6898927bfb1746b3ebdaf205916ba, type: 2}
+  - {fileID: 11400000, guid: e34b1fb0812c54f47b3a1f9e93fcba9a, type: 2}
 --- !u!4 &1576628495
 Transform:
   m_ObjectHideFlags: 0
@@ -1336,8 +1314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tetramino: {fileID: 583764042}
-  _materialCreator: {fileID: 1576628494}
-  _shapeCreator: {fileID: 1576628493}
+  _creator: {fileID: 0}
   _field: {fileID: 1034825157}
 --- !u!4 &1863002918
 Transform:
@@ -1349,8 +1326,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3, y: 17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 977632977}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

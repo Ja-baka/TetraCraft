@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class FieldView : MonoBehaviour
 {
-    [SerializeField] private MaterialCreator _materialCreator;
+    [SerializeField] private Creator _materialCreator;
     [SerializeField] private Field _field;
 
     private Dictionary<BlockMaterial, GameObject[,]> _cubes;
 
     private void Start()
     {
-        BlockMaterial[] materials = _materialCreator.GetCollection();
+        BlockMaterial[] materials = _materialCreator.GetMaterials();
         _cubes = new Dictionary<BlockMaterial, GameObject[,]>();
 
         foreach (BlockMaterial material in materials)
