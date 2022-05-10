@@ -15,7 +15,8 @@ public class Field : MonoBehaviour
     private bool _isAfterCleaning;
 
     public event Action<BlockMaterial[,]> Updated;
-    public event Action TurnEnded;
+    public event Action TurnDone;
+    public event Action LineCleared;
 
     public BlockMaterial[,] FieldView => (BlockMaterial[,])_cells.Clone();
 
@@ -111,7 +112,7 @@ public class Field : MonoBehaviour
             _isAfterCleaning = true;
         }
 
-        TurnEnded?.Invoke();
+        TurnDone?.Invoke();
     }
 
     private IEnumerator ClearLines()
@@ -132,6 +133,7 @@ public class Field : MonoBehaviour
             {
                 yield return _waitForDelay;
                 yield return ClearLine(y--);
+                LineCleared?.Invoke();
                 Updated?.Invoke(FieldView);
             }
         }

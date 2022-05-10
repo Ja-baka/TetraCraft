@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private float _standartTickDuration;
-    [SerializeField] private float _boostedTickDuration;
+    [SerializeField] private float _standartTick;
+    [SerializeField] private float _boostedTick;
     [Space]
     [SerializeField] private float _animationDelay;
+    [Space]
+    [SerializeField] private float _boostPerLevel;
 
     private float _elapsedTime = 0;
     private float _currentTime;
@@ -17,17 +19,22 @@ public class Timer : MonoBehaviour
 
     public void StartBoost()
     {
-        _currentTime = _boostedTickDuration;
+        _currentTime = _boostedTick;
     }
 
     public void EndBoost()
     {
-        _currentTime = _standartTickDuration;
+        _currentTime = _standartTick;
+    }
+
+    public void SpeedUp()
+    {
+        _standartTick -= _boostPerLevel;
     }
 
     private void Start()
     {
-        _currentTime = _standartTickDuration;
+        _currentTime = _standartTick;
     }
 
     private void Update()

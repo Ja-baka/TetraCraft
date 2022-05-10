@@ -16,12 +16,12 @@ public class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        _field.TurnEnded += Spawn;
+        _field.TurnDone += Spawn;
     }
 
     private void OnDisable()
     {
-        _field.TurnEnded -= Spawn;
+        _field.TurnDone -= Spawn;
     }
 
     public void Spawn()
