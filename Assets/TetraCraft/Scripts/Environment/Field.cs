@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Field : MonoBehaviour
 {
+    [SerializeField] private Timer _timer;
     [SerializeField] private Spawner _spawner;
     [SerializeField] private Tetramino _tetramino;
-    [SerializeField] private float _delayDuration;
 
     private BlockMaterial[,] _cells;
     private Vector2Int[] _previousPositions;
@@ -21,7 +21,7 @@ public class Field : MonoBehaviour
 
     private void Awake()
     {
-        _waitForDelay = new WaitForSeconds(_delayDuration);
+        _waitForDelay = new WaitForSeconds(_timer.AnimationTick);
         _cells = InitializeArray();
     }
 

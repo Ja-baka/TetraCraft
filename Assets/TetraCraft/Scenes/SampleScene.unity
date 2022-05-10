@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _standartTickDuration: 1
   _boostedTickDuration: 0.03
+  _animationDelay: 0.13
 --- !u!4 &353541350
 Transform:
   m_ObjectHideFlags: 0
@@ -581,7 +582,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &851287519
 GameObject:
@@ -861,7 +862,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawner: {fileID: 1863002917}
   _tetramino: {fileID: 583764042}
-  _delayDuration: 0.13
+  _timer: {fileID: 0}
 --- !u!4 &1034825158
 Transform:
   m_ObjectHideFlags: 0
@@ -874,7 +875,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1063476744
 GameObject:
@@ -1183,10 +1184,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15b07e97d3cebd45aa07b4dcabc1ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _materials:
-  - {fileID: 11400000, guid: b1209af2ec27b234eb1b517cee7dd709, type: 2}
-  - {fileID: 11400000, guid: 56450b3737f30154b9eb7898557ceff6, type: 2}
-  - {fileID: 11400000, guid: 0ff37ce0c3cfeda4e8602cc7396bb1c9, type: 2}
+  _entries:
+  - Material: {fileID: 11400000, guid: b1209af2ec27b234eb1b517cee7dd709, type: 2}
+    Weight: 0.15
+  - Material: {fileID: 11400000, guid: 0ff37ce0c3cfeda4e8602cc7396bb1c9, type: 2}
+    Weight: 0.15
+  - Material: {fileID: 11400000, guid: 56450b3737f30154b9eb7898557ceff6, type: 2}
+    Weight: 0.7
 --- !u!4 &1576628495
 Transform:
   m_ObjectHideFlags: 0

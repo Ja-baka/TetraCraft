@@ -5,11 +5,15 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] private float _standartTickDuration;
     [SerializeField] private float _boostedTickDuration;
+    [Space]
+    [SerializeField] private float _animationDelay;
 
     private float _elapsedTime = 0;
     private float _currentTime;
 
     public event Action Tick;
+
+    public float AnimationTick => _animationDelay;
 
     public void StartBoost()
     {
