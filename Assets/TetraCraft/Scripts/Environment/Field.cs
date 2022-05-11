@@ -7,10 +7,10 @@ public class Field : MonoBehaviour
     [SerializeField] private Timer _timer;
     [SerializeField] private Spawner _spawner;
     [SerializeField] private Tetramino _tetramino;
+    [SerializeField] private GameCycle _gameCycle;
 
     private BlockMaterial[,] _cells;
     private Vector2Int[] _previousPositions;
-    private bool _playing = true;
     private WaitForSeconds _waitForDelay;
     private bool _isAfterCleaning;
 
@@ -69,16 +69,7 @@ public class Field : MonoBehaviour
 
     private void GameOver()
     {
-        if (_playing == false)
-        {
-            return;
-        }
-        _playing = false;
-
-        Debug.Log("Game Over");
-        Application.Quit();
-
-        Time.timeScale = 0;
+        _gameCycle.GameOver();
     }
 
     private void OnTetraminoMoved()
