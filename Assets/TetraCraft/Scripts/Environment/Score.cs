@@ -7,8 +7,9 @@ public class Score : MonoBehaviour
 
     [SerializeField] private Field _field;
 
-    private int _clearedLinesCount = 0;
-    private int _scoreValue = 0;
+    private int _clearedLinesCount;
+    private int _scoreValue;
+    private int _combo;
 
     public event Action ScoreUpdated;
 
@@ -20,20 +21,41 @@ public class Score : MonoBehaviour
     private void OnEnable()
     {
         _field.LineCleared += OnLineCleared;
+        _field.TurnDone += OnTurnDone;
     }
 
     private void OnDisable()
     {
         _field.LineCleared -= OnLineCleared;
+        _field.TurnDone -= OnTurnDone;
     }
 
     private void OnLineCleared()
     {
         int oldLevel = Level;
+        _combo++;
 
         _clearedLinesCount++;
-        _scoreValue += 40 * Level;
+        int lineCoast = GetLineCoastByCombo(_combo);
+        _scoreValue += lineCoast * Level;
 
         ScoreUpdated?.Invoke();
+    }
+
+    private int GetLineCoastByCombo(int combo)
+    {
+        return combo switch
+        {
+            1 => 40,
+            2 => 60,
+            3 => 100,
+            4 => 600,
+            _ => throw new Exception()
+        };
+    }
+
+    private void OnTurnDone()
+    {
+        _combo = 0;
     }
 }

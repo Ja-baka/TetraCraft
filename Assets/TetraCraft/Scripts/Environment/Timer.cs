@@ -45,6 +45,7 @@ public class Timer : MonoBehaviour
 
     private void Start()
     {
+        _standartTick = 1f;
         _currentTime = _standartTick;
     }
 
