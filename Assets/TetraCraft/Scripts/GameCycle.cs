@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 
-public class GameCycle : MonoBehaviour
+public static class GameCycle
 {
-    private bool _playing = true;
+    private static bool _playing = true;
 
-    public void GameOver()
+    public static bool Playing => _playing;
+
+    public static void GameOver()
     {
         if (_playing == false)
         {

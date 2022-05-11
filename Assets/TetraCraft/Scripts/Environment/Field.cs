@@ -7,7 +7,6 @@ public class Field : MonoBehaviour
     [SerializeField] private Timer _timer;
     [SerializeField] private Spawner _spawner;
     [SerializeField] private Tetramino _tetramino;
-    [SerializeField] private GameCycle _gameCycle;
 
     private BlockMaterial[,] _cells;
     private Vector2Int[] _previousPositions;
@@ -59,17 +58,12 @@ public class Field : MonoBehaviour
 
             if (_cells[x, y] != null)
             {
-                GameOver();
+                GameCycle.GameOver();
             }
 
             _cells[x, y] = tetramino.Material;
         }
         Updated?.Invoke(FieldView);
-    }
-
-    private void GameOver()
-    {
-        _gameCycle.GameOver();
     }
 
     private void OnTetraminoMoved()
