@@ -11,19 +11,18 @@ public class Field : MonoBehaviour
     private BlockMaterial[,] _cells;
     private Vector2Int[] _previousPositions;
     private WaitForSeconds _waitForDelay;
-    private bool _isAfterCleaning;
-
-    public event Action<BlockMaterial[,]> Updated;
-    public event Action TurnDone;
-    public event Action LineCleared;
-
-    public BlockMaterial[,] FieldView => (BlockMaterial[,])_cells.Clone();
 
     private void Awake()
     {
         _waitForDelay = new WaitForSeconds(_timer.AnimationTick);
         _cells = InitializeArray();
     }
+
+    public event Action<BlockMaterial[,]> Updated;
+    public event Action TurnDone;
+    public event Action LineCleared;
+
+    public BlockMaterial[,] FieldView => (BlockMaterial[,])_cells.Clone();
 
     private BlockMaterial[,] InitializeArray()
     {
@@ -89,15 +88,34 @@ public class Field : MonoBehaviour
 
     private IEnumerator EndTurn()
     {
-        _isAfterCleaning = false;
+        bool isAfterCleaning = false;
         for (int i = 0; i < 2; i++)
         {
-            yield return CalculatePhysics();
-            yield return ClearLines(); 
-            _isAfterCleaning = true;
+            yield return CalculatePhysics(isAfterCleaning);
+            yield return ClearLines();
+            isAfterCleaning = true;
         }
 
         TurnDone?.Invoke();
+    }
+
+    private IEnumerator CalculatePhysics(bool isAfterCleaning)
+    {
+        for (int x = 0; x < _cells.GetLength(0); x++)
+        {
+            for (int y = 0; y < _cells.GetLength(1); y++)
+            {
+                if (_cells[x, y] == null)
+                {
+                    continue;
+                }
+
+                IWeight weight = _cells[x, y].Weight;
+                weight.Fall(new Vector2Int(x, y), ref _cells, isAfterCleaning);
+            }
+        }
+        Updated?.Invoke(FieldView);
+        yield return _waitForDelay;
     }
 
     private IEnumerator ClearLines()
@@ -122,25 +140,6 @@ public class Field : MonoBehaviour
                 Updated?.Invoke(FieldView);
             }
         }
-    }
-
-    private IEnumerator CalculatePhysics()
-    {
-        for (int x = 0; x < _cells.GetLength(0); x++)
-        {
-            for (int y = 0; y < _cells.GetLength(1); y++)
-            {
-                if (_cells[x, y] == null)
-                {
-                    continue;
-                }
-
-                IWeight weight = _cells[x, y].Weight;
-                weight.Fall(new Vector2Int(x, y), ref _cells, _isAfterCleaning);
-            }
-        }
-        Updated?.Invoke(FieldView);
-        yield return _waitForDelay;
     }
 
     private IEnumerator ClearLine(int indexOfRow)
