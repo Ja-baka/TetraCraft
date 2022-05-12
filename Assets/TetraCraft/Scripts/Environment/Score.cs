@@ -6,6 +6,7 @@ public class Score : MonoBehaviour
     private const int LinesCountForSpeedUp = 10;
 
     [SerializeField] private Field _field;
+    [SerializeField] private int _scoreMultiplier;
 
     private int _clearedLinesCount;
     private int _scoreValue;
@@ -36,22 +37,10 @@ public class Score : MonoBehaviour
         _combo++;
 
         _clearedLinesCount++;
-        int lineCoast = GetLineCoastByCombo(_combo);
+        int lineCoast = _combo * _combo * _scoreMultiplier;
         _scoreValue += lineCoast * Level;
 
         ScoreUpdated?.Invoke();
-    }
-
-    private int GetLineCoastByCombo(int combo)
-    {
-        return combo switch
-        {
-            1 => 40,
-            2 => 60,
-            3 => 100,
-            4 => 600,
-            _ => throw new Exception()
-        };
     }
 
     private void OnTurnDone()
