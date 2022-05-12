@@ -47,10 +47,10 @@ public class Field : MonoBehaviour
         _tetramino.Falled -= OnTetraminoFalled;
     }
 
-    public void OnTetraminoSpawned(Tetramino tetramino)
+    public void OnTetraminoSpawned()
     {
-        _previousPositions = (Vector2Int[])tetramino.Positions.Clone();
-        foreach (Vector2Int block in tetramino.Positions)
+        _previousPositions = (Vector2Int[])_tetramino.Positions.Clone();
+        foreach (Vector2Int block in _tetramino.Positions)
         {
             int x = block.x;
             int y = block.y;
@@ -60,7 +60,7 @@ public class Field : MonoBehaviour
                 GameCycle.GameOver();
             }
 
-            _cells[x, y] = tetramino.Material;
+            _cells[x, y] = _tetramino.Material;
         }
         Updated?.Invoke(FieldView);
     }

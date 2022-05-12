@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Creator _creator;
     [SerializeField] private Field _field;
 
-    public event Action<Tetramino> TetraminoSpawned;
+    public event Action TetraminoSpawned;
 
     private void Start()
     {
@@ -31,6 +31,6 @@ public class Spawner : MonoBehaviour
 
         _tetramino.Init(shape, material);
 
-        TetraminoSpawned?.Invoke(_tetramino);
+        TetraminoSpawned?.Invoke();
     }
 }

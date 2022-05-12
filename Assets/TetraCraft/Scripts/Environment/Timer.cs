@@ -4,9 +4,7 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     [SerializeField] private float _boostedTick;
-    [Space]
     [SerializeField] private float _animationDelay;
-    [Space]
     [SerializeField] private Score _score;
 
     private float _standartTick;
