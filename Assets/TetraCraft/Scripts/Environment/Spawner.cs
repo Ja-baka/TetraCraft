@@ -32,6 +32,5 @@ public class Spawner : IDisposable
         _tetramino.CreateNew(shape, material);
             
         TetraminoSpawned?.Invoke();
-        Debug.Log("Spawner Spawned");
     }
 }

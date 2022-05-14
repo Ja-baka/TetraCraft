@@ -11,14 +11,14 @@ public class GameCycle : IDisposable
     {
         _locator = locator;
         _spawner = spawner;
-        StartGame();
-
         _locator.GameOvered += OnGameOver;
+
+        StartGame();
     }
 
     public void StartGame()
     {
-        Debug.Log("Start game");
+        Debug.Log("Game Started");
         _spawner.Spawn();
     }
 

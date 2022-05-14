@@ -1,42 +1,28 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
-public class LocationInstaller : MonoInstaller, IInitializable
+public class LocationInstaller : MonoInstaller
 {
-    [SerializeField] private FieldView _fieldView;
-    [SerializeField] private ScoreView _scoreView;
-    [SerializeField] private Creator _creator;
-    [SerializeField] private Booster _booster;
-    [SerializeField] private PlayerController _controller;
-    [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Score.Settings _scoreSettings;
     [SerializeField] private Timer.Settings _timerSettings;
 
     public override void InstallBindings()
     {
-        BindingInstance(_creator);
+        BindingComponentInHierarchy<Creator>();
         BindingType<FieldEventLocator>();
         BindingWithSettings<Score, Score.Settings>(_scoreSettings);
         BindingWithSettings<Timer, Timer.Settings>(_timerSettings);
         BindingInstance(new PlayerInput());
         BindingType<FieldCells>();
         BindingType<Tetramino>();
-        BindingInstance(_booster);
-        BindingInstance(_controller);
-        BindingInstance(_scoreView);
-        BindingInstance(_fieldView);
+        BindingComponentInHierarchy<Booster>();
+        BindingComponentInHierarchy<PlayerController>();
+        BindingComponentInHierarchy<ScoreView>();
+        BindingComponentInHierarchy<FieldView>();
         BindingType<Spawner>();
         BindingType<Field>();
 
         BindingType<GameCycle>();
-    }
-
-    public void Initialize()
-    {
-        //Debug.Log("Initialize");
-        //GameCycle gameCycle = Container.Resolve<GameCycle>();
-        //gameCycle.StartGame();
     }
 
     private void BindingType<T>()
@@ -61,12 +47,11 @@ public class LocationInstaller : MonoInstaller, IInitializable
         BindingType<T>();
     }
 
-    private void BindingInterface<T, TI>()
-        where T : TI
+    private void BindingComponentInHierarchy<T>()
     {
         Container
-            .Bind<TI>()
-            .To<T>()
+            .Bind<T>()
+            .FromComponentInHierarchy()
             .AsSingle();
     }
 }

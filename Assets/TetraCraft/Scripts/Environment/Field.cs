@@ -12,7 +12,8 @@ public class Field : IDisposable
     private FieldCells _cells;
     private FieldEventLocator _locator;
 
-    public Field(FieldEventLocator locator, FieldCells cells, Timer timer, Spawner spawner, Tetramino tetramino)
+    public Field(FieldEventLocator locator, FieldCells cells, 
+        Timer timer, Spawner spawner, Tetramino tetramino)
     {
         _locator = locator; 
         _timer = timer;
@@ -36,7 +37,6 @@ public class Field : IDisposable
 
     public void OnTetraminoSpawned()
     {
-        Debug.Log("OnTetraminoSpawned");
         _previousPositions = (Vector2Int[])_tetramino.Positions.Clone();
         foreach (Vector2Int block in _tetramino.Positions)
         {
