@@ -36,6 +36,7 @@ public class Field : IDisposable
 
     public void OnTetraminoSpawned()
     {
+        Debug.Log("OnTetraminoSpawned");
         _previousPositions = (Vector2Int[])_tetramino.Positions.Clone();
         foreach (Vector2Int block in _tetramino.Positions)
         {

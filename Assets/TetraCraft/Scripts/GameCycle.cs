@@ -5,12 +5,20 @@ public class GameCycle : IDisposable
 {
     private bool _playing = true;
     private FieldEventLocator _locator;
+    private Spawner _spawner;
 
-    public GameCycle(FieldEventLocator locator)
+    public GameCycle(FieldEventLocator locator, Spawner spawner)
     {
         _locator = locator;
+        _spawner = spawner;
 
         _locator.GameOvered += OnGameOver;
+    }
+
+    public void StartGame()
+    {
+        Debug.Log("Start game");
+        _spawner.Spawn();
     }
 
     public bool Playing => _playing;

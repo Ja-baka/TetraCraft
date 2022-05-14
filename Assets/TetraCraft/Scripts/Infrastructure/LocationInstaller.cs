@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-public class LocationInstaller : MonoInstaller
+public class LocationInstaller : MonoInstaller, IInitializable
 {
     [SerializeField] private FieldView _fieldView;
     [SerializeField] private ScoreView _scoreView;
@@ -15,118 +15,57 @@ public class LocationInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        BindingCreator();
-        BindingFieldEventLocator();
-        BindGameCycle();
-        BindingScore();
-        BindingTimer();
-        BindingPlayerInput();
-        BindingFieldCells();
-        BindingTetramino();
-        BindingSpawner();
-        BindingBooster();
-        BindingController();
-        BindingView();
-        BndingField();
+        BindingInstance(_creator);
+        BindingType<FieldEventLocator>();
+        BindingType<GameCycle>();
+        BindingWithSettings<Score, Score.Settings>(_scoreSettings);
+        BindingWithSettings<Timer, Timer.Settings>(_timerSettings);
+        BindingInstance(new PlayerInput());
+        BindingType<FieldCells>();
+        BindingType<Tetramino>();
+        BindingInstance(_booster);
+        BindingInstance(_controller);
+        BindingInstance(_scoreView);
+        BindingInstance(_fieldView);
+        BindingType<Spawner>();
+        BindingType<Field>();
     }
 
-    private void BndingField()
+    public void Initialize()
     {
-        Container
-            .Bind<Field>()
-            .AsSingle();
+        Debug.Log("Initialize");
+        GameCycle gameCycle = Container.Resolve<GameCycle>();
+        gameCycle.StartGame();
     }
 
-    private void BindingFieldCells()
+    private void BindingType<T>()
     {
         Container
-            .Bind<FieldCells>()
-            .AsSingle();
+            .BindInterfacesAndSelfTo<T>()
+            .AsSingle()
+            .NonLazy();
     }
 
-    private void BindGameCycle()
+    private void BindingInstance<T>(T instance)
     {
         Container
-            .Bind<GameCycle>()
-            .AsSingle();
+            .BindInstance(instance)
+            .AsSingle()
+            .NonLazy();
     }
 
-    private void BindingFieldEventLocator()
+    private void BindingWithSettings<T, TS>(TS settings)
     {
-        Container
-            .Bind<FieldEventLocator>()
-            .AsSingle();
+        BindingInstance(settings);
+        BindingType<T>();
     }
 
-    private void BindingView()
+    private void BindingInterface<T, TI>()
+        where T : TI
     {
         Container
-            .BindInstance(_scoreView)
-            .AsSingle();
-        Container
-            .BindInstance(_fieldView)
-            .AsSingle();
-    }
-
-    private void BindingController()
-    {
-        Container
-            .BindInstance(_controller)
-            .AsSingle();
-    }
-
-    private void BindingBooster()
-    {
-        Container
-            .BindInstance(_booster)
-            .AsSingle();
-    }
-
-    private void BindingPlayerInput()
-    {
-        Container
-            .BindInstance(new PlayerInput())
-            .AsSingle();
-    }
-
-    private void BindingCreator()
-    {
-        Container
-            .BindInstance(_creator)
-            .AsSingle();
-    }
-    
-    private void BindingScore()
-    {
-        Container
-            .BindInstance(_scoreSettings);
-
-        Container
-            .Bind<Score>()
-            .AsSingle();
-    }
-
-    private void BindingTimer()
-    {
-        Container
-            .BindInstance(_timerSettings);
-
-        Container
-            .Bind<Timer>()
-            .AsSingle();
-    }
-
-    private void BindingSpawner()
-    {
-        Container
-            .Bind<Spawner>()
-            .AsSingle();
-    }
-
-    private void BindingTetramino()
-    {
-        Container
-            .Bind<Tetramino>()
+            .Bind<TI>()
+            .To<T>()
             .AsSingle();
     }
 }

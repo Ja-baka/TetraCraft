@@ -29,7 +29,7 @@ public class Tetramino : IDisposable
         => _positions != null
         && _material != null;
 
-    public void Init(Shape shape, BlockMaterial material)
+    public void CreateNew(Shape shape, BlockMaterial material)
     {
         _material = material;
         Vector2Int spawnerPosition = new Vector2Int(3, 17);

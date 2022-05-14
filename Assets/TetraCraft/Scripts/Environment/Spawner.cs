@@ -15,8 +15,6 @@ public class Spawner : IDisposable
         _tetramino = tetramino;
 
         _locator.TurnDoned += Spawn;
-        Spawn();
-        Debug.Log("Spawner");
     }
 
     public event Action TetraminoSpawned;
@@ -31,8 +29,9 @@ public class Spawner : IDisposable
         BlockMaterial material = _creator.PickRandomMaterial();
         Shape shape = _creator.PickRandomShape();
 
-        _tetramino.Init(shape, material);
-
+        _tetramino.CreateNew(shape, material);
+            
         TetraminoSpawned?.Invoke();
+        Debug.Log("Spawner Spawned");
     }
 }
