@@ -1,38 +1,53 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
-public class Timer : MonoBehaviour
+public class Timer : IDisposable, ITickable
 {
-    [SerializeField] private float _boostedTick;
-    [SerializeField] private float _animationDelay;
-    [SerializeField] private Score _score;
-
+    private Score _score;
+    private readonly Settings _settings;
     private float _standartTick;
     private float _elapsedTime = 0;
     private float _currentTime;
 
-    public event Action Tick;
+    public Timer(Settings settings, Score score)
+    {
+        _settings = settings;
+        _score = score;
 
-    public float AnimationTick => _animationDelay;
+        _standartTick = 1f;
+        _currentTime = _standartTick;
+
+        _score.ScoreUpdated += OnScoreUpdated;
+    }
+
+    public void Dispose()
+    {
+        _score.ScoreUpdated -= OnScoreUpdated;
+    }
+
+    public event Action TickEllapsed;
+
+    public float AnimationTick => _settings.AnimationDelay;
+
+    public void Tick()
+    {
+        _elapsedTime += Time.deltaTime;
+        if (_elapsedTime > _currentTime)
+        {
+            _elapsedTime = 0;
+            TickEllapsed?.Invoke();
+        }
+    }
 
     public void StartBoost()
     {
-        _currentTime = _boostedTick;
+        _currentTime = _settings.BoostedTick;
     }
 
     public void EndBoost()
     {
         _currentTime = _standartTick;
-    }
-
-    private void OnEnable()
-    {
-        _score.ScoreUpdated += OnScoreUpdated;
-    }
-
-    private void OnDisable()
-    {
-        _score.ScoreUpdated -= OnScoreUpdated;
     }
 
     private void OnScoreUpdated()
@@ -41,19 +56,10 @@ public class Timer : MonoBehaviour
         _standartTick = Mathf.Pow(0.8f - level * 0.007f, level);
     }
 
-    private void Start()
+    [Serializable]
+    public class Settings
     {
-        _standartTick = 1f;
-        _currentTime = _standartTick;
-    }
-
-    private void Update()
-    {
-        _elapsedTime += Time.deltaTime;
-        if (_elapsedTime > _currentTime)
-        {
-            _elapsedTime = 0;
-            Tick?.Invoke();
-        }
+        public float BoostedTick;
+        public float AnimationDelay;
     }
 }

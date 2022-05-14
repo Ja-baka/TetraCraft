@@ -1,12 +1,21 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class FieldView : MonoBehaviour
 {
     [SerializeField] private Creator _materialCreator;
-    [SerializeField] private Field _field;
 
+    private FieldEventLocator _locator;
+    private FieldCells _cells;
     private Dictionary<BlockMaterial, GameObject[,]> _cubes;
+
+    [Inject]
+    public void Constructor(FieldEventLocator locator, FieldCells cells)
+    {
+        _locator = locator;
+        _cells = cells;
+    }
 
     private void Start()
     {
@@ -21,7 +30,7 @@ public class FieldView : MonoBehaviour
 
     private void Iteration(BlockMaterial material)
     {
-        BlockMaterial[,] temp = _field.FieldView;
+        BlockMaterial[,] temp = _cells.CellsClone;
 
         GameObject[,] blocks = new GameObject[temp.GetLength(0), temp.GetLength(1)];
         _cubes.Add(material, blocks);
@@ -45,12 +54,12 @@ public class FieldView : MonoBehaviour
 
     private void OnEnable()
     {
-        _field.Updated += DrawField;
+        _locator.Updated += DrawField;
     }
 
     private void OnDisable()
     {
-        _field.Updated -= DrawField;
+        _locator.Updated -= DrawField;
     }
 
     private void DrawField(BlockMaterial[,] newField)

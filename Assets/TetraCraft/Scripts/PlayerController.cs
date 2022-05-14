@@ -1,15 +1,20 @@
 using UnityEngine;
+using Zenject;
 
-[RequireComponent(typeof(Tetramino))]
 public class PlayerController : MonoBehaviour
 {
     private PlayerInput _input;
     private Tetramino _tetramino;
 
+    [Inject]
+    public void Constructor(PlayerInput input, Tetramino tetramino)
+    {
+        _input = input;
+        _tetramino = tetramino;
+    }
+
     private void Awake()
     {
-        _input = new PlayerInput();
-
         _input.Tetramino.MoveLeft
             .performed += (ctx) => OnMoveLeft();
 
@@ -18,8 +23,6 @@ public class PlayerController : MonoBehaviour
 
         _input.Tetramino.Rotate
             .performed += (ctx) => OnRotate();
-
-        _tetramino = GetComponent<Tetramino>();
     }
 
     private void OnEnable()

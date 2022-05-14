@@ -1,13 +1,20 @@
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class ScoreView : MonoBehaviour
 {
-    [SerializeField] private Score _scoreModel;
-    [Space]
     [SerializeField] private TextMeshProUGUI _clearedLinesView;
     [SerializeField] private TextMeshProUGUI _levelView;
     [SerializeField] private TextMeshProUGUI _scoreValueView;
+
+    private Score _scoreModel;
+
+    [Inject]
+    public void Constructor(Score scoreModel)
+    {
+        _scoreModel = scoreModel;
+    }
 
     private void OnEnable()
     {

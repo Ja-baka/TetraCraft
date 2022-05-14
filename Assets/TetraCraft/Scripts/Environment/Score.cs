@@ -1,16 +1,23 @@
 ﻿using System;
 using UnityEngine;
 
-public class Score : MonoBehaviour
+public class Score : IDisposable
 {
     private const int LinesCountForSpeedUp = 10;
-
-    [SerializeField] private Field _field;
-    [SerializeField] private int _scoreMultiplier;
-
+    private FieldEventLocator _locator;
+    private Settings _settings;
     private int _clearedLinesCount;
     private int _scoreValue;
     private int _combo;
+
+    public Score(FieldEventLocator locator, Settings settings)
+    {
+        _locator = locator;
+        _settings = settings;
+
+        _locator.LineCleared += OnLineCleared;
+        _locator.TurnDoned += OnTurnDone;
+    }
 
     public event Action ScoreUpdated;
 
@@ -19,16 +26,11 @@ public class Score : MonoBehaviour
     public int Level 
         => _clearedLinesCount / LinesCountForSpeedUp + 1;
 
-    private void OnEnable()
-    {
-        _field.LineCleared += OnLineCleared;
-        _field.TurnDone += OnTurnDone;
-    }
 
-    private void OnDisable()
+    public void Dispose()
     {
-        _field.LineCleared -= OnLineCleared;
-        _field.TurnDone -= OnTurnDone;
+        _locator.LineCleared -= OnLineCleared;
+        _locator.TurnDoned -= OnTurnDone;
     }
 
     private void OnLineCleared()
@@ -37,7 +39,8 @@ public class Score : MonoBehaviour
         _combo++;
 
         _clearedLinesCount++;
-        int lineCoast = _combo * _combo * _scoreMultiplier;
+        int lineCoast = (int)(Mathf.Pow(_combo, _settings.ComboScaller)
+            * _settings.ScoreMultiplier);
         _scoreValue += lineCoast * Level;
 
         ScoreUpdated?.Invoke();
@@ -46,5 +49,12 @@ public class Score : MonoBehaviour
     private void OnTurnDone()
     {
         _combo = 0;
+    }
+
+    [Serializable]
+    public class Settings
+    {
+        public float ComboScaller;
+        public int ScoreMultiplier;
     }
 }

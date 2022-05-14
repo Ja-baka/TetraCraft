@@ -1,33 +1,35 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
-public class Spawner : MonoBehaviour
+public class Spawner : IDisposable
 {
-    [SerializeField] private Tetramino _tetramino;
-    [SerializeField] private Creator _creator;
-    [SerializeField] private Field _field;
+    private Creator _creator;
+    private FieldEventLocator _locator;
+    private Tetramino _tetramino;
+
+    public Spawner(Creator creator, FieldEventLocator locator, Tetramino tetramino)
+    {
+        _creator = creator;
+        _locator = locator;
+        _tetramino = tetramino;
+
+        _locator.TurnDoned += Spawn;
+        Spawn();
+        Debug.Log("Spawner");
+    }
 
     public event Action TetraminoSpawned;
 
-    private void Start()
+    public void Dispose()
     {
-        Spawn();
-    }
-
-    private void OnEnable()
-    {
-        _field.TurnDone += Spawn;
-    }
-
-    private void OnDisable()
-    {
-        _field.TurnDone -= Spawn;
+        _locator.TurnDoned -= Spawn;
     }
 
     public void Spawn()
     {
         BlockMaterial material = _creator.PickRandomMaterial();
-        Shape shape = Instantiate(_creator.PickRandomShape());
+        Shape shape = _creator.PickRandomShape();
 
         _tetramino.Init(shape, material);
 

@@ -1,24 +1,24 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-[RequireComponent(typeof(Timer))]
 public class Booster : MonoBehaviour
 {
     private PlayerInput _input;
     private Timer _timer;
 
+    [Inject]
+    public void Constructor(PlayerInput input, Timer timer)
+    {
+        _input = input;
+        _timer = timer;
+    }
+
     private void Awake()
     {
-        _input = new PlayerInput();
-
         _input.Tetramino.Boost
             .started += (ctx) => OnBoostStarted();
         _input.Tetramino.Boost
             .canceled += (ctx) => OnBoostEnded();
-
-        _timer= GetComponent<Timer>();
     }
 
     private void OnEnable()

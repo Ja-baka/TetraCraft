@@ -1,16 +1,30 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
-public class Tetramino : MonoBehaviour
+public class Tetramino : IDisposable
 {
-    [SerializeField] private Timer _timer;
-    [SerializeField] private Field _field;
+    private Timer _timer;
+    private FieldCells _cells;
 
     private Vector2Int[] _positions;
     private BlockMaterial _material;
     private Rotator _rotator;
-    
+
+    public Tetramino(Timer timer, FieldCells cells)
+    {
+        _timer = timer;
+        _cells = cells;
+
+        _timer.TickEllapsed += TryFall;
+    }
+
+    public void Dispose()
+    {
+        _timer.TickEllapsed -= TryFall;
+    }
+
     private bool IsInitialized 
         => _positions != null
         && _material != null;
@@ -60,23 +74,13 @@ public class Tetramino : MonoBehaviour
         );
     }
 
-    private void OnEnable()
-    {
-        _timer.Tick += TryFall;
-    }
-
-    private void OnDisable()
-    {
-        _timer.Tick -= TryFall;
-    }
-
     private bool IsCanFall()
     {
         return IsCanMove((p) => p + Vector2Int.down);
     }
 
     private bool IsCanRotate()
-    {
+    { 
         Vector2Int[] rotated = _rotator.GetRotated();
         bool isCan = IsCanMove(rotated);
         if (isCan)
@@ -112,15 +116,15 @@ public class Tetramino : MonoBehaviour
     private bool IsFree(Vector2Int offsetted)
     {
         return _positions.Contains(offsetted)
-            || _field.FieldView[offsetted.x, offsetted.y] == null;
+            || _cells[offsetted] == null;
     }
 
     private bool IsInField(Vector2Int offsetted)
     {
         return offsetted.x >= 0
-            && offsetted.x < _field.FieldView.GetLength(0)
+            && offsetted.x < _cells.GetLength(0)
             && offsetted.y >= 0
-            && offsetted.y < _field.FieldView.GetLength(1);
+            && offsetted.y < _cells.GetLength(1);
     }
 
     private void TryFall()

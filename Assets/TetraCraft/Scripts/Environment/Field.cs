@@ -2,45 +2,32 @@
 using System.Collections;
 using UnityEngine;
 
-public class Field : MonoBehaviour
+public class Field : IDisposable
 {
-    [SerializeField] private Timer _timer;
-    [SerializeField] private Spawner _spawner;
-    [SerializeField] private Tetramino _tetramino;
-
-    private BlockMaterial[,] _cells;
+    private Timer _timer;
+    private Spawner _spawner;
+    private Tetramino _tetramino;
     private Vector2Int[] _previousPositions;
     private WaitForSeconds _waitForDelay;
+    private FieldCells _cells;
+    private FieldEventLocator _locator;
 
-    private void Awake()
+    public Field(FieldEventLocator locator, FieldCells cells, Timer timer, Spawner spawner, Tetramino tetramino)
     {
+        _locator = locator; 
+        _timer = timer;
+        _spawner = spawner;
+        _tetramino = tetramino;
+        _cells = cells;
+
         _waitForDelay = new WaitForSeconds(_timer.AnimationTick);
-        _cells = InitializeArray();
-    }
 
-    public event Action<BlockMaterial[,]> Updated;
-    public event Action TurnDone;
-    public event Action LineCleared;
-
-    public BlockMaterial[,] FieldView => (BlockMaterial[,])_cells.Clone();
-
-    private BlockMaterial[,] InitializeArray()
-    {
-        // https://tetris.fandom.com/wiki/Tetris_Guideline
-        const int Width = 10;
-        const int Heigth = 24;
-
-        return new BlockMaterial[Width, Heigth];
-    }
-
-    private void OnEnable()
-    {
         _spawner.TetraminoSpawned += OnTetraminoSpawned;
         _tetramino.TetraminoMoved += OnTetraminoMoved;
         _tetramino.Falled += OnTetraminoFalled;
     }
 
-    private void OnDisable()
+    public void Dispose()
     {
         _spawner.TetraminoSpawned -= OnTetraminoSpawned;
         _tetramino.TetraminoMoved -= OnTetraminoMoved;
@@ -52,38 +39,35 @@ public class Field : MonoBehaviour
         _previousPositions = (Vector2Int[])_tetramino.Positions.Clone();
         foreach (Vector2Int block in _tetramino.Positions)
         {
-            int x = block.x;
-            int y = block.y;
-
-            if (_cells[x, y] != null)
+            if (_cells[block] != null)
             {
-                GameCycle.GameOver();
+                _locator.GameOver();
             }
 
-            _cells[x, y] = _tetramino.Material;
+            _cells[block] = _tetramino.Material;
         }
-        Updated?.Invoke(FieldView);
+        _locator.Update(_cells.CellsClone);
     }
 
     private void OnTetraminoMoved()
     {
         foreach (Vector2Int position in _previousPositions)
         {
-            _cells[position.x, position.y] = null;
+            _cells[position] = null;
         }
 
         foreach (Vector2Int position in _tetramino.Positions)
         {
-            _cells[position.x, position.y] = _tetramino.Material;
+            _cells[position] = _tetramino.Material;
         }
 
-        Updated?.Invoke(FieldView);
+        _locator.Update(_cells.CellsClone);
         _previousPositions = (Vector2Int[])_tetramino.Positions.Clone();
     }
 
     private void OnTetraminoFalled()
     {
-        StartCoroutine(EndTurn());
+        Coroutines.StartRoutine(EndTurn());
     }
 
     private IEnumerator EndTurn()
@@ -96,7 +80,7 @@ public class Field : MonoBehaviour
             isAfterCleaning = true;
         }
 
-        TurnDone?.Invoke();
+        _locator.TurnDone();
     }
 
     private IEnumerator CalculatePhysics(bool isAfterCleaning)
@@ -111,10 +95,12 @@ public class Field : MonoBehaviour
                 }
 
                 IWeight weight = _cells[x, y].Weight;
-                weight.Fall(new Vector2Int(x, y), ref _cells, isAfterCleaning);
+                BlockMaterial[,] temp = _cells.Cells;
+                weight.Fall(new Vector2Int(x, y), ref temp, isAfterCleaning);
+                _cells.Cells = temp;
             }
         }
-        Updated?.Invoke(FieldView);
+        _locator.Update(_cells.CellsClone);
         yield return _waitForDelay;
     }
 
@@ -136,8 +122,8 @@ public class Field : MonoBehaviour
             {
                 yield return _waitForDelay;
                 yield return ClearLine(y--);
-                LineCleared?.Invoke();
-                Updated?.Invoke(FieldView);
+                _locator.LineClear();
+                _locator.Update(_cells.CellsClone);
             }
         }
     }
@@ -149,7 +135,7 @@ public class Field : MonoBehaviour
             _cells[x, indexOfRow] = null;
         }
 
-        Updated?.Invoke(FieldView);
+        _locator.Update(_cells.CellsClone);
         yield return _waitForDelay;
 
         for (int y = indexOfRow; y < _cells.GetLength(1) - 1; y++)

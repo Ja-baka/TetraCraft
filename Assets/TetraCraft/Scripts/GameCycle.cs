@@ -1,12 +1,26 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public static class GameCycle
+public class GameCycle : IDisposable
 {
-    private static bool _playing = true;
+    private bool _playing = true;
+    private FieldEventLocator _locator;
 
-    public static bool Playing => _playing;
+    public GameCycle(FieldEventLocator locator)
+    {
+        _locator = locator;
 
-    public static void GameOver()
+        _locator.GameOvered += OnGameOver;
+    }
+
+    public bool Playing => _playing;
+
+    public void Dispose()
+    {
+        _locator.GameOvered -= OnGameOver;
+    }
+
+    public void OnGameOver()
     {
         if (_playing == false)
         {
