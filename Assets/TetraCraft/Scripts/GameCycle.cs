@@ -11,6 +11,7 @@ public class GameCycle : IDisposable
     {
         _locator = locator;
         _spawner = spawner;
+        StartGame();
 
         _locator.GameOvered += OnGameOver;
     }

@@ -17,7 +17,6 @@ public class LocationInstaller : MonoInstaller, IInitializable
     {
         BindingInstance(_creator);
         BindingType<FieldEventLocator>();
-        BindingType<GameCycle>();
         BindingWithSettings<Score, Score.Settings>(_scoreSettings);
         BindingWithSettings<Timer, Timer.Settings>(_timerSettings);
         BindingInstance(new PlayerInput());
@@ -29,13 +28,15 @@ public class LocationInstaller : MonoInstaller, IInitializable
         BindingInstance(_fieldView);
         BindingType<Spawner>();
         BindingType<Field>();
+
+        BindingType<GameCycle>();
     }
 
     public void Initialize()
     {
-        Debug.Log("Initialize");
-        GameCycle gameCycle = Container.Resolve<GameCycle>();
-        gameCycle.StartGame();
+        //Debug.Log("Initialize");
+        //GameCycle gameCycle = Container.Resolve<GameCycle>();
+        //gameCycle.StartGame();
     }
 
     private void BindingType<T>()
