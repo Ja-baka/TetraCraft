@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TreeEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FieldCells
 {
@@ -15,6 +9,9 @@ public class FieldCells
 
     public FieldCells()
     {
+        // 10 x 20 - клясічны памер гульнявога поля Tetris
+        // +4 радкі зьверху, каб фігуры маглі паварочвацца
+        // ў верхняй кропцы
         // https://tetris.fandom.com/wiki/Tetris_Guideline
         const int Width = 10;
         const int Heigth = 24;

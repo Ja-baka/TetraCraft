@@ -895,12 +895,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd6995bea8f515428993d3f93a4739c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fieldView: {fileID: 850905831}
-  _scoreView: {fileID: 1267101577}
-  _creator: {fileID: 1576628494}
-  _booster: {fileID: 353541351}
-  _controller: {fileID: 583764044}
-  _spawnPoint: {fileID: 2129692180}
   _scoreSettings:
     ComboScaller: 2
     ScoreMultiplier: 50
@@ -1773,11 +1767,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entries:
   - Item: {fileID: 11400000, guid: b1209af2ec27b234eb1b517cee7dd709, type: 2}
-    Weight: 0.15
+    Weight: 0.1
   - Item: {fileID: 11400000, guid: 0ff37ce0c3cfeda4e8602cc7396bb1c9, type: 2}
     Weight: 0.15
   - Item: {fileID: 11400000, guid: 56450b3737f30154b9eb7898557ceff6, type: 2}
-    Weight: 0.7
+    Weight: 0.75
   _shapes:
   - {fileID: 11400000, guid: d2352c7506c058b4f88d8d457cface3a, type: 2}
   - {fileID: 11400000, guid: c95fcef9a2691e84c94e554264c2f2c9, type: 2}
