@@ -9,14 +9,10 @@ public class FieldCells
 
     public FieldCells()
     {
-        // 10 x 20 - клясічны памер гульнявога поля Tetris
-        // +4 радкі зьверху, каб фігуры маглі паварочвацца
-        // ў верхняй кропцы
-        // https://tetris.fandom.com/wiki/Tetris_Guideline
-        const int Width = 10;
-        const int Heigth = 24;
+        int width = Constants.FieldWidth;
+        int heigth = Constants.FieldHeigth;
 
-        _cells = new BlockMaterial[Width, Heigth];
+        _cells = new BlockMaterial[width, heigth];
     }
 
     public BlockMaterial this[Vector2Int index]
