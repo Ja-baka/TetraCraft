@@ -6,5 +6,9 @@
     public const int FieldWidth = 10;
     public const int FieldHeigth = 24;
 
-    public const string GameField = nameof(GameField);
+    public class SceneNames
+    {
+        public const string GameField = nameof(GameField);
+        public const string MainMenu = nameof(MainMenu);
+    }
 }

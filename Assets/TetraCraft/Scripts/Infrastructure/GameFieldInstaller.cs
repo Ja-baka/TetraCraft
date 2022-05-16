@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class LocationInstaller : MonoInstaller
+public class GameFieldInstaller : MonoInstaller
 {
     [SerializeField] private Score.Settings _scoreSettings;
     [SerializeField] private Timer.Settings _timerSettings;

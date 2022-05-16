@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameCycle : IDisposable
 {
@@ -38,8 +40,12 @@ public class GameCycle : IDisposable
         _playing = false;
 
         Debug.Log("Game Over");
-        Application.Quit();
+        Coroutines.StartRoutine(DelayedExit());
+    }
 
-        Time.timeScale = 0;
+    private IEnumerator DelayedExit()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(Constants.SceneNames.MainMenu);
     }
 }
