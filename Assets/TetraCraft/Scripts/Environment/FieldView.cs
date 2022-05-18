@@ -24,11 +24,23 @@ public class FieldView : MonoBehaviour
 
         foreach (BlockMaterial material in materials)
         {
-            Iteration(material);
+            CreateObjectsPoolByMaterial(material);
         }
     }
 
-    private void Iteration(BlockMaterial material)
+    private void OnEnable()
+    {
+        _locator.Updated += DrawField;
+        _locator.GameOvered += () => OnDisable();
+    }
+
+    private void OnDisable()
+    {
+        _locator.Updated -= DrawField;
+        _locator.GameOvered -= () => OnDisable();
+    }
+
+    private void CreateObjectsPoolByMaterial(BlockMaterial material)
     {
         BlockMaterial[,] temp = _cells.CellsClone;
 
@@ -50,16 +62,6 @@ public class FieldView : MonoBehaviour
                 _cubes[material][i, j] = cube;
             }
         }
-    }
-
-    private void OnEnable()
-    {
-        _locator.Updated += DrawField;
-    }
-
-    private void OnDisable()
-    {
-        _locator.Updated -= DrawField;
     }
 
     private void DrawField(BlockMaterial[,] newField)
