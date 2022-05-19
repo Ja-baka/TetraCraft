@@ -278,6 +278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4286719417631582609}
   - component: {fileID: 4286719417631582608}
+  - component: {fileID: 3404023072871856263}
   m_Layer: 5
   m_Name: Record Entry
   m_TagString: Untagged
@@ -333,6 +334,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &3404023072871856263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4286719417631582614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f5e86cbf5143dc4aa4e0a52075fc421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _place: {fileID: 4286719417492668521}
+  _score: {fileID: 4286719418367190948}
+  _recordHolderName: {fileID: 4286719417026989236}
 --- !u!1 &4286719418367190954
 GameObject:
   m_ObjectHideFlags: 0

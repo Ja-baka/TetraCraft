@@ -667,6 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1028956797}
   - component: {fileID: 1028956796}
+  - component: {fileID: 1028956798}
   - component: {fileID: 1028956795}
   m_Layer: 0
   m_Name: SceneContext
@@ -702,6 +703,7 @@ MonoBehaviour:
   _scriptableObjectInstallers: []
   _monoInstallers:
   - {fileID: 1028956795}
+  - {fileID: 1028956798}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -733,6 +735,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1028956798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028956794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 737e9e479a8dcb04d8201849e967708c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1153299865
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,6 +1327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2131600295}
   - component: {fileID: 2131600296}
+  - component: {fileID: 2131600297}
   m_Layer: 5
   m_Name: Records
   m_TagString: Untagged
@@ -1366,3 +1381,17 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2131600297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131600294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12b27b6704e41ae4aaecfb7fd645b2e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _template: {fileID: 4286719417631582614, guid: 5049e1585fe1a554bbe9cb4db3851737, type: 3}
+  _scoresHolder: {fileID: 2131600295}

@@ -18,10 +18,7 @@ public class GameCycle : IDisposable
         StartGame();
     }
 
-    public event Action<HighscoreEntry> GameOvered;
-
     public bool Playing => _playing;
-
     public void Dispose()
     {
         _locator.GameOvered -= OnGameOver;

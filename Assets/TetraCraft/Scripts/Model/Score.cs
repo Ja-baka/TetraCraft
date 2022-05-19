@@ -9,14 +9,22 @@ public class Score : IDisposable
     private int _clearedLinesCount;
     private int _scoreValue;
     private int _combo;
+    private NewHighscore _newHighscore;
 
-    public Score(FieldEventLocator locator, Settings settings)
+    public Score(FieldEventLocator locator, NewHighscore newHighscore, Settings settings)
     {
         _locator = locator;
         _settings = settings;
+        _newHighscore = newHighscore;
 
         _locator.LineCleared += OnLineCleared;
         _locator.TurnDoned += OnTurnDone;
+        _locator.GameOvered += OnGameOvered;
+    }
+
+    private void OnGameOvered()
+    {
+        _newHighscore.Set("PlaceHolder", ScoreValue);
     }
 
     public event Action ScoreUpdated;
@@ -25,7 +33,6 @@ public class Score : IDisposable
     public int ClearedLinesCount => _clearedLinesCount;
     public int Level 
         => _clearedLinesCount / LinesCountForSpeedUp + 1;
-
 
     public void Dispose()
     {

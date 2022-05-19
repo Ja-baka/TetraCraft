@@ -4,7 +4,7 @@ public class HighScoresInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        ProjectContext projectContext = new ProjectContext();
-        projectContext.Container.Resolve<HighscoreEntry>();
+        Container.Bind<HighscoresTable>().AsSingle().NonLazy();
+        Container.Bind<TableView>().FromComponentInHierarchy().AsSingle();
     }
 }

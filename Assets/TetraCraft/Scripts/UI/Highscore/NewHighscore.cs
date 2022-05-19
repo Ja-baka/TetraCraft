@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public class NewHighscore : HighscoreEntry
+﻿public class NewHighscore
 {
-    public NewHighscore(string name, int score) 
-        : base(name, score)
+    private HighscoreEntry _entry;
+
+    public void Set(string name, int score)
     {
+        _entry = new HighscoreEntry(name, score);
     }
+
+    public HighscoreEntry Entry => _entry; 
 }
