@@ -18,17 +18,18 @@ public class GameCycle : IDisposable
         StartGame();
     }
 
-    public void StartGame()
-    {
-        Debug.Log("Game Started");
-        _spawner.Spawn();
-    }
+    public event Action<HighscoreEntry> GameOvered;
 
     public bool Playing => _playing;
 
     public void Dispose()
     {
         _locator.GameOvered -= OnGameOver;
+    }
+
+    public void StartGame()
+    {
+        _spawner.Spawn();
     }
 
     public void OnGameOver()
@@ -39,13 +40,12 @@ public class GameCycle : IDisposable
         }
         _playing = false;
 
-        Debug.Log("Game Over");
         Coroutines.StartRoutine(DelayedExit());
     }
 
     private IEnumerator DelayedExit()
     {
         yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(Constants.SceneNames.MainMenu);
+        SceneManager.LoadScene(Constants.SceneNames.LeaderBoard);
     }
 }

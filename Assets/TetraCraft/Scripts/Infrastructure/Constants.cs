@@ -10,5 +10,6 @@
     {
         public const string GameField = nameof(GameField);
         public const string MainMenu = nameof(MainMenu);
+        public const string LeaderBoard = nameof(LeaderBoard);
     }
 }
