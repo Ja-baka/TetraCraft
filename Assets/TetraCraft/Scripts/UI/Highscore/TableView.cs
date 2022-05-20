@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using Zenject;
 
 public class TableView : MonoBehaviour
@@ -12,6 +13,11 @@ public class TableView : MonoBehaviour
     public void Construct(HighscoresTable highscoresTable)
     {
         _tableModel = highscoresTable;
+
+        ScoreSaver saver = FindObjectOfType<ScoreSaver>();
+        HighscoreEntry entry = new HighscoreEntry(saver.Nickname, saver.ScoreVale);
+
+        _tableModel.AddNewScore(entry);
     }
 
     private void OnValidate()

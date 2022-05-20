@@ -7,5 +7,6 @@
         _entry = new HighscoreEntry(name, score);
     }
 
-    public HighscoreEntry Entry => _entry; 
+    public HighscoreEntry Entry => _entry
+        ?? throw new System.Exception("First Call Set()"); 
 }

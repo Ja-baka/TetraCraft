@@ -43,6 +43,7 @@ public class Field : IDisposable
             if (_cells[block] != null)
             {
                 _locator.GameOver();
+                break;
             }
 
             _cells[block] = _tetramino.Material;

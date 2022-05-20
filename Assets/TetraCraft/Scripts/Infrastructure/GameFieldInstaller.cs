@@ -19,6 +19,7 @@ public class GameFieldInstaller : MonoInstaller
         BindingComponentInHierarchy<PlayerController>();
         BindingComponentInHierarchy<ScoreView>();
         BindingComponentInHierarchy<FieldView>();
+        BindingComponentInHierarchy<ScoreSaver>();
         BindingType<Spawner>();
         BindingType<Field>();
 

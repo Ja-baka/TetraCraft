@@ -9,7 +9,7 @@ public class Storage
 
     public Storage()
     {
-        _path = Application.persistentDataPath + "/scores/LeaderBoard.save";
+        _path = Application.persistentDataPath + "/LeaderBoard.save";
         _formatter = new BinaryFormatter();
     }
 

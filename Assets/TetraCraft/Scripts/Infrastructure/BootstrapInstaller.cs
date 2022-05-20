@@ -4,10 +4,7 @@ public class BootstrapInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        Container
-            .Bind<NewHighscore>()
-            .AsSingle()
-            .NonLazy();
+        Container.Bind<NewHighscore>().AsSingle().NonLazy();
     }
 }
 
