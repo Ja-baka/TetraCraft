@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScoreSaver : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class ScoreSaver : MonoBehaviour
         _score = score;
         _score.ScoreUpdated += OnScoreUpdated;
         _score.GameOver += () => Unsubscribe();
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
+
     private void Unsubscribe()
     {
         _score.ScoreUpdated -= OnScoreUpdated;
@@ -24,11 +27,17 @@ public class ScoreSaver : MonoBehaviour
         _nickname = "PlaceHolder";
     }
 
+    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.MoveGameObjectToScene(gameObject, currentScene);
+    }
+
     public string Nickname => _nickname;
     public int ScoreVale => _scoreValue;
 
     private void Start()
     {
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(gameObject);
     }
 }

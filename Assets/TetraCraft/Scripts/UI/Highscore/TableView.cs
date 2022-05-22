@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-public class TableView : MonoBehaviour
+public class TableView : MonoBehaviour, IInitializable
 {
     [SerializeField] private GameObject _template;
     [SerializeField] private Transform _scoresHolder;
@@ -16,8 +16,19 @@ public class TableView : MonoBehaviour
 
         ScoreSaver saver = FindObjectOfType<ScoreSaver>();
         HighscoreEntry entry = new HighscoreEntry(saver.Nickname, saver.ScoreVale);
+    }
 
-        _tableModel.AddNewScore(entry);
+    public void Initialize()
+    {
+        foreach (HighscoreEntry entry in _tableModel.SortedList)
+        {
+            HighscoreEntryView entryView
+                = _template.GetComponent<HighscoreEntryView>();
+            string place = _place++.ToString();
+            string score = entry.ScoreValue.ToString();
+            entryView.SetScore(place, score, entry.NickName);
+            Instantiate(entryView, _scoresHolder);
+        }
     }
 
     private void OnValidate()
@@ -26,19 +37,6 @@ public class TableView : MonoBehaviour
         {
             _template = null;
             throw new System.Exception("");
-        }
-    }
-
-    private void Start()
-    {
-        foreach (HighscoreEntry entry in _tableModel.SortedList)
-        {
-            HighscoreEntryView entryView 
-                = _template.GetComponent<HighscoreEntryView>();
-            string place = _place++.ToString();
-            string score = entry.Score.ToString();
-            entryView.SetScore(place, score, entry.Name);
-            Instantiate(entryView, _scoresHolder);
         }
     }
 }

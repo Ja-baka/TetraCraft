@@ -1,4 +1,6 @@
-﻿public class NewHighscore
+﻿using UnityEngine;
+
+public class NewHighscore
 {
     private HighscoreEntry _entry;
 

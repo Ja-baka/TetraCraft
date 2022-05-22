@@ -3,15 +3,15 @@ using System;
 [Serializable]
 public class HighscoreEntry
 {
-    private readonly string _name;
-    private readonly int _score;
+    private readonly string _nickName;
+    private readonly int _scoreValue;
 
     public HighscoreEntry(string name, int score)
     {
-        _name = name;
-        _score = score;
+        _nickName = name;
+        _scoreValue = score;
     }
 
-    public string Name => _name;
-    public int Score => _score;
+    public string NickName => _nickName;
+    public int ScoreValue => _scoreValue;
 }
