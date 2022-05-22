@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using Zenject;
-using static UnityEngine.EventSystems.EventTrigger;
 
 [Serializable]
 public class HighscoresTable
 {
     private const int MaxEntries = 10;
     private List<HighscoreEntry> _entries;
-    private HighscoreEntry _newEntry;
+    private Storage _storage;
 
     [Inject]
-    public HighscoresTable(HighscoreEntry newEntry)
+    public HighscoresTable()
     {
-        _newEntry = newEntry;
-
-        Storage storage = new Storage();
-        _entries = storage.Load(new List<HighscoreEntry>(MaxEntries))
+        _storage = new Storage();
+        _entries = _storage.Load(new List<HighscoreEntry>(MaxEntries))
             as List<HighscoreEntry>;
+    }
 
-        TryAddNewScore(_newEntry);
-        storage.Save(_entries);
+    public void SaveTable()
+    {
+        _storage.Save(_entries);
     }
 
     public void TryAddNewScore(HighscoreEntry entry)

@@ -25,15 +25,18 @@ public class Score : IDisposable
     private void OnGameOvered()
     {
         _newHighscore.Set("PlaceHolder", ScoreValue);
-        GameOver?.Invoke();
+        Storage storage = new Storage();
+
+        HighscoresTable highscoresTable = new HighscoresTable();
+        highscoresTable.TryAddNewScore(_newHighscore.Entry);
+        highscoresTable.SaveTable();
     }
 
     public event Action ScoreUpdated;
-    public event Action GameOver;
 
     public int ScoreValue => _scoreValue;
     public int ClearedLinesCount => _clearedLinesCount;
-    public int Level 
+    public int Level
         => _clearedLinesCount / LinesCountForSpeedUp + 1;
 
     public void Dispose()
