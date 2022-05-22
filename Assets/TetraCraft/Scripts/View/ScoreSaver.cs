@@ -10,10 +10,12 @@ public class ScoreSaver : MonoBehaviour
     {
         _score = score;
         _score.ScoreUpdated += OnScoreUpdated;
+        _score.GameOver += () => Unsubscribe();
     }
-    private void OnDestroy()
+    private void Unsubscribe()
     {
         _score.ScoreUpdated -= OnScoreUpdated;
+        _score.GameOver -= () => Unsubscribe();
     }
 
     private void OnScoreUpdated()

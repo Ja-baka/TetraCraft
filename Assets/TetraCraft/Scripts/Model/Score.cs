@@ -25,9 +25,11 @@ public class Score : IDisposable
     private void OnGameOvered()
     {
         _newHighscore.Set("PlaceHolder", ScoreValue);
+        GameOver?.Invoke();
     }
 
     public event Action ScoreUpdated;
+    public event Action GameOver;
 
     public int ScoreValue => _scoreValue;
     public int ClearedLinesCount => _clearedLinesCount;
