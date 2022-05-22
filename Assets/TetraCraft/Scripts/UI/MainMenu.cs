@@ -13,6 +13,11 @@ public class MainMenu : MonoBehaviour
         throw new System.NotImplementedException();
     }
 
+    public void OpenMainMenu()
+    {
+        SceneManager.LoadScene(Constants.SceneNames.MainMenu);
+    }
+
     public void ExitGame()
     {
         Application.Quit();
