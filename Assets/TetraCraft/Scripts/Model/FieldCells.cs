@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class FieldCells
 {
@@ -30,5 +31,23 @@ public class FieldCells
     internal int GetLength(int dimension)
     {
         return _cells.GetLength(dimension);
+    }
+
+    public bool IsSpawnBLocked()
+    {
+        Vector2Int start = Constants.spawnAreaStart;
+        Vector2Int end = Constants.spawnAreaEnd;
+
+        for (int x = start.x; x < end.x; x++)
+        {
+            for (int y = start.y; y < end.y; y++)
+            {
+                if (_cells[x, y] != null)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

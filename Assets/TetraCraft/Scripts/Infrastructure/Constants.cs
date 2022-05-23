@@ -1,10 +1,15 @@
-﻿public class Constants
+﻿using UnityEngine;
+
+public class Constants
 {
     // 10 x 20 - клясічны памер гульнявога поля Tetris
     // +4 радкі зьверху, каб фігуры маглі паварочвацца
     // ў верхняй кропцы
     public const int FieldWidth = 10;
     public const int FieldHeigth = 24;
+
+    public readonly static Vector2Int spawnAreaStart = new Vector2Int(3, 17);
+    public readonly static Vector2Int spawnAreaEnd = new Vector2Int(6, 19);
 
     public class SceneNames
     {

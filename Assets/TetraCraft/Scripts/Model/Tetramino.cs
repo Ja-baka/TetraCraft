@@ -29,19 +29,24 @@ public class Tetramino : IDisposable
         => _positions != null
         && _material != null;
 
-    public void CreateNew(Shape shape, BlockMaterial material)
+    public bool TryCreateNew(Shape shape, BlockMaterial material)
     {
+        if (_cells.IsSpawnBLocked())
+        {
+            return false;
+        }
+
         _material = material;
-        Vector2Int spawnerPosition = new Vector2Int(3, 17);
-        
         _positions = new Vector2Int[4];
         for (int i = 0; i < _positions.Length; i++)
         {
-            Vector2Int position = shape.Positions[i] + spawnerPosition;
+            Vector2Int position = shape.Positions[i] 
+                + Constants.spawnAreaStart;
             _positions[i] = position;
         }
 
         _rotator = new Rotator(_positions);
+        return true;
     }
 
     public event Action Falled;
@@ -104,20 +109,13 @@ public class Tetramino : IDisposable
     private bool IsCanMove(Vector2Int[] moved)
     {
         return IsInitialized
-            && IsNotStuck()
             && moved.All((p) => IsInField(p) && IsFree(p));
     }
 
     private bool IsCanMove(Func<Vector2Int, Vector2Int> move)
     {
-        return IsInitialized
-            && IsNotStuck()
+        return IsInitialized 
             && _positions.All((p) => IsInField(move(p)) && IsFree(move(p)));
-    }
-    
-    private bool IsNotStuck()
-    {
-        return _positions.All((p) => IsFree(p));
     }
 
     private bool IsFree(Vector2Int offsetted)

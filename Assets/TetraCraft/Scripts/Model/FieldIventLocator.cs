@@ -7,8 +7,6 @@ public class FieldEventLocator
     public event Action LineCleared;
     public event Action GameOvered;
 
-    public bool _isPlaying = true;
-
     public void Update(BlockMaterial[,] cells)
     {
         Updated?.Invoke(cells);
@@ -24,14 +22,8 @@ public class FieldEventLocator
         LineCleared?.Invoke();
     }
 
-    public void TryGameOver()
+    public void GameOver()
     {
-        if (_isPlaying == false)
-        {
-            //return;
-        }
-        _isPlaying = false;
-
         GameOvered?.Invoke();
     }
 }

@@ -17,6 +17,7 @@ public class Spawner : IDisposable
         _locator.TurnDoned += Spawn;
     }
 
+    public event Action CantSpawn;
     public event Action TetraminoSpawned;
 
     public void Dispose()
@@ -29,7 +30,11 @@ public class Spawner : IDisposable
         BlockMaterial material = _creator.PickRandomMaterial();
         Shape shape = _creator.PickRandomShape();
 
-        _tetramino.CreateNew(shape, material);
+        if (_tetramino.TryCreateNew(shape, material) == false)
+        {
+            CantSpawn?.Invoke();
+            return;
+        }
         TetraminoSpawned?.Invoke();
     }
 }

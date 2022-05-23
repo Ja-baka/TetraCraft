@@ -24,6 +24,7 @@ public class Field : IDisposable
         _waitForDelay = new WaitForSeconds(_timer.AnimationTick);
 
         _spawner.TetraminoSpawned += OnTetraminoSpawned;
+        _spawner.CantSpawn += OnCantSpawn;
         _tetramino.TetraminoMoved += OnTetraminoMoved;
         _tetramino.Falled += OnTetraminoFalled;
     }
@@ -40,16 +41,14 @@ public class Field : IDisposable
         _previousPositions = (Vector2Int[])_tetramino.Positions.Clone();
         foreach (Vector2Int block in _tetramino.Positions)
         {
-            if (_cells[block] != null)
-            {
-                Debug.Log("TryGameOver");
-                _locator.TryGameOver();
-                break;
-            }
-
             _cells[block] = _tetramino.Material;
         }
         _locator.Update(_cells.CellsClone);
+    }
+
+    private void OnCantSpawn()
+    {
+        _locator.GameOver();
     }
 
     private void OnTetraminoMoved()
