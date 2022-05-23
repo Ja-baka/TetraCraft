@@ -9,13 +9,11 @@ public class Score : IDisposable
     private int _clearedLinesCount;
     private int _scoreValue;
     private int _combo;
-    private NewHighscore _newHighscore;
 
-    public Score(FieldEventLocator locator, NewHighscore newHighscore, Settings settings)
+    public Score(FieldEventLocator locator, Settings settings)
     {
         _locator = locator;
         _settings = settings;
-        _newHighscore = newHighscore;
 
         _locator.LineCleared += OnLineCleared;
         _locator.TurnDoned += OnTurnDone;
@@ -24,11 +22,9 @@ public class Score : IDisposable
 
     private void OnGameOvered()
     {
-        _newHighscore.Set("PlaceHolder", ScoreValue);
-        Storage storage = new Storage();
-
-        HighscoresTable highscoresTable = new HighscoresTable();
-        highscoresTable.TryAddNewScore(_newHighscore.Entry);
+        var newEntry = new HighscoreEntry("PlaceHolder", ScoreValue);
+        var highscoresTable = new HighscoresTable();
+        highscoresTable.TryAddNewScore(newEntry);
         highscoresTable.SaveTable();
     }
 

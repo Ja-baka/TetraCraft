@@ -33,7 +33,7 @@ public class TableView : MonoBehaviour
         if (_template.TryGetComponent(out HighscoreEntryView _) == false)
         {
             _template = null;
-            throw new System.Exception("");
+            throw new System.Exception("Template need component HighscoreEntryView");
         }
     }
 }
