@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class TableView : MonoBehaviour, IInitializable
+public class TableView : MonoBehaviour
 {
     [SerializeField] private GameObject _template;
     [SerializeField] private Transform _scoresHolder;
@@ -12,6 +12,7 @@ public class TableView : MonoBehaviour, IInitializable
     public void Construct(HighscoresTable highscoresTable)
     {
         _tableModel = highscoresTable;
+        Initialize();
     }
 
     public void Initialize()
