@@ -4,25 +4,32 @@ using UnityEngine;
 public class Score : IDisposable
 {
     private const int LinesCountForSpeedUp = 10;
-    private FieldEventLocator _locator;
     private Settings _settings;
+    private FieldEventLocator _locator;
     private int _clearedLinesCount;
     private int _scoreValue;
     private int _combo;
 
-    public Score(FieldEventLocator locator, Settings settings)
+    public Score(Settings settings, FieldEventLocator locator)
     {
-        _locator = locator;
         _settings = settings;
+        _locator = locator;
 
         _locator.LineCleared += OnLineCleared;
         _locator.TurnDoned += OnTurnDone;
         _locator.GameOvered += OnGameOvered;
     }
 
+    public void Dispose()
+    {
+        _locator.LineCleared -= OnLineCleared;
+        _locator.TurnDoned -= OnTurnDone;
+        _locator.GameOvered -= OnGameOvered;
+    }
+
     private void OnGameOvered()
     {
-        var newEntry = new HighscoreEntry("PlaceHolder", ScoreValue);
+        var newEntry = new HighscoreEntry("Test", ScoreValue);
         var highscoresTable = new HighscoresTable();
         highscoresTable.TryAddNewScore(newEntry);
         highscoresTable.SaveTable();
@@ -34,12 +41,6 @@ public class Score : IDisposable
     public int ClearedLinesCount => _clearedLinesCount;
     public int Level
         => _clearedLinesCount / LinesCountForSpeedUp + 1;
-
-    public void Dispose()
-    {
-        _locator.LineCleared -= OnLineCleared;
-        _locator.TurnDoned -= OnTurnDone;
-    }
 
     private void OnLineCleared()
     {

@@ -104,13 +104,20 @@ public class Tetramino : IDisposable
     private bool IsCanMove(Vector2Int[] moved)
     {
         return IsInitialized
+            && IsNotStuck()
             && moved.All((p) => IsInField(p) && IsFree(p));
     }
 
     private bool IsCanMove(Func<Vector2Int, Vector2Int> move)
     {
-        return IsInitialized 
+        return IsInitialized
+            && IsNotStuck()
             && _positions.All((p) => IsInField(move(p)) && IsFree(move(p)));
+    }
+    
+    private bool IsNotStuck()
+    {
+        return _positions.All((p) => IsFree(p));
     }
 
     private bool IsFree(Vector2Int offsetted)

@@ -42,7 +42,8 @@ public class Field : IDisposable
         {
             if (_cells[block] != null)
             {
-                _locator.GameOver();
+                Debug.Log("TryGameOver");
+                _locator.TryGameOver();
                 break;
             }
 

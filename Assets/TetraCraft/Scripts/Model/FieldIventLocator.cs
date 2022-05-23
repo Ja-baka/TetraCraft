@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 public class FieldEventLocator
 {
@@ -7,6 +6,8 @@ public class FieldEventLocator
     public event Action TurnDoned;
     public event Action LineCleared;
     public event Action GameOvered;
+
+    public bool _isPlaying = true;
 
     public void Update(BlockMaterial[,] cells)
     {
@@ -23,8 +24,14 @@ public class FieldEventLocator
         LineCleared?.Invoke();
     }
 
-    public void GameOver()
+    public void TryGameOver()
     {
+        if (_isPlaying == false)
+        {
+            //return;
+        }
+        _isPlaying = false;
+
         GameOvered?.Invoke();
     }
 }

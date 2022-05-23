@@ -25,6 +25,7 @@ public class HighscoresTable
 
     public void TryAddNewScore(HighscoreEntry entry)
     {
+        UnityEngine.Debug.Log("TryAddNewScore");
         int minScore = _entries.Any()
             ? _entries.Min((record) => record.ScoreValue)
             : 0;
@@ -44,5 +45,4 @@ public class HighscoresTable
 
     public IOrderedEnumerable<HighscoreEntry> SortedList
         => _entries.OrderByDescending((e) => e.ScoreValue);
-    public List<HighscoreEntry> Entries => _entries;
 }

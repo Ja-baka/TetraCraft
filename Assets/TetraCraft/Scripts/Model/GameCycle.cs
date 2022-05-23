@@ -18,7 +18,10 @@ public class GameCycle : IDisposable
         StartGame();
     }
 
+    public Action GameOver;
+
     public bool Playing => _playing;
+
     public void Dispose()
     {
         _locator.GameOvered -= OnGameOver;
@@ -44,5 +47,6 @@ public class GameCycle : IDisposable
     {
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(Constants.SceneNames.LeaderBoard);
+        GameOver?.Invoke();
     }
 }

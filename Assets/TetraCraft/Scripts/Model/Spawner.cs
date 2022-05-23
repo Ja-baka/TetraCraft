@@ -30,7 +30,6 @@ public class Spawner : IDisposable
         Shape shape = _creator.PickRandomShape();
 
         _tetramino.CreateNew(shape, material);
-            
         TetraminoSpawned?.Invoke();
     }
 }
