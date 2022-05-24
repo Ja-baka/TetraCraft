@@ -25,7 +25,6 @@ public class HighscoresTable
 
     public void TryAddNewScore(HighscoreEntry entry)
     {
-        UnityEngine.Debug.Log("TryAddNewScore");
         int minScore = _entries.Any()
             ? _entries.Min((record) => record.ScoreValue)
             : 0;

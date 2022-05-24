@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Score : IDisposable
@@ -6,14 +7,17 @@ public class Score : IDisposable
     private const int LinesCountForSpeedUp = 10;
     private Settings _settings;
     private FieldEventLocator _locator;
+    private INicknameGetter _nicknameGetter;
+
     private int _clearedLinesCount;
     private int _scoreValue;
     private int _combo;
 
-    public Score(Settings settings, FieldEventLocator locator)
+    public Score(Settings settings, FieldEventLocator locator, INicknameGetter nicknameGetter)
     {
         _settings = settings;
         _locator = locator;
+        _nicknameGetter = nicknameGetter;
 
         _locator.LineCleared += OnLineCleared;
         _locator.TurnDoned += OnTurnDone;
@@ -29,7 +33,10 @@ public class Score : IDisposable
 
     private void OnGameOvered()
     {
-        var newEntry = new HighscoreEntry("Test", ScoreValue);
+        _nicknameGetter.ShowMessage();
+        string nickname = _nicknameGetter.GetNickname();
+
+        var newEntry = new HighscoreEntry(nickname, ScoreValue);
         var highscoresTable = new HighscoresTable();
         highscoresTable.TryAddNewScore(newEntry);
         highscoresTable.SaveTable();

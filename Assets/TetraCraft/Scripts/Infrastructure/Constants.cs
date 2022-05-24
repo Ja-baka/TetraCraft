@@ -11,6 +11,8 @@ public class Constants
     public readonly static Vector2Int spawnAreaStart = new Vector2Int(3, 17);
     public readonly static Vector2Int spawnAreaEnd = new Vector2Int(6, 19);
 
+    public const int NicknameMaxLength = 12;
+
     public class SceneNames
     {
         public const string GameField = nameof(GameField);

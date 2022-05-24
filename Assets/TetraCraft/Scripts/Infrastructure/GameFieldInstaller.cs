@@ -8,17 +8,18 @@ public class GameFieldInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        BindingComponentInHierarchy<Creator>();
+        BindingInterfaceToHierarchy<INicknameGetter, WindowGetNickname>();
+        BindingFromHierarchy<Creator>();
         BindingType<FieldEventLocator>();
         BindingWithSettings<Score, Score.Settings>(_scoreSettings);
         BindingWithSettings<Timer, Timer.Settings>(_timerSettings);
         BindingInstance(new PlayerInput());
         BindingType<FieldCells>();
         BindingType<Tetramino>();
-        BindingComponentInHierarchy<Booster>();
-        BindingComponentInHierarchy<PlayerController>();
-        BindingComponentInHierarchy<ScoreView>();
-        BindingComponentInHierarchy<FieldView>();
+        BindingFromHierarchy<Booster>();
+        BindingFromHierarchy<PlayerController>();
+        BindingFromHierarchy<ScoreView>();
+        BindingFromHierarchy<FieldView>();
         BindingType<Spawner>();
         BindingType<Field>();
 
@@ -47,10 +48,20 @@ public class GameFieldInstaller : MonoInstaller
         BindingType<T>();
     }
 
-    private void BindingComponentInHierarchy<T>()
+    private void BindingFromHierarchy<T>()
     {
         Container
             .Bind<T>()
+            .FromComponentInHierarchy()
+            .AsSingle();
+    }
+
+    private void BindingInterfaceToHierarchy<TI, T>()
+           where T : TI
+    {
+        Container
+            .Bind<TI>()
+            .To<T>()
             .FromComponentInHierarchy()
             .AsSingle();
     }
