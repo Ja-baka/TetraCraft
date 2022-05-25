@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Zenject;
 
 [Serializable]
-public class HighscoresTable : IDisposable
+public class HighscoresTable : IInitializable, IDisposable
 {
     private const int MaxEntries = 10;
     private List<HighscoreEntry> _entries;
@@ -24,9 +25,12 @@ public class HighscoresTable : IDisposable
         _entries = _storage.Load(new List<HighscoreEntry>(MaxEntries));
 
         _nicknameGetter.NickGetted += OnNickGetted;
-        CheckOnHighscore();
     }
 
+    public void Initialize()
+    {
+        CheckOnHighscore();
+    }
     public void Dispose()
     {
         _nicknameGetter.NickGetted -= OnNickGetted;
@@ -49,6 +53,7 @@ public class HighscoresTable : IDisposable
     {
         string nickname = _nicknameGetter.Nickname;
         TryAddNewScore(new HighscoreEntry(nickname, _newScoreValue));
+        _storage.Save(_entries);
         Updated?.Invoke();
     }
 

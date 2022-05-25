@@ -17,7 +17,6 @@ public class TableView : MonoBehaviour
 
     public void OnUpdated()
     {
-        _tableModel.SaveTable();
         int i = 1;
 
         foreach (HighscoreEntry entry in _tableModel.SortedList)
