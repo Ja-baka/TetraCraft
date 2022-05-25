@@ -6,7 +6,6 @@ public class TableView : MonoBehaviour
     [SerializeField] private GameObject _template;
     [SerializeField] private Transform _scoresHolder;
     private HighscoresTable _tableModel;
-    private int _place = 1;
 
     [Inject]
     public void Construct(HighscoresTable highscoresTable)
@@ -18,13 +17,18 @@ public class TableView : MonoBehaviour
 
     public void OnUpdated()
     {
+        _tableModel.SaveTable();
+        int i = 1;
+
         foreach (HighscoreEntry entry in _tableModel.SortedList)
         {
             HighscoreEntryView entryView
                 = _template.GetComponent<HighscoreEntryView>();
-            string place = _place++.ToString();
+            string place = i++.ToString();
             string score = entry.ScoreValue.ToString();
-            entryView.SetScore(place, score, entry.NickName);
+            string nickname = entry.NickName;
+
+            entryView.SetScore(place, score, nickname);
             Instantiate(entryView, _scoresHolder);
         }
     }

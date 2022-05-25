@@ -13,24 +13,22 @@ public class Storage
         _formatter = new BinaryFormatter();
     }
 
-    public object Load(object defaultSaveData) 
+    public T Load<T>(T defaultSaveData) 
+        where T : notnull
     {
         if (File.Exists(_path) == false)
         {
-            if (defaultSaveData != null)
-            {
-                Save(defaultSaveData);
-            }
+            Save(defaultSaveData);
             return defaultSaveData;
         }
 
-        FileStream file = File.Open(_path, FileMode.Open);
-        object savedData = _formatter.Deserialize(file);
+        using FileStream file = File.Open(_path, FileMode.Open);
+        T savedData = (T) _formatter.Deserialize(file);
         file.Close();
         return savedData;
     }
 
-    public void Save(object saveData)
+    public void Save<T>(T saveData)
     {
         using FileStream file = File.Create(_path);
         _formatter.Serialize(file, saveData);

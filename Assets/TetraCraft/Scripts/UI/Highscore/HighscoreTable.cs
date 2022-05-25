@@ -21,8 +21,7 @@ public class HighscoresTable : IDisposable
 
         _newScoreValue = HighscoreEntry.NewScoreValue;
         _storage = new Storage();
-        _entries = _storage.Load(new List<HighscoreEntry>(MaxEntries))
-            as List<HighscoreEntry>;
+        _entries = _storage.Load(new List<HighscoreEntry>(MaxEntries));
 
         _nicknameGetter.NickGetted += OnNickGetted;
         CheckOnHighscore();
