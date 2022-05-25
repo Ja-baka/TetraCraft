@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
 
 public interface INicknameGetter
 {
-    IEnumerator ShowMessage();
-    string GetNickname();
+    void Show();
+    string Nickname { get; }
+
+    event Action NickGetted;
 }

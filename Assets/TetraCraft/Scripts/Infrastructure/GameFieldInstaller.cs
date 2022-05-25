@@ -8,7 +8,7 @@ public class GameFieldInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        BindingInterfaceToHierarchy<INicknameGetter, WindowGetNickname>();
+        //BindingInterfaceToHierarchy<INicknameGetter, WindowGetNickname>();
         BindingFromHierarchy<Creator>();
         BindingType<FieldEventLocator>();
         BindingWithSettings<Score, Score.Settings>(_scoreSettings);

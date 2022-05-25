@@ -7,17 +7,15 @@ public class Score : IDisposable
     private const int LinesCountForSpeedUp = 10;
     private Settings _settings;
     private FieldEventLocator _locator;
-    private INicknameGetter _nicknameGetter;
 
     private int _clearedLinesCount;
     private int _scoreValue;
     private int _combo;
 
-    public Score(Settings settings, FieldEventLocator locator, INicknameGetter nicknameGetter)
+    public Score(Settings settings, FieldEventLocator locator)
     {
         _settings = settings;
         _locator = locator;
-        _nicknameGetter = nicknameGetter;
 
         _locator.LineCleared += OnLineCleared;
         _locator.TurnDoned += OnTurnDone;
@@ -33,13 +31,7 @@ public class Score : IDisposable
 
     private void OnGameOvered()
     {
-        _nicknameGetter.ShowMessage();
-        string nickname = _nicknameGetter.GetNickname();
-
-        var newEntry = new HighscoreEntry(nickname, ScoreValue);
-        var highscoresTable = new HighscoresTable();
-        highscoresTable.TryAddNewScore(newEntry);
-        highscoresTable.SaveTable();
+        HighscoreEntry.NewScoreValue = ScoreValue;
     }
 
     public event Action ScoreUpdated;

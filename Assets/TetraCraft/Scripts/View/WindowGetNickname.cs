@@ -1,20 +1,24 @@
-using System.Collections;
+using System;
 using UnityEngine;
 
 public class WindowGetNickname : MonoBehaviour, INicknameGetter
 {
     [SerializeField] private TMPro.TMP_InputField _inputField;
 
-    public IEnumerator ShowMessage()
-    {
-        gameObject.SetActive(true);
-        Time.timeScale = 0;
-        yield return new WaitWhile(() => enabled);
+    private string _nickname;
+
+    public string Nickname 
+    { 
+        get => _nickname
+            ?? throw new Exception("Nick is not Getted yet"); 
+        private set => _nickname = value; 
     }
 
-    public string GetNickname()
+    public event Action NickGetted;
+
+    public void Show()
     {
-        return _inputField.text;
+        gameObject.SetActive(true);
     }
 
     public void Confirm()
@@ -27,7 +31,9 @@ public class WindowGetNickname : MonoBehaviour, INicknameGetter
             return;
         }
 
+        _nickname = nickname;
+
         gameObject.SetActive(false);
-        Time.timeScale = 1;
+        NickGetted?.Invoke();
     }
 }

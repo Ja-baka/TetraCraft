@@ -12,10 +12,11 @@ public class TableView : MonoBehaviour
     public void Construct(HighscoresTable highscoresTable)
     {
         _tableModel = highscoresTable;
-        Initialize();
+
+        _tableModel.Updated += OnUpdated;
     }
 
-    public void Initialize()
+    public void OnUpdated()
     {
         foreach (HighscoreEntry entry in _tableModel.SortedList)
         {

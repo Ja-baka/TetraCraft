@@ -12,6 +12,9 @@ public class HighscoreEntry
         _scoreValue = score;
     }
 
+    public static int NewScoreValue { get; set; }
+    public static string NewScoreNickname { get; set; }
+
     public string NickName => _nickName;
     public int ScoreValue => _scoreValue;
 }
