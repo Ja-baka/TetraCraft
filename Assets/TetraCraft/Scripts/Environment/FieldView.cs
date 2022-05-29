@@ -5,6 +5,7 @@ using Zenject;
 public class FieldView : MonoBehaviour
 {
     [SerializeField] private Creator _materialCreator;
+    [SerializeField] private SoundPitcher _pitcher;
 
     private FieldEventLocator _locator;
     private FieldCells _cells;
@@ -76,5 +77,6 @@ public class FieldView : MonoBehaviour
                 }
             }
         }
+        _pitcher.Play();
     }
 }
