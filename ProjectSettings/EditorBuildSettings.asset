@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/TetraCraft/Scenes/MainMenu.unity
     guid: 901681537adf631439dabb2ff2f5086f
   - enabled: 1
+    path: Assets/TetraCraft/Scenes/Settings.unity
+    guid: 8d8b5c9c4c462f749939458f59afc0ec
+  - enabled: 1
     path: Assets/TetraCraft/Scenes/GameField.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1

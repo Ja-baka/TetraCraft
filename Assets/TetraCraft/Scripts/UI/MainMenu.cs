@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
 
     public void OpenSettings()
     {
-        throw new System.NotImplementedException();
+        SceneManager.LoadScene(Constants.SceneNames.Settings);
     }
 
     public void OpenMainMenu()
